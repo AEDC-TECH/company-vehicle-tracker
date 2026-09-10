@@ -1,0 +1,462 @@
+/* ==========================================
+   AEDC VEHICLE EVIDENCE UPLOAD
+========================================== */
+
+.evidence-upload {
+  margin-top: 18px;
+  padding: 20px;
+
+  border: 1px solid #e0e7ec;
+  border-radius: 16px;
+
+  background: #fafcfd;
+}
+
+.evidence-upload-heading {
+  display: flex;
+  align-items: flex-start;
+  gap: 13px;
+
+  margin-bottom: 16px;
+}
+
+.evidence-icon {
+  width: 42px;
+  height: 42px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 11px;
+
+  background: #e8f1fa;
+  color: #1d5fa7;
+
+  font-size: 1.1rem;
+}
+
+.evidence-title-row {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  flex-wrap: wrap;
+}
+
+.evidence-title-row h4 {
+  margin: 0;
+
+  color: #1d3446;
+
+  font-size: 1rem;
+}
+
+.evidence-required {
+  padding: 4px 7px;
+
+  border-radius: 999px;
+
+  background: #fee9e7;
+  color: #a83d32;
+
+  font-size: 0.62rem;
+  font-weight: 800;
+
+  letter-spacing: 0.06em;
+}
+
+.evidence-upload-heading p {
+  margin: 5px 0 0;
+
+  color: #6d7a84;
+
+  font-size: 0.85rem;
+  line-height: 1.55;
+}
+
+.hidden-file-input {
+  display: none;
+}
+
+.evidence-drop-zone {
+  width: 100%;
+  min-height: 145px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  gap: 7px;
+
+  padding: 20px;
+
+  border: 2px dashed #b8c9d7;
+  border-radius: 14px;
+
+  background: #ffffff;
+
+  color: #516575;
+
+  cursor: pointer;
+
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+.evidence-drop-zone:hover {
+  border-color: #1d5fa7;
+
+  background: #f6faff;
+
+  transform: translateY(-1px);
+}
+
+.evidence-drop-zone > svg {
+  color: #1d5fa7;
+
+  font-size: 1.5rem;
+}
+
+.evidence-drop-zone strong {
+  color: #263d4e;
+
+  font-size: 0.95rem;
+}
+
+.evidence-drop-zone span {
+  color: #778691;
+
+  font-size: 0.77rem;
+}
+
+.evidence-drop-zone small {
+  color: #89959d;
+
+  font-size: 0.72rem;
+}
+
+.selected-evidence-list,
+.uploaded-evidence-list {
+  display: grid;
+  gap: 9px;
+
+  margin-top: 15px;
+}
+
+.evidence-list-label {
+  color: #77858f;
+
+  font-size: 0.66rem;
+  font-weight: 800;
+
+  letter-spacing: 0.07em;
+}
+
+.selected-evidence-file,
+.uploaded-evidence-file {
+  display: grid;
+
+  grid-template-columns:
+    auto 1fr auto;
+
+  align-items: center;
+
+  gap: 11px;
+
+  padding: 12px 14px;
+
+  border: 1px solid #e1e7eb;
+  border-radius: 10px;
+
+  background: #ffffff;
+}
+
+.selected-evidence-file > svg {
+  color: #54748d;
+}
+
+.selected-evidence-file div,
+.uploaded-evidence-file div {
+  min-width: 0;
+}
+
+.selected-evidence-file strong,
+.uploaded-evidence-file strong {
+  display: block;
+
+  overflow: hidden;
+
+  color: #314756;
+
+  font-size: 0.82rem;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.selected-evidence-file span,
+.uploaded-evidence-file span {
+  display: block;
+
+  margin-top: 2px;
+
+  overflow: hidden;
+
+  color: #85919a;
+
+  font-size: 0.7rem;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.selected-evidence-file button {
+  width: 32px;
+  height: 32px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: none;
+  border-radius: 8px;
+
+  background: #f5f6f7;
+  color: #8c4a45;
+
+  cursor: pointer;
+}
+
+.upload-evidence-button {
+  min-height: 45px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 8px;
+
+  border: none;
+  border-radius: 10px;
+
+  background: #1d5fa7;
+  color: #ffffff;
+
+  font-weight: 800;
+
+  cursor: pointer;
+}
+
+.upload-evidence-button:hover {
+  background: #174f8b;
+}
+
+.upload-evidence-button:disabled {
+  opacity: 0.65;
+
+  cursor: not-allowed;
+}
+
+.uploaded-evidence-file {
+  grid-template-columns:
+    auto 1fr;
+
+  border-color: #cce5d4;
+
+  background: #f4fbf6;
+}
+
+.uploaded-evidence-file > svg {
+  color: #27834e;
+}
+
+.evidence-error {
+  margin-top: 12px;
+
+  padding: 11px 13px;
+
+  border: 1px solid #ecc5c1;
+  border-radius: 9px;
+
+  background: #fff5f4;
+  color: #a43f35;
+
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+
+/* ==========================================
+   EVIDENCE GALLERY
+========================================== */
+
+.evidence-gallery {
+  display: grid;
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr));
+
+  gap: 14px;
+}
+
+.evidence-gallery-card {
+  overflow: hidden;
+
+  border: 1px solid #e0e6ea;
+  border-radius: 14px;
+
+  background: #ffffff;
+}
+
+.evidence-preview {
+  height: 180px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  overflow: hidden;
+
+  background: #eef3f6;
+
+  color: #718391;
+
+  font-size: 2rem;
+}
+
+.evidence-preview img {
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+}
+
+.evidence-gallery-info {
+  padding: 13px;
+}
+
+.evidence-gallery-info > span {
+  display: block;
+
+  margin-bottom: 4px;
+
+  color: #75838d;
+
+  font-size: 0.64rem;
+  font-weight: 800;
+
+  letter-spacing: 0.06em;
+}
+
+.evidence-gallery-info > strong {
+  display: block;
+
+  color: #263b4a;
+
+  text-transform: capitalize;
+}
+
+.evidence-gallery-info > small {
+  display: block;
+
+  margin-top: 5px;
+
+  overflow: hidden;
+
+  color: #84919a;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.evidence-gallery-info a {
+  margin-top: 12px;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+
+  color: #1d5fa7;
+
+  text-decoration: none;
+
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.evidence-gallery-message {
+  margin: 0;
+
+  padding: 16px;
+
+  border-radius: 10px;
+
+  background: #f7f9fb;
+
+  color: #74818a;
+}
+
+.evidence-gallery-error {
+  margin: 0;
+
+  padding: 14px;
+
+  border: 1px solid #e8c3bf;
+  border-radius: 10px;
+
+  background: #fff5f4;
+  color: #a13c34;
+}
+
+@media (max-width: 900px) {
+  .evidence-gallery {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 600px) {
+  .evidence-upload {
+    padding: 15px;
+  }
+
+  .evidence-drop-zone {
+    min-height: 125px;
+  }
+
+  .evidence-gallery {
+    grid-template-columns: 1fr;
+  }
+
+  .evidence-preview {
+    height: 210px;
+  }
+}
+
+.evidence-status-summary {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+
+  margin-top: 16px;
+}
+
+.evidence-status-summary span {
+  padding: 8px 11px;
+
+  border: 1px solid #dce5eb;
+  border-radius: 999px;
+
+  background: #ffffff;
+  color: #687986;
+
+  font-size: 0.76rem;
+}
+
+.evidence-status-summary strong {
+  color: #1d5fa7;
+}

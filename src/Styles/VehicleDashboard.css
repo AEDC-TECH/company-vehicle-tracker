@@ -1,0 +1,2277 @@
+/* =========================================================
+   AEDC ADMIN VEHICLE DASHBOARD
+   Matches src/Pages/VehicleDashboard.jsx
+========================================================= */
+
+.dashboard-page {
+  width: 100%;
+  min-height: 100vh;
+
+  background: #f4f6f8;
+  color: #26313d;
+
+  font-family:
+    Inter,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.dashboard-header {
+  width: 100%;
+
+  position: sticky;
+  top: 0;
+  z-index: 100;
+
+  background: #ffffff;
+
+  border-bottom: 1px solid #e4e8ed;
+
+  box-shadow:
+    0 4px 18px rgba(15, 23, 42, 0.04);
+}
+
+.dashboard-header-inner {
+  width: min(1180px, calc(100% - 48px));
+  min-height: 88px;
+
+  margin: 0 auto;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 28px;
+}
+
+.dashboard-brand {
+  min-width: 0;
+
+  display: flex;
+  align-items: center;
+
+  gap: 15px;
+}
+
+.dashboard-brand-logo {
+  flex-shrink: 0;
+}
+
+.dashboard-brand-text {
+  min-width: 0;
+}
+
+.dashboard-brand-text span {
+  display: block;
+
+  margin-bottom: 3px;
+
+  color: #b38b2e;
+
+  font-size: 0.6rem;
+  font-weight: 850;
+
+  letter-spacing: 1.4px;
+
+  text-transform: uppercase;
+}
+
+.dashboard-brand-text h1 {
+  margin: 0;
+
+  color: #11145f;
+
+  font-size: 1.25rem;
+  font-weight: 850;
+
+  line-height: 1.2;
+}
+
+.dashboard-brand-text p {
+  margin: 4px 0 0;
+
+  color: #89939d;
+
+  font-size: 0.68rem;
+}
+
+.dashboard-header-actions {
+  display: flex;
+  align-items: center;
+
+  gap: 9px;
+
+  flex-shrink: 0;
+}
+
+.dashboard-header-link,
+.dashboard-refresh-button {
+  min-height: 40px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 7px;
+
+  padding: 9px 14px;
+
+  border-radius: 8px;
+
+  font-size: 0.66rem;
+  font-weight: 800;
+
+  text-decoration: none;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+.dashboard-header-link {
+  border: 1px solid #d9dee4;
+
+  background: #ffffff;
+  color: #596572;
+}
+
+.dashboard-header-link:hover {
+  border-color: #11145f;
+
+  color: #11145f;
+
+  background: #f5f5fb;
+}
+
+.dashboard-refresh-button {
+  border: 1px solid #11145f;
+
+  background: #11145f;
+  color: #ffffff;
+}
+
+.dashboard-refresh-button:hover {
+  background: #1c2177;
+
+  transform: translateY(-1px);
+}
+
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.dashboard-hero {
+  width: 100%;
+
+  position: relative;
+
+  overflow: hidden;
+
+  background:
+    linear-gradient(
+      135deg,
+      #11145f 0%,
+      #1d236e 58%,
+      #282d7c 100%
+    );
+
+  color: #ffffff;
+}
+
+.dashboard-hero::before {
+  content: "";
+
+  position: absolute;
+
+  width: 320px;
+  height: 320px;
+
+  top: -170px;
+  right: -80px;
+
+  border-radius: 50%;
+
+  border: 55px solid
+    rgba(255, 255, 255, 0.025);
+}
+
+.dashboard-hero::after {
+  content: "";
+
+  position: absolute;
+
+  width: 220px;
+  height: 220px;
+
+  bottom: -150px;
+  left: 12%;
+
+  border-radius: 50%;
+
+  background:
+    rgba(179, 139, 46, 0.07);
+}
+
+.dashboard-hero-inner {
+  width: min(1180px, calc(100% - 48px));
+
+  margin: 0 auto;
+
+  position: relative;
+  z-index: 2;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 40px;
+
+  padding: 48px 0 52px;
+}
+
+.dashboard-hero-copy {
+  max-width: 680px;
+}
+
+.dashboard-hero-copy > span {
+  display: block;
+
+  margin-bottom: 8px;
+
+  color: #d3af55;
+
+  font-size: 0.62rem;
+  font-weight: 850;
+
+  letter-spacing: 1.7px;
+
+  text-transform: uppercase;
+}
+
+.dashboard-hero-copy h2 {
+  margin: 0;
+
+  color: #ffffff;
+
+  font-size: clamp(
+    1.75rem,
+    3vw,
+    2.55rem
+  );
+
+  line-height: 1.1;
+
+  font-weight: 850;
+}
+
+.dashboard-hero-copy p {
+  max-width: 620px;
+
+  margin: 13px 0 0;
+
+  color: rgba(
+    255,
+    255,
+    255,
+    0.72
+  );
+
+  font-size: 0.78rem;
+  line-height: 1.7;
+}
+
+.dashboard-primary-button {
+  min-height: 44px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 8px;
+
+  padding: 11px 18px;
+
+  border: 1px solid #b38b2e;
+  border-radius: 8px;
+
+  background: #b38b2e;
+  color: #ffffff;
+
+  font-size: 0.68rem;
+  font-weight: 850;
+
+  text-decoration: none;
+
+  transition: 0.2s ease;
+}
+
+.dashboard-primary-button:hover {
+  background: #c59c3b;
+
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 8px 20px
+      rgba(0, 0, 0, 0.18);
+}
+
+
+/* =========================================================
+   CONTENT
+========================================================= */
+
+.dashboard-content {
+  width: min(1180px, calc(100% - 48px));
+
+  margin: 0 auto;
+
+  padding: 34px 0 70px;
+}
+
+
+/* =========================================================
+   ERROR / LOADING
+========================================================= */
+
+.dashboard-error {
+  display: flex;
+  align-items: flex-start;
+
+  gap: 9px;
+
+  margin-bottom: 20px;
+
+  padding: 13px 15px;
+
+  border: 1px solid #edbdb9;
+  border-radius: 9px;
+
+  background: #fff2f1;
+  color: #b42318;
+
+  font-size: 0.69rem;
+  font-weight: 700;
+}
+
+.dashboard-loading {
+  padding: 40px 20px;
+
+  border: 1px solid #e2e6ea;
+  border-radius: 10px;
+
+  background: #ffffff;
+  color: #87919c;
+
+  text-align: center;
+
+  font-size: 0.72rem;
+}
+
+
+/* =========================================================
+   SUMMARY
+========================================================= */
+
+.dashboard-summary-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(4, minmax(0, 1fr));
+
+  gap: 14px;
+
+  margin-bottom: 38px;
+}
+
+.dashboard-summary-card {
+  min-height: 100px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 14px;
+
+  padding: 18px;
+
+  border: 1px solid #dfe4e9;
+  border-radius: 11px;
+
+  background: #ffffff;
+
+  box-shadow:
+    0 4px 13px
+      rgba(15, 23, 42, 0.035);
+}
+
+.dashboard-summary-icon {
+  width: 46px;
+  height: 46px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 10px;
+
+  background: #f0f1f8;
+  color: #11145f;
+
+  font-size: 1rem;
+}
+
+.dashboard-summary-card span {
+  display: block;
+
+  color: #8e98a3;
+
+  font-size: 0.54rem;
+  font-weight: 850;
+
+  letter-spacing: 0.5px;
+
+  text-transform: uppercase;
+}
+
+.dashboard-summary-card strong {
+  display: block;
+
+  margin-top: 5px;
+
+  color: #303a46;
+
+  font-size: 1.35rem;
+  font-weight: 850;
+}
+
+
+/* =========================================================
+   SECTIONS
+========================================================= */
+
+.dashboard-section {
+  margin-top: 40px;
+}
+
+.dashboard-section-heading {
+  margin-bottom: 18px;
+}
+
+.dashboard-section-heading > span {
+  display: block;
+
+  margin-bottom: 4px;
+
+  color: #b38b2e;
+
+  font-size: 0.58rem;
+  font-weight: 850;
+
+  letter-spacing: 1.4px;
+
+  text-transform: uppercase;
+}
+
+.dashboard-section-heading h2 {
+  margin: 0;
+
+  color: #303a46;
+
+  font-size: 1.2rem;
+  font-weight: 850;
+}
+
+.dashboard-section-heading p {
+  margin: 5px 0 0;
+
+  color: #8c96a1;
+
+  font-size: 0.69rem;
+}
+
+
+/* =========================================================
+   FLEET GRID
+========================================================= */
+
+.dashboard-fleet-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap: 17px;
+}
+
+
+/* =========================================================
+   FLEET CARD
+========================================================= */
+
+.dashboard-fleet-card {
+  position: relative;
+
+  min-width: 0;
+
+  overflow: hidden;
+
+  padding: 20px;
+
+  border: 1px solid #dfe4e9;
+  border-radius: 12px;
+
+  background: #ffffff;
+
+  box-shadow:
+    0 4px 13px
+      rgba(15, 23, 42, 0.035);
+
+  transition: 0.2s ease;
+}
+
+.dashboard-fleet-card::before {
+  content: "";
+
+  position: absolute;
+
+  top: 0;
+  left: 0;
+  right: 0;
+
+  height: 3px;
+
+  background: #11145f;
+}
+
+.dashboard-fleet-card:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 11px 28px
+      rgba(15, 23, 42, 0.075);
+}
+
+.dashboard-fleet-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 15px;
+
+  margin-bottom: 17px;
+}
+
+.dashboard-fleet-icon {
+  width: 46px;
+  height: 46px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  border-radius: 10px;
+
+  background: #f0f1f8;
+  color: #11145f;
+
+  font-size: 1rem;
+}
+
+.dashboard-vehicle-status {
+  min-height: 25px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 5px 10px;
+
+  border-radius: 999px;
+
+  background: #edf0f2;
+  color: #64707c;
+
+  font-size: 0.5rem;
+  font-weight: 850;
+
+  letter-spacing: 0.35px;
+
+  text-transform: uppercase;
+}
+
+.dashboard-fleet-title {
+  margin-bottom: 16px;
+}
+
+.dashboard-fleet-title span {
+  display: block;
+
+  color: #9099a3;
+
+  font-size: 0.58rem;
+  font-weight: 750;
+
+  text-transform: uppercase;
+}
+
+.dashboard-fleet-title h3 {
+  margin: 3px 0 0;
+
+  color: #303a46;
+
+  font-size: 1.12rem;
+  font-weight: 850;
+}
+
+.dashboard-fleet-title p {
+  margin: 5px 0 0;
+
+  color: #b38b2e;
+
+  font-size: 0.7rem;
+  font-weight: 850;
+}
+
+
+/* =========================================================
+   FLEET INFO
+========================================================= */
+
+.dashboard-fleet-info-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr));
+
+  gap: 8px;
+}
+
+.dashboard-fleet-info-grid > div {
+  min-width: 0;
+
+  padding: 11px;
+
+  border: 1px solid #edf0f3;
+  border-radius: 8px;
+
+  background: #f8f9fa;
+}
+
+.dashboard-fleet-info-grid span {
+  display: block;
+
+  color: #929ba5;
+
+  font-size: 0.5rem;
+  font-weight: 800;
+
+  text-transform: uppercase;
+}
+
+.dashboard-fleet-info-grid strong {
+  display: block;
+
+  margin-top: 4px;
+
+  color: #48535f;
+
+  font-size: 0.65rem;
+  font-weight: 800;
+}
+
+
+/* =========================================================
+   VEHICLE READY / WARNING
+========================================================= */
+
+.dashboard-fleet-ready,
+.dashboard-fleet-warning {
+  display: flex;
+  align-items: flex-start;
+
+  gap: 8px;
+
+  margin-top: 14px;
+
+  padding: 10px 12px;
+
+  border-radius: 8px;
+
+  font-size: 0.61rem;
+  font-weight: 700;
+
+  line-height: 1.45;
+}
+
+.dashboard-fleet-ready {
+  border: 1px solid #b2dec2;
+
+  background: #eef9f2;
+  color: #177747;
+}
+
+.dashboard-fleet-warning {
+  border: 1px solid #ead7aa;
+
+  background: #fff9eb;
+  color: #84631b;
+}
+
+
+/* =========================================================
+   ACTIVE TRIP HEADING
+========================================================= */
+
+.dashboard-fleet-trip-heading {
+  margin-top: 15px;
+  margin-bottom: 8px;
+
+  color: #11145f;
+
+  font-size: 0.63rem;
+  font-weight: 850;
+
+  text-transform: uppercase;
+}
+
+
+/* =========================================================
+   FLEET ACTIONS
+========================================================= */
+
+.dashboard-fleet-actions {
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap: 8px;
+
+  margin-top: 17px;
+
+  padding-top: 15px;
+
+  border-top: 1px solid #edf0f3;
+}
+
+.dashboard-fleet-actions a,
+.dashboard-fleet-actions button {
+  min-height: 38px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 6px;
+
+  padding: 8px 10px;
+
+  border-radius: 7px;
+
+  font: inherit;
+  font-size: 0.59rem;
+  font-weight: 800;
+
+  text-decoration: none;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+.dashboard-fleet-view {
+  border: 1px solid #d9dee4;
+
+  background: #ffffff;
+  color: #55616e;
+}
+
+.dashboard-fleet-request {
+  border: 1px solid #11145f;
+
+  background: #11145f;
+  color: #ffffff;
+}
+
+.dashboard-fleet-return {
+  border: 1px solid #a6d2b7;
+
+  background: #eef9f2;
+  color: #177747;
+}
+
+.dashboard-fleet-incident-button {
+  min-height: 38px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 6px;
+
+  margin-top: 10px;
+
+  padding: 8px 13px;
+
+  border: 1px solid #edc1bd;
+  border-radius: 7px;
+
+  background: #fff4f3;
+  color: #b42318;
+
+  font: inherit;
+  font-size: 0.59rem;
+  font-weight: 800;
+
+  text-decoration: none;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+.dashboard-fleet-incident-button:hover {
+  border-color: #b42318;
+
+  background: #b42318;
+  color: #ffffff;
+
+  transform: translateY(-1px);
+}
+
+.dashboard-fleet-actions a:hover,
+.dashboard-fleet-actions button:hover {
+  transform: translateY(-1px);
+}
+
+
+/* =========================================================
+   BOOKINGS
+========================================================= */
+
+.dashboard-booking-list {
+  display: grid;
+
+  gap: 12px;
+}
+
+.dashboard-booking-card {
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 1fr) auto;
+
+  align-items: center;
+
+  gap: 20px;
+
+  padding: 17px 18px;
+
+  border: 1px solid #dfe4e9;
+  border-radius: 10px;
+
+  background: #ffffff;
+
+  box-shadow:
+    0 3px 10px
+      rgba(15, 23, 42, 0.03);
+}
+
+.dashboard-booking-main {
+  min-width: 0;
+}
+
+.dashboard-booking-reference {
+  display: inline-block;
+
+  margin-bottom: 5px;
+
+  color: #b38b2e;
+
+  font-size: 0.56rem;
+  font-weight: 850;
+
+  letter-spacing: 0.6px;
+}
+
+.dashboard-booking-main h3 {
+  margin: 0;
+
+  color: #303a46;
+
+  font-size: 0.88rem;
+  font-weight: 850;
+}
+
+.dashboard-booking-main p {
+  margin: 5px 0 0;
+
+  color: #838d98;
+
+  font-size: 0.66rem;
+}
+
+.dashboard-booking-detail {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+
+  gap: 7px 15px;
+
+  margin-top: 10px;
+}
+
+.dashboard-booking-detail span {
+  color: #747f8a;
+
+  font-size: 0.61rem;
+}
+
+.dashboard-booking-detail strong {
+  color: #454f5a;
+}
+
+.dashboard-booking-action {
+  min-height: 38px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 6px;
+
+  padding: 8px 13px;
+
+  border: 1px solid #11145f;
+  border-radius: 7px;
+
+  background: #11145f;
+  color: #ffffff;
+
+  font-size: 0.6rem;
+  font-weight: 800;
+
+  text-decoration: none;
+}
+
+
+/* =========================================================
+   QUICK ACTIONS
+========================================================= */
+
+.dashboard-actions-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(5, minmax(0, 1fr));
+
+  gap: 12px;
+}
+
+.dashboard-action-card {
+  min-width: 0;
+
+  display: flex;
+  align-items: flex-start;
+
+  gap: 12px;
+
+  padding: 17px;
+
+  border: 1px solid #dfe4e9;
+  border-radius: 10px;
+
+  background: #ffffff;
+  color: #394552;
+
+  text-decoration: none;
+
+  transition: 0.2s ease;
+}
+
+.dashboard-action-card > svg {
+  width: 34px;
+  height: 34px;
+
+  flex-shrink: 0;
+
+  padding: 9px;
+
+  border-radius: 8px;
+
+  background: #f0f1f8;
+  color: #11145f;
+}
+
+.dashboard-action-card strong {
+  display: block;
+
+  color: #303a46;
+
+  font-size: 0.68rem;
+  font-weight: 850;
+}
+
+.dashboard-action-card span {
+  display: block;
+
+  margin-top: 4px;
+
+  color: #929ba5;
+
+  font-size: 0.58rem;
+  line-height: 1.45;
+}
+
+.dashboard-action-card:hover {
+  border-color: #c9cce2;
+
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 9px 20px
+      rgba(17, 20, 95, 0.07);
+}
+
+
+/* =========================================================
+   EMPTY STATE
+========================================================= */
+
+.dashboard-empty-card {
+  padding: 33px 22px;
+
+  border: 1px dashed #ccd4dc;
+  border-radius: 10px;
+
+  background: #ffffff;
+
+  color: #87919c;
+
+  text-align: center;
+}
+
+.dashboard-empty-card > svg {
+  margin-bottom: 10px;
+
+  color: #11145f;
+
+  font-size: 1.4rem;
+}
+
+.dashboard-empty-card h3 {
+  margin: 0;
+
+  color: #3f4955;
+
+  font-size: 0.84rem;
+}
+
+.dashboard-empty-card p {
+  margin: 6px 0 0;
+
+  font-size: 0.66rem;
+  line-height: 1.5;
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.dashboard-footer {
+  width: min(1180px, calc(100% - 48px));
+
+  margin: 0 auto;
+
+  padding: 20px 0 28px;
+
+  border-top: 1px solid #e0e5ea;
+
+  color: #99a2ac;
+
+  text-align: center;
+
+  font-size: 0.58rem;
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 1050px) {
+  .dashboard-actions-grid {
+    grid-template-columns:
+      repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 900px) {
+  .dashboard-summary-grid {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+
+  .dashboard-fleet-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 760px) {
+  .dashboard-header {
+    position: relative;
+  }
+
+  .dashboard-header-inner,
+  .dashboard-hero-inner,
+  .dashboard-content,
+  .dashboard-footer {
+    width: calc(100% - 30px);
+  }
+
+  .dashboard-header-inner {
+    min-height: auto;
+
+    flex-direction: column;
+    align-items: stretch;
+
+    padding: 15px 0;
+  }
+
+  .dashboard-header-actions {
+    width: 100%;
+  }
+
+  .dashboard-header-link,
+  .dashboard-refresh-button {
+    flex: 1;
+  }
+
+  .dashboard-hero-inner {
+    flex-direction: column;
+    align-items: flex-start;
+
+    padding: 35px 0 38px;
+  }
+
+  .dashboard-actions-grid {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+
+  .dashboard-booking-card {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboard-booking-action {
+    width: 100%;
+  }
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (max-width: 520px) {
+  .dashboard-brand-text h1 {
+    font-size: 1rem;
+  }
+
+  .dashboard-brand-text p {
+    display: none;
+  }
+
+  .dashboard-header-actions {
+    flex-direction: column;
+  }
+
+  .dashboard-header-link,
+  .dashboard-refresh-button {
+    width: 100%;
+  }
+
+  .dashboard-summary-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboard-actions-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboard-fleet-info-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboard-fleet-actions {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboard-primary-button {
+    width: 100%;
+  }
+}
+
+/* =========================================================
+   AEDC DASHBOARD LOADING SCREEN
+========================================================= */
+
+.dashboard-loading {
+  position: relative;
+
+  width: 100%;
+  min-height: 100vh;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  overflow: hidden;
+
+  padding: 30px;
+
+  box-sizing: border-box;
+
+  background:
+    radial-gradient(
+      circle at 15% 20%,
+      rgba(179, 139, 46, 0.12),
+      transparent 28%
+    ),
+    radial-gradient(
+      circle at 85% 80%,
+      rgba(17, 20, 95, 0.13),
+      transparent 30%
+    ),
+    linear-gradient(
+      135deg,
+      #f7f8fb 0%,
+      #eef0f6 100%
+    );
+}
+
+
+/* =========================================================
+   FLOATING BACKGROUND ORBS
+========================================================= */
+
+.dashboard-loading-background {
+  position: absolute;
+  inset: 0;
+
+  overflow: hidden;
+
+  pointer-events: none;
+}
+
+.dashboard-loading-orb {
+  position: absolute;
+
+  display: block;
+
+  border-radius: 50%;
+
+  filter: blur(2px);
+
+  animation:
+    dashboardOrbFloat
+    7s
+    ease-in-out
+    infinite;
+}
+
+.dashboard-loading-orb-one {
+  width: 260px;
+  height: 260px;
+
+  top: -80px;
+  left: -80px;
+
+  background:
+    rgba(
+      17,
+      20,
+      95,
+      0.07
+    );
+}
+
+.dashboard-loading-orb-two {
+  width: 330px;
+  height: 330px;
+
+  right: -130px;
+  bottom: -130px;
+
+  background:
+    rgba(
+      179,
+      139,
+      46,
+      0.08
+    );
+
+  animation-delay: -2s;
+}
+
+.dashboard-loading-orb-three {
+  width: 150px;
+  height: 150px;
+
+  top: 20%;
+  right: 16%;
+
+  background:
+    rgba(
+      17,
+      20,
+      95,
+      0.05
+    );
+
+  animation-delay: -4s;
+}
+
+
+/* =========================================================
+   LOADING CARD
+========================================================= */
+
+.dashboard-loading-card {
+  position: relative;
+
+  z-index: 2;
+
+  width: min(
+    440px,
+    100%
+  );
+
+  padding: 32px 34px 30px;
+
+  box-sizing: border-box;
+
+  border:
+    1px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.85
+    );
+
+  border-radius: 22px;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.92
+    );
+
+  box-shadow:
+    0 30px 80px
+    rgba(
+      17,
+      20,
+      95,
+      0.13
+    );
+
+  backdrop-filter:
+    blur(14px);
+
+  text-align: center;
+
+  animation:
+    dashboardLoadingCardEnter
+    0.65s
+    ease
+    both;
+}
+
+
+/* =========================================================
+   BRAND
+========================================================= */
+
+.dashboard-loading-brand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 10px;
+
+  margin-bottom: 30px;
+}
+
+.dashboard-loading-logo {
+  animation:
+    dashboardLogoPulse
+    2s
+    ease-in-out
+    infinite;
+}
+
+.dashboard-loading-brand > div {
+  text-align: left;
+}
+
+.dashboard-loading-brand span {
+  display: block;
+
+  color: #b38b2e;
+
+  font-size: 0.55rem;
+
+  font-weight: 900;
+
+  letter-spacing: 1.5px;
+}
+
+.dashboard-loading-brand strong {
+  display: block;
+
+  margin-top: 2px;
+
+  color: #11145f;
+
+  font-size: 0.68rem;
+
+  font-weight: 850;
+}
+
+
+/* =========================================================
+   CAR ANIMATION
+========================================================= */
+
+.dashboard-loading-animation {
+  position: relative;
+
+  width: 130px;
+  height: 130px;
+
+  margin:
+    0
+    auto
+    10px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dashboard-loading-car {
+  position: relative;
+
+  z-index: 3;
+
+  width: 70px;
+  height: 70px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background:
+    linear-gradient(
+      145deg,
+      #11145f,
+      #222781
+    );
+
+  color: #ffffff;
+
+  box-shadow:
+    0 15px 35px
+    rgba(
+      17,
+      20,
+      95,
+      0.27
+    );
+
+  animation:
+    dashboardCarDrive
+    2.2s
+    ease-in-out
+    infinite;
+}
+
+.dashboard-loading-car svg {
+  font-size: 1.65rem;
+
+  animation:
+    dashboardCarBounce
+    0.65s
+    ease-in-out
+    infinite alternate;
+}
+
+
+/* =========================================================
+   ROTATING RINGS
+========================================================= */
+
+.dashboard-loading-ring {
+  position: absolute;
+
+  border-radius: 50%;
+
+  border-style: solid;
+}
+
+.dashboard-loading-ring-one {
+  width: 103px;
+  height: 103px;
+
+  border-width: 2px;
+
+  border-color:
+    #b38b2e
+    transparent
+    #b38b2e
+    transparent;
+
+  animation:
+    dashboardRingSpin
+    2.2s
+    linear
+    infinite;
+}
+
+.dashboard-loading-ring-two {
+  width: 125px;
+  height: 125px;
+
+  border-width: 1px;
+
+  border-color:
+    transparent
+    rgba(
+      17,
+      20,
+      95,
+      0.22
+    )
+    transparent
+    rgba(
+      17,
+      20,
+      95,
+      0.22
+    );
+
+  animation:
+    dashboardRingSpinReverse
+    3.4s
+    linear
+    infinite;
+}
+
+
+/* =========================================================
+   MOVING ROAD
+========================================================= */
+
+.dashboard-loading-road {
+  position: relative;
+
+  width: 190px;
+  height: 23px;
+
+  margin:
+    -10px
+    auto
+    24px;
+
+  overflow: hidden;
+
+  border-radius: 20px;
+
+  background:
+    #252b34;
+
+  box-shadow:
+    inset
+    0
+    2px
+    4px
+    rgba(
+      0,
+      0,
+      0,
+      0.18
+    );
+}
+
+.dashboard-loading-road-lines {
+  position: absolute;
+
+  top: 50%;
+  left: 0;
+
+  width: 320px;
+
+  display: flex;
+
+  gap: 18px;
+
+  transform:
+    translateY(-50%);
+
+  animation:
+    dashboardRoadMove
+    1.2s
+    linear
+    infinite;
+}
+
+.dashboard-loading-road-lines span {
+  width: 28px;
+  height: 3px;
+
+  flex-shrink: 0;
+
+  border-radius: 5px;
+
+  background:
+    #f4d76d;
+}
+
+
+/* =========================================================
+   TEXT
+========================================================= */
+
+.dashboard-loading-copy {
+  animation:
+    dashboardLoadingText
+    0.8s
+    ease
+    both;
+
+  animation-delay:
+    0.15s;
+}
+
+.dashboard-loading-label {
+  display: block;
+
+  margin-bottom: 7px;
+
+  color: #b38b2e;
+
+  font-size: 0.51rem;
+
+  font-weight: 900;
+
+  letter-spacing: 1.6px;
+}
+
+.dashboard-loading-copy h2 {
+  margin:
+    0
+    0
+    8px;
+
+  color: #11145f;
+
+  font-size: 1.15rem;
+
+  font-weight: 850;
+}
+
+.dashboard-loading-copy p {
+  max-width: 330px;
+
+  margin:
+    0
+    auto;
+
+  color: #7a8490;
+
+  font-size: 0.62rem;
+
+  line-height: 1.55;
+}
+
+
+/* =========================================================
+   PROGRESS BAR
+========================================================= */
+
+.dashboard-loading-progress {
+  position: relative;
+
+  width: 100%;
+  height: 5px;
+
+  margin-top: 24px;
+
+  overflow: hidden;
+
+  border-radius: 20px;
+
+  background:
+    #eceef3;
+}
+
+.dashboard-loading-progress-bar {
+  position: absolute;
+
+  top: 0;
+  left: -45%;
+
+  width: 45%;
+  height: 100%;
+
+  border-radius: inherit;
+
+  background:
+    linear-gradient(
+      90deg,
+      #11145f,
+      #b38b2e,
+      #11145f
+    );
+
+  animation:
+    dashboardProgressMove
+    1.6s
+    ease-in-out
+    infinite;
+}
+
+
+/* =========================================================
+   LOADING DOTS
+========================================================= */
+
+.dashboard-loading-dots {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 6px;
+
+  margin-top: 15px;
+}
+
+.dashboard-loading-dots span {
+  width: 6px;
+  height: 6px;
+
+  display: block;
+
+  border-radius: 50%;
+
+  background:
+    #11145f;
+
+  animation:
+    dashboardLoadingDot
+    1.2s
+    ease-in-out
+    infinite;
+}
+
+.dashboard-loading-dots span:nth-child(2) {
+  animation-delay:
+    0.15s;
+}
+
+.dashboard-loading-dots span:nth-child(3) {
+  animation-delay:
+    0.3s;
+}
+
+
+/* =========================================================
+   ANIMATIONS
+========================================================= */
+
+@keyframes dashboardLoadingCardEnter {
+  from {
+    opacity: 0;
+
+    transform:
+      translateY(20px)
+      scale(0.97);
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      translateY(0)
+      scale(1);
+  }
+}
+
+
+@keyframes dashboardLogoPulse {
+  0%,
+  100% {
+    transform:
+      scale(1);
+
+    opacity:
+      1;
+  }
+
+  50% {
+    transform:
+      scale(1.05);
+
+    opacity:
+      0.86;
+  }
+}
+
+
+@keyframes dashboardRingSpin {
+  from {
+    transform:
+      rotate(0deg);
+  }
+
+  to {
+    transform:
+      rotate(360deg);
+  }
+}
+
+
+@keyframes dashboardRingSpinReverse {
+  from {
+    transform:
+      rotate(360deg);
+  }
+
+  to {
+    transform:
+      rotate(0deg);
+  }
+}
+
+
+@keyframes dashboardCarDrive {
+  0%,
+  100% {
+    transform:
+      translateX(-4px);
+  }
+
+  50% {
+    transform:
+      translateX(4px);
+  }
+}
+
+
+@keyframes dashboardCarBounce {
+  from {
+    transform:
+      translateY(0)
+      rotate(-1deg);
+  }
+
+  to {
+    transform:
+      translateY(-3px)
+      rotate(1deg);
+  }
+}
+
+
+@keyframes dashboardRoadMove {
+  from {
+    transform:
+      translate(
+        0,
+        -50%
+      );
+  }
+
+  to {
+    transform:
+      translate(
+        -92px,
+        -50%
+      );
+  }
+}
+
+
+@keyframes dashboardProgressMove {
+  0% {
+    left:
+      -45%;
+  }
+
+  55% {
+    left:
+      55%;
+  }
+
+  100% {
+    left:
+      110%;
+  }
+}
+
+
+@keyframes dashboardLoadingDot {
+  0%,
+  100% {
+    transform:
+      translateY(0);
+
+    opacity:
+      0.35;
+  }
+
+  50% {
+    transform:
+      translateY(-5px);
+
+    opacity:
+      1;
+  }
+}
+
+
+@keyframes dashboardOrbFloat {
+  0%,
+  100% {
+    transform:
+      translate(
+        0,
+        0
+      );
+  }
+
+  50% {
+    transform:
+      translate(
+        18px,
+        -15px
+      );
+  }
+}
+
+
+@keyframes dashboardLoadingText {
+  from {
+    opacity: 0;
+
+    transform:
+      translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      translateY(0);
+  }
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (
+  prefers-reduced-motion:
+    reduce
+) {
+  .dashboard-loading *,
+  .dashboard-loading *::before,
+  .dashboard-loading *::after {
+    animation-duration:
+      0.01ms !important;
+
+    animation-iteration-count:
+      1 !important;
+  }
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (
+  max-width: 520px
+) {
+  .dashboard-loading {
+    padding: 18px;
+  }
+
+  .dashboard-loading-card {
+    padding:
+      26px
+      20px
+      25px;
+
+    border-radius:
+      17px;
+  }
+
+  .dashboard-loading-animation {
+    width:
+      115px;
+
+    height:
+      115px;
+  }
+
+  .dashboard-loading-ring-one {
+    width:
+      92px;
+
+    height:
+      92px;
+  }
+
+  .dashboard-loading-ring-two {
+    width:
+      110px;
+
+    height:
+      110px;
+  }
+
+  .dashboard-loading-car {
+    width:
+      62px;
+
+    height:
+      62px;
+  }
+
+  .dashboard-loading-car svg {
+    font-size:
+      1.4rem;
+  }
+
+  .dashboard-loading-road {
+    width:
+      165px;
+  }
+
+  .dashboard-loading-copy h2 {
+    font-size:
+      1rem;
+  }
+}
+
+/* =========================================================
+   ADMIN LOGOUT BUTTON
+========================================================= */
+
+.dashboard-logout-button {
+  min-height: 40px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 7px;
+
+  padding: 9px 14px;
+
+  border: 1px solid #edc1bd;
+  border-radius: 8px;
+
+  background: #fff4f3;
+  color: #b42318;
+
+  font: inherit;
+  font-size: 0.66rem;
+  font-weight: 800;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+
+.dashboard-logout-button:hover:not(:disabled) {
+  border-color: #b42318;
+
+  background: #b42318;
+  color: #ffffff;
+
+  transform: translateY(-1px);
+}
+
+
+.dashboard-logout-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+
+@media (max-width: 760px) {
+  .dashboard-logout-button {
+    flex: 1;
+  }
+}
+
+
+@media (max-width: 520px) {
+  .dashboard-logout-button {
+    width: 100%;
+  }
+}
+
+
+/* =========================================================
+   ADMIN NAVBAR — LIVE STATUS + LOCAL TIME
+========================================================= */
+
+.dashboard-navbar-status,
+.dashboard-navbar-time {
+  min-height: 40px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 8px;
+
+  padding: 7px 11px;
+
+  border: 1px solid #e1e5ea;
+  border-radius: 8px;
+
+  background: #f8f9fb;
+}
+
+.dashboard-navbar-status > div,
+.dashboard-navbar-time > div {
+  min-width: 0;
+}
+
+.dashboard-navbar-status small,
+.dashboard-navbar-status strong,
+.dashboard-navbar-time small,
+.dashboard-navbar-time strong {
+  display: block;
+
+  white-space: nowrap;
+}
+
+.dashboard-navbar-status small,
+.dashboard-navbar-time small {
+  color: #9099a3;
+
+  font-size: 0.43rem;
+  font-weight: 850;
+
+  letter-spacing: 0.8px;
+}
+
+.dashboard-navbar-status strong {
+  margin-top: 1px;
+
+  color: #218653;
+
+  font-size: 0.57rem;
+  font-weight: 900;
+
+  letter-spacing: 0.55px;
+}
+
+.dashboard-navbar-time strong {
+  margin-top: 1px;
+
+  color: #11145f;
+
+  font-size: 0.61rem;
+  font-weight: 900;
+
+  letter-spacing: 0.45px;
+
+  font-variant-numeric: tabular-nums;
+}
+
+.dashboard-navbar-time > svg {
+  color: #b38b2e;
+
+  font-size: 0.72rem;
+}
+
+.dashboard-navbar-live-dot {
+  width: 7px;
+  height: 7px;
+
+  flex-shrink: 0;
+
+  border-radius: 50%;
+
+  background: #43b978;
+
+  box-shadow:
+    0 0 0 4px rgba(67, 185, 120, 0.1),
+    0 0 10px rgba(67, 185, 120, 0.35);
+
+  animation:
+    dashboardNavbarLivePulse
+    1.8s
+    ease-in-out
+    infinite;
+}
+
+@keyframes dashboardNavbarLivePulse {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
+
+@media (max-width: 1080px) {
+  .dashboard-navbar-status {
+    display: none;
+  }
+}
+
+@media (max-width: 920px) {
+  .dashboard-navbar-time {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dashboard-navbar-live-dot {
+    animation: none;
+  }
+}

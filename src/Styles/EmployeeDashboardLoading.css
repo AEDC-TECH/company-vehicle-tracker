@@ -1,0 +1,859 @@
+/* =========================================================
+   AEDC DASHBOARD LOADING SCREEN
+========================================================= */
+
+.employee-dashboard-loading {
+  position: relative;
+
+  width: 100%;
+  min-height: 100vh;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  overflow: hidden;
+
+  padding: 30px;
+
+  box-sizing: border-box;
+
+  background:
+    radial-gradient(
+      circle at 15% 20%,
+      rgba(179, 139, 46, 0.12),
+      transparent 28%
+    ),
+    radial-gradient(
+      circle at 85% 80%,
+      rgba(17, 20, 95, 0.13),
+      transparent 30%
+    ),
+    linear-gradient(
+      135deg,
+      #f7f8fb 0%,
+      #eef0f6 100%
+    );
+}
+
+
+/* =========================================================
+   FLOATING BACKGROUND ORBS
+========================================================= */
+
+.employee-dashboard-loading-background {
+  position: absolute;
+  inset: 0;
+
+  overflow: hidden;
+
+  pointer-events: none;
+}
+
+.employee-dashboard-loading-orb {
+  position: absolute;
+
+  display: block;
+
+  border-radius: 50%;
+
+  filter: blur(2px);
+
+  animation:
+    employeeDashboardOrbFloat
+    7s
+    ease-in-out
+    infinite;
+}
+
+.employee-dashboard-loading-orb-one {
+  width: 260px;
+  height: 260px;
+
+  top: -80px;
+  left: -80px;
+
+  background:
+    rgba(
+      17,
+      20,
+      95,
+      0.07
+    );
+}
+
+.employee-dashboard-loading-orb-two {
+  width: 330px;
+  height: 330px;
+
+  right: -130px;
+  bottom: -130px;
+
+  background:
+    rgba(
+      179,
+      139,
+      46,
+      0.08
+    );
+
+  animation-delay: -2s;
+}
+
+.employee-dashboard-loading-orb-three {
+  width: 150px;
+  height: 150px;
+
+  top: 20%;
+  right: 16%;
+
+  background:
+    rgba(
+      17,
+      20,
+      95,
+      0.05
+    );
+
+  animation-delay: -4s;
+}
+
+
+/* =========================================================
+   LOADING CARD
+========================================================= */
+
+.employee-dashboard-loading-card {
+  position: relative;
+
+  z-index: 2;
+
+  width: min(
+    440px,
+    100%
+  );
+
+  padding: 32px 34px 30px;
+
+  box-sizing: border-box;
+
+  border:
+    1px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.85
+    );
+
+  border-radius: 22px;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.92
+    );
+
+  box-shadow:
+    0 30px 80px
+    rgba(
+      17,
+      20,
+      95,
+      0.13
+    );
+
+  backdrop-filter:
+    blur(14px);
+
+  text-align: center;
+
+  animation:
+    employeeDashboardLoadingCardEnter
+    0.65s
+    ease
+    both;
+}
+
+
+/* =========================================================
+   BRAND
+========================================================= */
+
+.employee-dashboard-loading-brand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 10px;
+
+  margin-bottom: 30px;
+}
+
+.employee-dashboard-loading-logo {
+  animation:
+    employeeDashboardLogoPulse
+    2s
+    ease-in-out
+    infinite;
+}
+
+.employee-dashboard-loading-brand > div {
+  text-align: left;
+}
+
+.employee-dashboard-loading-brand span {
+  display: block;
+
+  color: #b38b2e;
+
+  font-size: 0.55rem;
+
+  font-weight: 900;
+
+  letter-spacing: 1.5px;
+}
+
+.employee-dashboard-loading-brand strong {
+  display: block;
+
+  margin-top: 2px;
+
+  color: #11145f;
+
+  font-size: 0.68rem;
+
+  font-weight: 850;
+}
+
+
+/* =========================================================
+   CAR ANIMATION
+========================================================= */
+
+.employee-dashboard-loading-animation {
+  position: relative;
+
+  width: 130px;
+  height: 130px;
+
+  margin:
+    0
+    auto
+    10px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.employee-dashboard-loading-car {
+  position: relative;
+
+  z-index: 3;
+
+  width: 70px;
+  height: 70px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background:
+    linear-gradient(
+      145deg,
+      #11145f,
+      #222781
+    );
+
+  color: #ffffff;
+
+  box-shadow:
+    0 15px 35px
+    rgba(
+      17,
+      20,
+      95,
+      0.27
+    );
+
+  animation:
+    employeeDashboardCarDrive
+    2.2s
+    ease-in-out
+    infinite;
+}
+
+.employee-dashboard-loading-car svg {
+  font-size: 1.65rem;
+
+  animation:
+    employeeDashboardCarBounce
+    0.65s
+    ease-in-out
+    infinite alternate;
+}
+
+
+/* =========================================================
+   ROTATING RINGS
+========================================================= */
+
+.employee-dashboard-loading-ring {
+  position: absolute;
+
+  border-radius: 50%;
+
+  border-style: solid;
+}
+
+.employee-dashboard-loading-ring-one {
+  width: 103px;
+  height: 103px;
+
+  border-width: 2px;
+
+  border-color:
+    #b38b2e
+    transparent
+    #b38b2e
+    transparent;
+
+  animation:
+    employeeDashboardRingSpin
+    2.2s
+    linear
+    infinite;
+}
+
+.employee-dashboard-loading-ring-two {
+  width: 125px;
+  height: 125px;
+
+  border-width: 1px;
+
+  border-color:
+    transparent
+    rgba(
+      17,
+      20,
+      95,
+      0.22
+    )
+    transparent
+    rgba(
+      17,
+      20,
+      95,
+      0.22
+    );
+
+  animation:
+    employeeDashboardRingSpinReverse
+    3.4s
+    linear
+    infinite;
+}
+
+
+/* =========================================================
+   MOVING ROAD
+========================================================= */
+
+.employee-dashboard-loading-road {
+  position: relative;
+
+  width: 190px;
+  height: 23px;
+
+  margin:
+    -10px
+    auto
+    24px;
+
+  overflow: hidden;
+
+  border-radius: 20px;
+
+  background:
+    #252b34;
+
+  box-shadow:
+    inset
+    0
+    2px
+    4px
+    rgba(
+      0,
+      0,
+      0,
+      0.18
+    );
+}
+
+.employee-dashboard-loading-road-lines {
+  position: absolute;
+
+  top: 50%;
+  left: 0;
+
+  width: 320px;
+
+  display: flex;
+
+  gap: 18px;
+
+  transform:
+    translateY(-50%);
+
+  animation:
+    employeeDashboardRoadMove
+    1.2s
+    linear
+    infinite;
+}
+
+.employee-dashboard-loading-road-lines span {
+  width: 28px;
+  height: 3px;
+
+  flex-shrink: 0;
+
+  border-radius: 5px;
+
+  background:
+    #f4d76d;
+}
+
+
+/* =========================================================
+   TEXT
+========================================================= */
+
+.employee-dashboard-loading-copy {
+  animation:
+    employeeDashboardLoadingText
+    0.8s
+    ease
+    both;
+
+  animation-delay:
+    0.15s;
+}
+
+.employee-dashboard-loading-label {
+  display: block;
+
+  margin-bottom: 7px;
+
+  color: #b38b2e;
+
+  font-size: 0.51rem;
+
+  font-weight: 900;
+
+  letter-spacing: 1.6px;
+}
+
+.employee-dashboard-loading-copy h2 {
+  margin:
+    0
+    0
+    8px;
+
+  color: #11145f;
+
+  font-size: 1.15rem;
+
+  font-weight: 850;
+}
+
+.employee-dashboard-loading-copy p {
+  max-width: 330px;
+
+  margin:
+    0
+    auto;
+
+  color: #7a8490;
+
+  font-size: 0.62rem;
+
+  line-height: 1.55;
+}
+
+
+/* =========================================================
+   PROGRESS BAR
+========================================================= */
+
+.employee-dashboard-loading-progress {
+  position: relative;
+
+  width: 100%;
+  height: 5px;
+
+  margin-top: 24px;
+
+  overflow: hidden;
+
+  border-radius: 20px;
+
+  background:
+    #eceef3;
+}
+
+.employee-dashboard-loading-progress-bar {
+  position: absolute;
+
+  top: 0;
+  left: -45%;
+
+  width: 45%;
+  height: 100%;
+
+  border-radius: inherit;
+
+  background:
+    linear-gradient(
+      90deg,
+      #11145f,
+      #b38b2e,
+      #11145f
+    );
+
+  animation:
+    employeeDashboardProgressMove
+    1.6s
+    ease-in-out
+    infinite;
+}
+
+
+/* =========================================================
+   LOADING DOTS
+========================================================= */
+
+.employee-dashboard-loading-dots {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 6px;
+
+  margin-top: 15px;
+}
+
+.employee-dashboard-loading-dots span {
+  width: 6px;
+  height: 6px;
+
+  display: block;
+
+  border-radius: 50%;
+
+  background:
+    #11145f;
+
+  animation:
+    employeeDashboardLoadingDot
+    1.2s
+    ease-in-out
+    infinite;
+}
+
+.employee-dashboard-loading-dots span:nth-child(2) {
+  animation-delay:
+    0.15s;
+}
+
+.employee-dashboard-loading-dots span:nth-child(3) {
+  animation-delay:
+    0.3s;
+}
+
+
+/* =========================================================
+   ANIMATIONS
+========================================================= */
+
+@keyframes employeeDashboardLoadingCardEnter {
+  from {
+    opacity: 0;
+
+    transform:
+      translateY(20px)
+      scale(0.97);
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      translateY(0)
+      scale(1);
+  }
+}
+
+
+@keyframes employeeDashboardLogoPulse {
+  0%,
+  100% {
+    transform:
+      scale(1);
+
+    opacity:
+      1;
+  }
+
+  50% {
+    transform:
+      scale(1.05);
+
+    opacity:
+      0.86;
+  }
+}
+
+
+@keyframes employeeDashboardRingSpin {
+  from {
+    transform:
+      rotate(0deg);
+  }
+
+  to {
+    transform:
+      rotate(360deg);
+  }
+}
+
+
+@keyframes employeeDashboardRingSpinReverse {
+  from {
+    transform:
+      rotate(360deg);
+  }
+
+  to {
+    transform:
+      rotate(0deg);
+  }
+}
+
+
+@keyframes employeeDashboardCarDrive {
+  0%,
+  100% {
+    transform:
+      translateX(-4px);
+  }
+
+  50% {
+    transform:
+      translateX(4px);
+  }
+}
+
+
+@keyframes employeeDashboardCarBounce {
+  from {
+    transform:
+      translateY(0)
+      rotate(-1deg);
+  }
+
+  to {
+    transform:
+      translateY(-3px)
+      rotate(1deg);
+  }
+}
+
+
+@keyframes employeeDashboardRoadMove {
+  from {
+    transform:
+      translate(
+        0,
+        -50%
+      );
+  }
+
+  to {
+    transform:
+      translate(
+        -92px,
+        -50%
+      );
+  }
+}
+
+
+@keyframes employeeDashboardProgressMove {
+  0% {
+    left:
+      -45%;
+  }
+
+  55% {
+    left:
+      55%;
+  }
+
+  100% {
+    left:
+      110%;
+  }
+}
+
+
+@keyframes employeeDashboardLoadingDot {
+  0%,
+  100% {
+    transform:
+      translateY(0);
+
+    opacity:
+      0.35;
+  }
+
+  50% {
+    transform:
+      translateY(-5px);
+
+    opacity:
+      1;
+  }
+}
+
+
+@keyframes employeeDashboardOrbFloat {
+  0%,
+  100% {
+    transform:
+      translate(
+        0,
+        0
+      );
+  }
+
+  50% {
+    transform:
+      translate(
+        18px,
+        -15px
+      );
+  }
+}
+
+
+@keyframes employeeDashboardLoadingText {
+  from {
+    opacity: 0;
+
+    transform:
+      translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      translateY(0);
+  }
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (
+  prefers-reduced-motion:
+    reduce
+) {
+  .employee-dashboard-loading *,
+  .employee-dashboard-loading *::before,
+  .employee-dashboard-loading *::after {
+    animation-duration:
+      0.01ms !important;
+
+    animation-iteration-count:
+      1 !important;
+  }
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (
+  max-width: 520px
+) {
+  .employee-dashboard-loading {
+    padding: 18px;
+  }
+
+  .employee-dashboard-loading-card {
+    padding:
+      26px
+      20px
+      25px;
+
+    border-radius:
+      17px;
+  }
+
+  .employee-dashboard-loading-animation {
+    width:
+      115px;
+
+    height:
+      115px;
+  }
+
+  .employee-dashboard-loading-ring-one {
+    width:
+      92px;
+
+    height:
+      92px;
+  }
+
+  .employee-dashboard-loading-ring-two {
+    width:
+      110px;
+
+    height:
+      110px;
+  }
+
+  .employee-dashboard-loading-car {
+    width:
+      62px;
+
+    height:
+      62px;
+  }
+
+  .employee-dashboard-loading-car svg {
+    font-size:
+      1.4rem;
+  }
+
+  .employee-dashboard-loading-road {
+    width:
+      165px;
+  }
+
+  .employee-dashboard-loading-copy h2 {
+    font-size:
+      1rem;
+  }
+}

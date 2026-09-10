@@ -1,0 +1,90 @@
+/* ==========================================
+   AEDC LOGO
+========================================== */
+
+.aedc-logo-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+
+  flex-shrink: 0;
+  min-width: 0;
+}
+
+.aedc-logo-image {
+  display: block;
+
+  width: 210px;
+  max-width: 100%;
+  height: auto;
+
+  object-fit: contain;
+}
+
+
+/* ==========================================
+   COMPACT VERSION
+========================================== */
+
+.aedc-logo-compact .aedc-logo-image {
+  width: 150px;
+}
+
+
+/* ==========================================
+   FORM HEADER VERSION
+========================================== */
+
+.form-brand-logo .aedc-logo-image {
+  width: 165px;
+}
+
+
+/* ==========================================
+   DASHBOARD VERSION
+========================================== */
+
+.dashboard-brand-logo .aedc-logo-image {
+  width: 220px;
+}
+
+
+/* ==========================================
+   RESPONSIVE
+========================================== */
+
+@media (max-width: 768px) {
+  .aedc-logo-image {
+    width: 175px;
+  }
+
+  .aedc-logo-compact .aedc-logo-image {
+    width: 135px;
+  }
+
+  .form-brand-logo .aedc-logo-image {
+    width: 140px;
+  }
+
+  .dashboard-brand-logo .aedc-logo-image {
+    width: 180px;
+  }
+}
+
+@media (max-width: 480px) {
+  .aedc-logo-image {
+    width: 145px;
+  }
+
+  .aedc-logo-compact .aedc-logo-image {
+    width: 120px;
+  }
+
+  .form-brand-logo .aedc-logo-image {
+    width: 125px;
+  }
+
+  .dashboard-brand-logo .aedc-logo-image {
+    width: 155px;
+  }
+}

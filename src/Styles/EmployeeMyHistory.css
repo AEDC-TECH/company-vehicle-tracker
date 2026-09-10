@@ -1,0 +1,1268 @@
+/* =========================================================
+   AEDC EMPLOYEE MY TRIP HISTORY
+========================================================= */
+
+.employee-history-page {
+  min-height: 100vh;
+
+  background: #f4f6f8;
+
+  color: #29333d;
+
+  font-family:
+    Inter,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.employee-history-header {
+  background: #ffffff;
+
+  border-bottom: 1px solid #e2e6ea;
+}
+
+.employee-history-header-inner {
+  width: min(
+    1180px,
+    calc(100% - 40px)
+  );
+
+  min-height: 82px;
+
+  margin: 0 auto;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 25px;
+}
+
+.employee-history-header-left {
+  display: flex;
+
+  align-items: center;
+
+  gap: 13px;
+}
+
+.employee-history-back {
+  width: 38px;
+
+  height: 38px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border: 1px solid #d8dee4;
+
+  border-radius: 8px;
+
+  background: #ffffff;
+
+  color: #5e6974;
+
+  text-decoration: none;
+
+  transition: 0.2s ease;
+}
+
+.employee-history-back:hover {
+  border-color: #11145f;
+
+  color: #11145f;
+}
+
+.employee-history-brand span {
+  display: block;
+
+  color: #b38b2e;
+
+  font-size: 0.52rem;
+
+  font-weight: 850;
+
+  letter-spacing: 1.2px;
+}
+
+.employee-history-brand strong {
+  display: block;
+
+  margin-top: 2px;
+
+  color: #11145f;
+
+  font-size: 0.75rem;
+}
+
+.employee-history-user {
+  display: flex;
+
+  align-items: center;
+
+  gap: 9px;
+
+  padding: 8px 11px;
+
+  border: 1px solid #e0e4e9;
+
+  border-radius: 8px;
+
+  background: #f8f9fa;
+}
+
+.employee-history-user > svg {
+  color: #11145f;
+}
+
+.employee-history-user span {
+  display: block;
+
+  color: #929ba4;
+
+  font-size: 0.48rem;
+
+  font-weight: 800;
+
+  text-transform: uppercase;
+}
+
+.employee-history-user strong {
+  display: block;
+
+  margin-top: 2px;
+
+  color: #414c57;
+
+  font-size: 0.6rem;
+}
+
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.employee-history-hero {
+  background:
+    linear-gradient(
+      135deg,
+      #11145f 0%,
+      #1b206f 100%
+    );
+
+  color: #ffffff;
+}
+
+.employee-history-hero-inner {
+  width: min(
+    1180px,
+    calc(100% - 40px)
+  );
+
+  margin: 0 auto;
+
+  padding: 40px 0;
+}
+
+.employee-history-hero span {
+  display: block;
+
+  margin-bottom: 7px;
+
+  color: #d8ba6d;
+
+  font-size: 0.56rem;
+
+  font-weight: 850;
+
+  letter-spacing: 1.5px;
+}
+
+.employee-history-hero h1 {
+  margin: 0;
+
+  font-size: 1.7rem;
+
+  font-weight: 850;
+}
+
+.employee-history-hero p {
+  max-width: 620px;
+
+  margin: 8px 0 0;
+
+  color: rgba(
+    255,
+    255,
+    255,
+    0.76
+  );
+
+  font-size: 0.68rem;
+
+  line-height: 1.55;
+}
+
+
+/* =========================================================
+   CONTENT
+========================================================= */
+
+.employee-history-content {
+  width: min(
+    1180px,
+    calc(100% - 40px)
+  );
+
+  margin: 28px auto 0;
+
+  padding-bottom: 70px;
+}
+
+
+/* =========================================================
+   EMPLOYEE CARD
+========================================================= */
+
+.employee-history-employee-card {
+  display: flex;
+
+  align-items: center;
+
+  gap: 14px;
+
+  margin-bottom: 18px;
+
+  padding: 18px;
+
+  border: 1px solid #dfe4e9;
+
+  border-radius: 11px;
+
+  background: #ffffff;
+
+  box-shadow:
+    0 4px 15px
+    rgba(
+      15,
+      23,
+      42,
+      0.035
+    );
+}
+
+.employee-history-employee-icon {
+  width: 43px;
+
+  height: 43px;
+
+  flex-shrink: 0;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border-radius: 9px;
+
+  background: #f0f1f8;
+
+  color: #11145f;
+}
+
+.employee-history-employee-card span {
+  display: block;
+
+  color: #b38b2e;
+
+  font-size: 0.49rem;
+
+  font-weight: 850;
+
+  letter-spacing: 1px;
+}
+
+.employee-history-employee-card h2 {
+  margin: 3px 0;
+
+  color: #333e49;
+
+  font-size: 0.9rem;
+}
+
+.employee-history-employee-card p {
+  margin: 0;
+
+  color: #89939d;
+
+  font-size: 0.58rem;
+}
+
+
+/* =========================================================
+   SUMMARY
+========================================================= */
+
+.employee-history-summary {
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      4,
+      minmax(0, 1fr)
+    );
+
+  gap: 12px;
+
+  margin-bottom: 18px;
+}
+
+.employee-history-summary article {
+  display: flex;
+
+  align-items: center;
+
+  gap: 11px;
+
+  min-height: 76px;
+
+  padding: 15px;
+
+  border: 1px solid #dfe4e9;
+
+  border-radius: 10px;
+
+  background: #ffffff;
+}
+
+.employee-history-summary-icon {
+  width: 36px;
+
+  height: 36px;
+
+  flex-shrink: 0;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border-radius: 8px;
+
+  background: #f1f2f8;
+
+  color: #11145f;
+}
+
+.employee-history-summary span {
+  display: block;
+
+  color: #929ba4;
+
+  font-size: 0.49rem;
+
+  font-weight: 800;
+
+  text-transform: uppercase;
+}
+
+.employee-history-summary strong {
+  display: block;
+
+  margin-top: 3px;
+
+  color: #303b46;
+
+  font-size: 1rem;
+}
+
+
+/* =========================================================
+   TOOLBAR
+========================================================= */
+
+.employee-history-toolbar {
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  margin-bottom: 18px;
+
+  padding: 13px;
+
+  border: 1px solid #dfe4e9;
+
+  border-radius: 10px;
+
+  background: #ffffff;
+}
+
+.employee-history-search {
+  position: relative;
+
+  flex: 1;
+}
+
+.employee-history-search svg {
+  position: absolute;
+
+  top: 50%;
+
+  left: 12px;
+
+  transform:
+    translateY(-50%);
+
+  color: #929ca6;
+
+  font-size: 0.7rem;
+}
+
+.employee-history-search input,
+.employee-history-toolbar select {
+  height: 41px;
+
+  box-sizing: border-box;
+
+  outline: none;
+
+  border: 1px solid #d6dce2;
+
+  border-radius: 7px;
+
+  background: #ffffff;
+
+  color: #414c57;
+
+  font: inherit;
+
+  font-size: 0.62rem;
+}
+
+.employee-history-search input {
+  width: 100%;
+
+  padding: 0 12px 0 35px;
+}
+
+.employee-history-toolbar select {
+  min-width: 165px;
+
+  padding: 0 10px;
+}
+
+.employee-history-search input:focus,
+.employee-history-toolbar select:focus {
+  border-color: #11145f;
+
+  box-shadow:
+    0 0 0 3px
+    rgba(
+      17,
+      20,
+      95,
+      0.06
+    );
+}
+
+
+/* =========================================================
+   HISTORY SECTION
+========================================================= */
+
+.employee-history-section {
+  padding: 22px;
+
+  border: 1px solid #dfe4e9;
+
+  border-radius: 12px;
+
+  background: #ffffff;
+
+  box-shadow:
+    0 4px 15px
+    rgba(
+      15,
+      23,
+      42,
+      0.035
+    );
+}
+
+.employee-history-section-heading {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 20px;
+
+  margin-bottom: 19px;
+
+  padding-bottom: 16px;
+
+  border-bottom: 1px solid #edf0f3;
+}
+
+.employee-history-section-heading span {
+  display: block;
+
+  color: #b38b2e;
+
+  font-size: 0.5rem;
+
+  font-weight: 850;
+
+  letter-spacing: 1px;
+}
+
+.employee-history-section-heading h2 {
+  margin: 3px 0 0;
+
+  color: #313c47;
+
+  font-size: 1rem;
+}
+
+.employee-history-section-heading > strong {
+  padding: 6px 9px;
+
+  border-radius: 6px;
+
+  background: #f2f3f7;
+
+  color: #606b76;
+
+  font-size: 0.55rem;
+}
+
+
+/* =========================================================
+   TRIP LIST
+========================================================= */
+
+.employee-history-list {
+  display: grid;
+
+  gap: 15px;
+}
+
+.employee-history-trip-card {
+  overflow: hidden;
+
+  border: 1px solid #dfe4e9;
+
+  border-left: 4px solid #238552;
+
+  border-radius: 10px;
+
+  background: #ffffff;
+}
+
+.employee-history-trip-issue {
+  border-left-color: #b42318;
+}
+
+
+/* =========================================================
+   TRIP TOP
+========================================================= */
+
+.employee-history-trip-top {
+  display: flex;
+
+  align-items: flex-start;
+
+  justify-content: space-between;
+
+  gap: 20px;
+
+  padding: 18px;
+
+  border-bottom: 1px solid #edf0f3;
+}
+
+.employee-history-reference {
+  display: inline-flex;
+
+  margin-bottom: 7px;
+
+  padding: 4px 7px;
+
+  border-radius: 5px;
+
+  background: #f0f1f8;
+
+  color: #11145f;
+
+  font-size: 0.48rem;
+
+  font-weight: 850;
+}
+
+.employee-history-trip-top h3 {
+  margin: 0;
+
+  color: #303b46;
+
+  font-size: 0.9rem;
+}
+
+.employee-history-trip-top p {
+  margin: 4px 0 0;
+
+  color: #929ca6;
+
+  font-size: 0.56rem;
+}
+
+
+/* =========================================================
+   STATUS
+========================================================= */
+
+.employee-history-status {
+  flex-shrink: 0;
+
+  display: inline-flex;
+
+  padding: 6px 9px;
+
+  border-radius: 20px;
+
+  font-size: 0.5rem;
+
+  font-weight: 850;
+}
+
+.employee-history-status-returned {
+  background: #eaf7ef;
+
+  color: #177747;
+}
+
+.employee-history-status-incident {
+  background: #fff0ef;
+
+  color: #b42318;
+}
+
+
+/* =========================================================
+   PURPOSE
+========================================================= */
+
+.employee-history-purpose {
+  display: flex;
+
+  align-items: flex-start;
+
+  gap: 10px;
+
+  margin: 15px 18px;
+
+  padding: 12px;
+
+  border: 1px solid #e5e9ed;
+
+  border-radius: 8px;
+
+  background: #f8f9fa;
+}
+
+.employee-history-purpose > svg {
+  flex-shrink: 0;
+
+  margin-top: 2px;
+
+  color: #b38b2e;
+}
+
+.employee-history-purpose span {
+  display: block;
+
+  color: #929ca6;
+
+  font-size: 0.47rem;
+
+  font-weight: 800;
+
+  text-transform: uppercase;
+}
+
+.employee-history-purpose strong {
+  display: block;
+
+  margin-top: 2px;
+
+  color: #424d58;
+
+  font-size: 0.64rem;
+}
+
+.employee-history-purpose p {
+  margin: 3px 0 0;
+
+  color: #7f8993;
+
+  font-size: 0.57rem;
+}
+
+
+/* =========================================================
+   DETAILS
+========================================================= */
+
+.employee-history-details {
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      3,
+      minmax(0, 1fr)
+    );
+
+  gap: 9px;
+
+  padding: 0 18px 17px;
+}
+
+.employee-history-details > div {
+  position: relative;
+
+  min-height: 59px;
+
+  padding: 11px 11px 11px 32px;
+
+  border: 1px solid #e7eaee;
+
+  border-radius: 7px;
+
+  background: #ffffff;
+}
+
+.employee-history-details svg {
+  position: absolute;
+
+  top: 13px;
+
+  left: 10px;
+
+  color: #11145f;
+
+  font-size: 0.65rem;
+}
+
+.employee-history-details span {
+  display: block;
+
+  color: #969fa8;
+
+  font-size: 0.46rem;
+
+  font-weight: 800;
+
+  text-transform: uppercase;
+}
+
+.employee-history-details strong {
+  display: block;
+
+  margin-top: 4px;
+
+  color: #46515c;
+
+  font-size: 0.57rem;
+
+  line-height: 1.4;
+}
+
+
+/* =========================================================
+   FUEL BOX
+========================================================= */
+
+.employee-history-fuel-box {
+  display: flex;
+
+  align-items: flex-start;
+
+  gap: 10px;
+
+  margin: 0 18px 16px;
+
+  padding: 12px;
+
+  border: 1px solid #e6d8ad;
+
+  border-radius: 8px;
+
+  background: #fffaf0;
+}
+
+.employee-history-fuel-box > svg {
+  margin-top: 2px;
+
+  color: #b38b2e;
+}
+
+.employee-history-fuel-box span {
+  display: block;
+
+  color: #987527;
+
+  font-size: 0.48rem;
+
+  font-weight: 800;
+
+  text-transform: uppercase;
+}
+
+.employee-history-fuel-box strong {
+  display: block;
+
+  margin-top: 2px;
+
+  color: #6d541d;
+
+  font-size: 0.67rem;
+}
+
+.employee-history-fuel-box p {
+  margin: 3px 0 0;
+
+  color: #897448;
+
+  font-size: 0.55rem;
+}
+
+
+/* =========================================================
+   ISSUE BOX
+========================================================= */
+
+.employee-history-issue-box {
+  display: flex;
+
+  align-items: flex-start;
+
+  gap: 10px;
+
+  margin: 0 18px 16px;
+
+  padding: 13px;
+
+  border: 1px solid #e7b8b4;
+
+  border-radius: 8px;
+
+  background: #fff3f2;
+
+  color: #8d2820;
+}
+
+.employee-history-issue-box > svg {
+  flex-shrink: 0;
+
+  margin-top: 2px;
+
+  color: #b42318;
+}
+
+.employee-history-issue-box strong {
+  display: block;
+
+  margin-bottom: 5px;
+
+  font-size: 0.62rem;
+}
+
+.employee-history-issue-box p {
+  margin: 3px 0;
+
+  font-size: 0.56rem;
+
+  line-height: 1.5;
+}
+
+
+/* =========================================================
+   RETURN INFO
+========================================================= */
+
+.employee-history-return-info {
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      4,
+      minmax(0, 1fr)
+    );
+
+  gap: 8px;
+
+  padding: 15px 18px;
+
+  border-top: 1px solid #edf0f3;
+
+  background: #fafbfc;
+}
+
+.employee-history-return-info span {
+  display: block;
+
+  margin-bottom: 4px;
+
+  color: #979fa8;
+
+  font-size: 0.45rem;
+
+  font-weight: 800;
+
+  text-transform: uppercase;
+}
+
+.employee-history-return-info strong {
+  display: block;
+
+  color: #4b5661;
+
+  font-size: 0.55rem;
+
+  line-height: 1.4;
+}
+
+
+/* =========================================================
+   NOTES
+========================================================= */
+
+.employee-history-notes {
+  padding: 13px 18px;
+
+  border-top: 1px solid #edf0f3;
+}
+
+.employee-history-notes span {
+  display: block;
+
+  color: #9099a2;
+
+  font-size: 0.47rem;
+
+  font-weight: 800;
+
+  text-transform: uppercase;
+}
+
+.employee-history-notes p {
+  margin: 5px 0 0;
+
+  color: #626d78;
+
+  font-size: 0.58rem;
+
+  line-height: 1.55;
+}
+
+
+/* =========================================================
+   EMPTY
+========================================================= */
+
+.employee-history-empty {
+  padding: 50px 20px;
+
+  text-align: center;
+}
+
+.employee-history-empty > svg {
+  margin-bottom: 12px;
+
+  color: #11145f;
+
+  font-size: 1.8rem;
+}
+
+.employee-history-empty h3 {
+  margin: 0;
+
+  color: #343f4a;
+
+  font-size: 0.9rem;
+}
+
+.employee-history-empty p {
+  max-width: 430px;
+
+  margin: 7px auto 18px;
+
+  color: #89939d;
+
+  font-size: 0.62rem;
+
+  line-height: 1.55;
+}
+
+
+/* =========================================================
+   BUTTONS
+========================================================= */
+
+.employee-history-primary-button,
+.employee-history-back-dashboard {
+  min-height: 40px;
+
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 7px;
+
+  padding: 8px 15px;
+
+  border-radius: 7px;
+
+  font-size: 0.59rem;
+
+  font-weight: 850;
+
+  text-decoration: none;
+}
+
+.employee-history-primary-button {
+  background: #11145f;
+
+  color: #ffffff;
+}
+
+.employee-history-primary-button:hover {
+  background: #1c2173;
+}
+
+.employee-history-bottom-actions {
+  display: flex;
+
+  margin-top: 18px;
+}
+
+.employee-history-back-dashboard {
+  border: 1px solid #d5dbe1;
+
+  background: #ffffff;
+
+  color: #555f69;
+}
+
+.employee-history-back-dashboard:hover {
+  border-color: #11145f;
+
+  color: #11145f;
+}
+
+
+/* =========================================================
+   LOADING / ERROR
+========================================================= */
+
+.employee-history-loading,
+.employee-history-error-page {
+  width: min(
+    480px,
+    calc(100% - 40px)
+  );
+
+  margin: 100px auto;
+
+  padding: 35px;
+
+  box-sizing: border-box;
+
+  border: 1px solid #dfe4e9;
+
+  border-radius: 12px;
+
+  background: #ffffff;
+
+  text-align: center;
+
+  box-shadow:
+    0 8px 30px
+    rgba(
+      15,
+      23,
+      42,
+      0.06
+    );
+}
+
+.employee-history-loading > svg,
+.employee-history-error-page > svg {
+  margin-bottom: 12px;
+
+  color: #11145f;
+
+  font-size: 1.7rem;
+}
+
+.employee-history-error-page > svg {
+  color: #b42318;
+}
+
+.employee-history-loading h2,
+.employee-history-error-page h2 {
+  margin: 0;
+
+  color: #303a46;
+
+  font-size: 1rem;
+}
+
+.employee-history-loading p,
+.employee-history-error-page p {
+  margin: 8px 0 18px;
+
+  color: #818b95;
+
+  font-size: 0.64rem;
+
+  line-height: 1.55;
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (
+  max-width: 900px
+) {
+  .employee-history-summary {
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(0, 1fr)
+      );
+  }
+
+  .employee-history-details {
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(0, 1fr)
+      );
+  }
+
+  .employee-history-return-info {
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(0, 1fr)
+      );
+  }
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (
+  max-width: 620px
+) {
+  .employee-history-header-inner,
+  .employee-history-hero-inner,
+  .employee-history-content {
+    width:
+      calc(
+        100% - 28px
+      );
+  }
+
+  .employee-history-header-inner {
+    min-height: 70px;
+  }
+
+  .employee-history-user {
+    display: none;
+  }
+
+  .employee-history-hero-inner {
+    padding: 30px 0;
+  }
+
+  .employee-history-hero h1 {
+    font-size: 1.35rem;
+  }
+
+  .employee-history-summary {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .employee-history-toolbar {
+    flex-direction: column;
+  }
+
+  .employee-history-search,
+  .employee-history-toolbar select {
+    width: 100%;
+
+    min-width: 0;
+  }
+
+  .employee-history-section {
+    padding: 15px;
+  }
+
+  .employee-history-section-heading {
+    align-items: flex-start;
+
+    flex-direction: column;
+  }
+
+  .employee-history-trip-top {
+    flex-direction: column;
+  }
+
+  .employee-history-details,
+  .employee-history-return-info {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (
+  max-width: 420px
+) {
+  .employee-history-summary {
+    grid-template-columns: 1fr;
+  }
+
+  .employee-history-brand strong {
+    font-size: 0.67rem;
+  }
+}
