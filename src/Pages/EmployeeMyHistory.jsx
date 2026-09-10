@@ -25,6 +25,8 @@ import {
 
 import { supabase } from "../lib/supabase";
 
+import { lookupVehicleEmployee } from "../lib/employeeLookup";
+
 import AEDCLogo from "../Components/AEDCLogo";
 
 import "../Styles/EmployeeMyHistory.css";
@@ -115,22 +117,10 @@ function EmployeeMyHistory() {
        * ============================================
        */
 
-      const {
-        data: employeeData,
-        error: employeeError,
-      } = await supabase
-        .from("drivers")
-        .select("*")
-        .eq(
-          "employee_number",
+      const employeeData =
+        await lookupVehicleEmployee(
           storedEmployeeNumber
-        )
-        .maybeSingle();
-
-
-      if (employeeError) {
-        throw employeeError;
-      }
+        );
 
 
       if (!employeeData) {
