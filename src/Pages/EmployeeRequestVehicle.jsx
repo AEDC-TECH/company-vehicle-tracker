@@ -15,6 +15,7 @@ import {
 } from "react-icons/fa";
 
 import { supabase } from "../lib/supabase";
+import { lookupVehicleEmployee } from "../lib/employeeLookup";
 import AEDCLogo from "../Components/AEDCLogo";
 
 import "../Styles/EmployeeRequestVehicle.css";
@@ -71,23 +72,10 @@ function EmployeeRequestVehicle() {
 
   async function loadEmployeeProfile(number) {
     try {
-      const {
-        data: driver,
-        error,
-      } = await supabase
-        .from("drivers")
-        .select("*")
-        .eq("employee_number", number)
-        .maybeSingle();
-
-      if (error) {
-        console.error(
-          "Unable to load driver profile:",
-          error
+      const driver =
+        await lookupVehicleEmployee(
+          number
         );
-
-        return;
-      }
 
       if (!driver) {
         return;
