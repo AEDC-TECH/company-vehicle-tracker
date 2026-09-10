@@ -28,6 +28,8 @@ import {
 
 import { supabase } from "../lib/supabase";
 
+import { lookupVehicleEmployee } from "../lib/employeeLookup";
+
 import AEDCLogo from "../Components/AEDCLogo";
 
 import "../Styles/EmployeeDashboard.css";
@@ -204,21 +206,10 @@ function EmployeeDashboard() {
        * ==============================================
        */
 
-      const {
-        data: employeeData,
-        error: employeeError,
-      } = await supabase
-        .from("drivers")
-        .select("*")
-        .eq(
-          "employee_number",
+      const employeeData =
+        await lookupVehicleEmployee(
           normalizedNumber
-        )
-        .maybeSingle();
-
-      if (employeeError) {
-        throw employeeError;
-      }
+        );
 
 
       /*
