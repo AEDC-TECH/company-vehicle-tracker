@@ -25,6 +25,8 @@ import {
 
 import { supabase } from "../lib/supabase";
 
+import { lookupVehicleEmployee } from "../lib/employeeLookup";
+
 import VehicleEvidenceUpload from "../Components/VehicleEvidenceUpload";
 import AEDCLogo from "../Components/AEDCLogo";
 
@@ -271,19 +273,14 @@ function EmployeePreInspection() {
        * isn't registered yet.
        */
 
-      const {
-        data: driverData,
-        error: driverError,
-      } = await supabase
-        .from("drivers")
-        .select("*")
-        .eq(
-          "employee_number",
-          currentEmployeeNumber
-        )
-        .maybeSingle();
+      let driverData = null;
 
-      if (driverError) {
+      try {
+        driverData =
+          await lookupVehicleEmployee(
+            currentEmployeeNumber
+          );
+      } catch (driverError) {
         console.error(
           "Driver profile lookup:",
           driverError
