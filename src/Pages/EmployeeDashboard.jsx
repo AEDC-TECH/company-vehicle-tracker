@@ -30,6 +30,8 @@ import { supabase } from "../lib/supabase";
 
 import { lookupVehicleEmployee } from "../lib/employeeLookup";
 
+import { listVehicleRequestsForEmployee } from "../lib/vehicleRequestLookup";
+
 import AEDCLogo from "../Components/AEDCLogo";
 
 import "../Styles/EmployeeDashboard.css";
@@ -323,23 +325,13 @@ function EmployeeDashboard() {
     number
   ) {
     const [
-      requestResult,
+      requestData,
       tripResult,
       vehicleResult,
     ] = await Promise.all([
-      supabase
-        .from("vehicle_requests")
-        .select("*")
-        .eq(
-          "employee_number",
-          number
-        )
-        .order(
-          "created_at",
-          {
-            ascending: false,
-          }
-        ),
+      listVehicleRequestsForEmployee(
+        number
+      ),
 
       supabase
         .from("vehicle_trips")
@@ -360,10 +352,6 @@ function EmployeeDashboard() {
         .select("*"),
     ]);
 
-    if (requestResult.error) {
-      throw requestResult.error;
-    }
-
     if (tripResult.error) {
       throw tripResult.error;
     }
@@ -373,7 +361,7 @@ function EmployeeDashboard() {
     }
 
     setRequests(
-      requestResult.data || []
+      requestData || []
     );
 
     setTrips(
