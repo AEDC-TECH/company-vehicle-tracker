@@ -17,6 +17,7 @@ import {
 } from "react-icons/fa";
 
 import { supabase } from "../lib/supabase";
+import { listVehicleRequestsForEmployee } from "../lib/vehicleRequestLookup";
 import AEDCLogo from "../Components/AEDCLogo";
 
 import "../Styles/EmployeeMyRequests.css";
@@ -64,17 +65,13 @@ function EmployeeMyRequests() {
       setErrorMessage("");
 
       const [
-        requestResult,
+        requestData,
         vehicleResult,
         tripResult,
       ] = await Promise.all([
-        supabase
-          .from("vehicle_requests")
-          .select("*")
-          .eq("employee_number", number)
-          .order("created_at", {
-            ascending: false,
-          }),
+        listVehicleRequestsForEmployee(
+          number
+        ),
 
         supabase
           .from("vehicles")
@@ -89,10 +86,6 @@ function EmployeeMyRequests() {
           }),
       ]);
 
-      if (requestResult.error) {
-        throw requestResult.error;
-      }
-
       if (vehicleResult.error) {
         throw vehicleResult.error;
       }
@@ -101,12 +94,12 @@ function EmployeeMyRequests() {
         throw tripResult.error;
       }
 
-      setRequests(requestResult.data || []);
+      setRequests(requestData || []);
       setVehicles(vehicleResult.data || []);
       setTrips(tripResult.data || []);
 
       const detectedName =
-        requestResult.data?.[0]?.requested_driver_name ||
+        requestData?.[0]?.requested_driver_name ||
         tripResult.data?.[0]?.driver_name ||
         savedNameFallback();
 
