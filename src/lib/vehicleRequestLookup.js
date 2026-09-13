@@ -116,3 +116,61 @@ export async function checkVehicleRequestConflicts(
     ? data
     : [];
 }
+
+export async function createVehicleRequestForEmployee({
+  vehicleId,
+  requestedDriverName,
+  employeeNumber,
+  department,
+  purpose,
+  destination,
+  requestedDepartureAt,
+  requestedReturnAt,
+  outOfProvince,
+  itinerary,
+  overnightLocation,
+}) {
+  const { data, error } = await supabase.rpc(
+    "create_vehicle_request_for_employee",
+    {
+      p_vehicle_id:
+        vehicleId,
+
+      p_requested_driver_name:
+        requestedDriverName,
+
+      p_employee_number:
+        employeeNumber,
+
+      p_department:
+        department,
+
+      p_purpose:
+        purpose,
+
+      p_destination:
+        destination,
+
+      p_requested_departure_at:
+        requestedDepartureAt,
+
+      p_requested_return_at:
+        requestedReturnAt,
+
+      p_out_of_province:
+        outOfProvince,
+
+      p_itinerary:
+        itinerary,
+
+      p_overnight_location:
+        overnightLocation,
+    }
+  );
+
+  if (error) {
+    throw error;
+  }
+
+  return data || null;
+}

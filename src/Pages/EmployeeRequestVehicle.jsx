@@ -16,7 +16,10 @@ import {
 
 import { supabase } from "../lib/supabase";
 import { lookupVehicleEmployee } from "../lib/employeeLookup";
-import { checkVehicleRequestConflicts } from "../lib/vehicleRequestLookup";
+import {
+  checkVehicleRequestConflicts,
+  createVehicleRequestForEmployee,
+} from "../lib/vehicleRequestLookup";
 import AEDCLogo from "../Components/AEDCLogo";
 
 import "../Styles/EmployeeRequestVehicle.css";
@@ -360,19 +363,15 @@ function EmployeeRequestVehicle() {
         );
       }
 
-      const {
-        data: request,
-        error: requestError,
-      } = await supabase
-        .from("vehicle_requests")
-        .insert({
-          vehicle_id:
+      const request =
+        await createVehicleRequestForEmployee({
+          vehicleId:
             selectedVehicleId,
 
-          requested_driver_name:
+          requestedDriverName:
             employeeName.trim(),
 
-          employee_number:
+          employeeNumber:
             employeeNumber.trim(),
 
           department:
@@ -384,45 +383,24 @@ function EmployeeRequestVehicle() {
           destination:
             destination.trim(),
 
-          requested_departure_at:
+          requestedDepartureAt:
             departureAt,
 
-          requested_return_at:
+          requestedReturnAt:
             returnAt,
 
-          out_of_province:
-            outOfProvince,
+          outOfProvince,
 
           itinerary:
             outOfProvince
               ? itinerary.trim()
               : null,
 
-          overnight_location:
+          overnightLocation:
             overnightStay
               ? overnightLocation.trim()
               : null,
-
-          status: "pending",
-
-          request_source:
-            "employee",
-
-          submitted_by_name:
-            employeeName.trim(),
-
-          submitted_by_role:
-            "employee",
-
-          submitted_on_behalf:
-            false,
-        })
-        .select("*")
-        .single();
-
-      if (requestError) {
-        throw requestError;
-      }
+        });
 
       setSuccessMessage(
         request?.booking_reference
