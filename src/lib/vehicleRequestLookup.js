@@ -174,3 +174,42 @@ export async function createVehicleRequestForEmployee({
 
   return data || null;
 }
+
+export async function completeVehicleRequestForEmployee(
+  tripId,
+  employeeNumber
+) {
+  const normalizedTripId = String(
+    tripId || ""
+  ).trim();
+
+  const normalizedEmployeeNumber = String(
+    employeeNumber || ""
+  )
+    .trim()
+    .toUpperCase();
+
+  if (
+    !normalizedTripId ||
+    !normalizedEmployeeNumber
+  ) {
+    return null;
+  }
+
+  const { data, error } = await supabase.rpc(
+    "complete_vehicle_request_for_employee",
+    {
+      p_trip_id:
+        normalizedTripId,
+
+      p_employee_number:
+        normalizedEmployeeNumber,
+    }
+  );
+
+  if (error) {
+    throw error;
+  }
+
+  return data || null;
+}

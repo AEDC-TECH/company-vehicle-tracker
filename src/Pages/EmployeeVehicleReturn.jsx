@@ -26,6 +26,8 @@ import { supabase } from "../lib/supabase";
 
 import { lookupVehicleEmployee } from "../lib/employeeLookup";
 
+import { completeVehicleRequestForEmployee } from "../lib/vehicleRequestLookup";
+
 import AEDCLogo from "../Components/AEDCLogo";
 
 import VehicleEvidenceUpload from "../Components/VehicleEvidenceUpload";
@@ -1290,28 +1292,10 @@ function EmployeeVehicleReturn() {
       if (
         trip.request_id
       ) {
-        const {
-          error:
-            requestError,
-        } = await supabase
-          .from(
-            "vehicle_requests"
-          )
-          .update({
-            status:
-              "completed",
-          })
-          .eq(
-            "id",
-            trip.request_id
-          );
-
-
-        if (
-          requestError
-        ) {
-          throw requestError;
-        }
+        await completeVehicleRequestForEmployee(
+          trip.id,
+          employee.employee_number
+        );
       }
 
 
