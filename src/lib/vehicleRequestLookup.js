@@ -29,3 +29,42 @@ export async function listVehicleRequestsForEmployee(
     ? data
     : [];
 }
+
+export async function getVehicleRequestForEmployee(
+  requestId,
+  employeeNumber
+) {
+  const normalizedRequestId = String(
+    requestId || ""
+  ).trim();
+
+  const normalizedEmployeeNumber = String(
+    employeeNumber || ""
+  )
+    .trim()
+    .toUpperCase();
+
+  if (
+    !normalizedRequestId ||
+    !normalizedEmployeeNumber
+  ) {
+    return null;
+  }
+
+  const { data, error } = await supabase.rpc(
+    "get_vehicle_request_for_employee",
+    {
+      p_request_id:
+        normalizedRequestId,
+
+      p_employee_number:
+        normalizedEmployeeNumber,
+    }
+  );
+
+  if (error) {
+    throw error;
+  }
+
+  return data || null;
+}

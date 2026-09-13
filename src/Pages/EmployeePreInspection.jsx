@@ -27,6 +27,8 @@ import { supabase } from "../lib/supabase";
 
 import { lookupVehicleEmployee } from "../lib/employeeLookup";
 
+import { getVehicleRequestForEmployee } from "../lib/vehicleRequestLookup";
+
 import VehicleEvidenceUpload from "../Components/VehicleEvidenceUpload";
 import AEDCLogo from "../Components/AEDCLogo";
 
@@ -173,17 +175,16 @@ function EmployeePreInspection() {
        * -------------------------------------------------
        */
 
-      const {
-        data: requestData,
-        error: requestError,
-      } = await supabase
-        .from("vehicle_requests")
-        .select("*")
-        .eq("id", requestId)
-        .single();
+      const requestData =
+        await getVehicleRequestForEmployee(
+          requestId,
+          currentEmployeeNumber
+        );
 
-      if (requestError) {
-        throw requestError;
+      if (!requestData) {
+        throw new Error(
+          "Unable to load this approved booking."
+        );
       }
 
 
@@ -682,20 +683,16 @@ function EmployeePreInspection() {
        * -------------------------------------------------
        */
 
-      const {
-        data: latestRequest,
-        error: latestRequestError,
-      } = await supabase
-        .from("vehicle_requests")
-        .select("*")
-        .eq(
-          "id",
-          request.id
-        )
-        .single();
+      const latestRequest =
+        await getVehicleRequestForEmployee(
+          request.id,
+          employeeNumber
+        );
 
-      if (latestRequestError) {
-        throw latestRequestError;
+      if (!latestRequest) {
+        throw new Error(
+          "This booking does not belong to your employee number."
+        );
       }
 
       if (
