@@ -68,3 +68,51 @@ export async function getVehicleRequestForEmployee(
 
   return data || null;
 }
+
+export async function checkVehicleRequestConflicts(
+  vehicleId,
+  departureAt,
+  returnAt
+) {
+  const normalizedVehicleId = String(
+    vehicleId || ""
+  ).trim();
+
+  const normalizedDepartureAt = String(
+    departureAt || ""
+  ).trim();
+
+  const normalizedReturnAt = String(
+    returnAt || ""
+  ).trim();
+
+  if (
+    !normalizedVehicleId ||
+    !normalizedDepartureAt ||
+    !normalizedReturnAt
+  ) {
+    return [];
+  }
+
+  const { data, error } = await supabase.rpc(
+    "check_vehicle_request_conflicts",
+    {
+      p_vehicle_id:
+        normalizedVehicleId,
+
+      p_departure_at:
+        normalizedDepartureAt,
+
+      p_return_at:
+        normalizedReturnAt,
+    }
+  );
+
+  if (error) {
+    throw error;
+  }
+
+  return Array.isArray(data)
+    ? data
+    : [];
+}

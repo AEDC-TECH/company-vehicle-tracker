@@ -16,6 +16,7 @@ import {
 
 import { supabase } from "../lib/supabase";
 import { lookupVehicleEmployee } from "../lib/employeeLookup";
+import { checkVehicleRequestConflicts } from "../lib/vehicleRequestLookup";
 import AEDCLogo from "../Components/AEDCLogo";
 
 import "../Styles/EmployeeRequestVehicle.css";
@@ -271,33 +272,11 @@ function EmployeeRequestVehicle() {
   }
 
   async function checkSchedulingConflict() {
-    const {
-      data,
-      error,
-    } = await supabase
-      .from("vehicle_requests")
-      .select(
-        `
-          id,
-          booking_reference,
-          status,
-          requested_departure_at,
-          requested_return_at
-        `
-      )
-      .eq("vehicle_id", selectedVehicleId)
-      .in("status", [
-        "pending",
-        "approved",
-      ])
-      .lt("requested_departure_at", returnAt)
-      .gt("requested_return_at", departureAt);
-
-    if (error) {
-      throw error;
-    }
-
-    return data || [];
+    return checkVehicleRequestConflicts(
+      selectedVehicleId,
+      departureAt,
+      returnAt
+    );
   }
 
   async function handleSubmit(event) {
