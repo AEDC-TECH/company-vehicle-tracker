@@ -29,6 +29,11 @@ import { lookupVehicleEmployee } from "../lib/employeeLookup";
 
 import { getVehicleRequestForEmployee } from "../lib/vehicleRequestLookup";
 
+import {
+  completeVehiclePreInspectionForEmployee,
+  getVehicleTripForEmployeeRequest,
+} from "../lib/vehicleTripLookup";
+
 import VehicleEvidenceUpload from "../Components/VehicleEvidenceUpload";
 import AEDCLogo from "../Components/AEDCLogo";
 
@@ -311,23 +316,11 @@ function EmployeePreInspection() {
        * -------------------------------------------------
        */
 
-      const {
-        data: existingTrip,
-        error: existingTripError,
-      } = await supabase
-        .from("vehicle_trips")
-        .select(
-          "id, status"
-        )
-        .eq(
-          "request_id",
-          requestId
-        )
-        .maybeSingle();
-
-      if (existingTripError) {
-        throw existingTripError;
-      }
+      const existingTrip =
+        await getVehicleTripForEmployeeRequest(
+          requestId,
+          currentEmployeeNumber
+        );
 
       if (existingTrip) {
         if (
@@ -723,23 +716,11 @@ function EmployeePreInspection() {
        * -------------------------------------------------
        */
 
-      const {
-        data: existingTrip,
-        error: existingTripError,
-      } = await supabase
-        .from("vehicle_trips")
-        .select(
-          "id, status"
-        )
-        .eq(
-          "request_id",
-          request.id
-        )
-        .maybeSingle();
-
-      if (existingTripError) {
-        throw existingTripError;
-      }
+      const existingTrip =
+        await getVehicleTripForEmployeeRequest(
+          request.id,
+          employeeNumber
+        );
 
       if (existingTrip) {
         if (
@@ -814,196 +795,59 @@ function EmployeePreInspection() {
 
       /*
        * -------------------------------------------------
-       * CREATE TRIP
+       * COMPLETE PRE-USE CHECKOUT
        * -------------------------------------------------
+       *
+       * The database transaction creates the trip,
+       * links pre-use evidence and marks the vehicle
+       * IN USE as one restricted server-side operation.
        */
 
-      const {
-        data: trip,
-        error: tripError,
-      } = await supabase
-        .from("vehicle_trips")
-        .insert({
-          vehicle_id:
-            vehicle.id,
+      await completeVehiclePreInspectionForEmployee({
+        requestId:
+          request.id,
 
-          request_id:
-            request.id,
+        employeeNumber,
 
-          booking_reference:
-            request.booking_reference,
+        phone:
+          formData.phone,
 
-          driver_name:
-            request.requested_driver_name,
+        driverLicenseNumber:
+          formData.driverLicenseNumber,
 
-          employee_number:
-            request.employee_number,
+        licenseValidConfirmed:
+          formData.licenseValidConfirmed,
 
-          department:
-            request.department,
+        fitToDriveConfirmed:
+          formData.fitToDriveConfirmed,
 
-          phone:
-            formData.phone.trim() ||
-            null,
+        authorizedDriverConfirmed:
+          formData.authorizedDriverConfirmed,
 
-          driver_license_number:
-            formData.driverLicenseNumber.trim(),
+        policyAcknowledgedConfirmed:
+          formData.policyAcknowledgedConfirmed,
 
-          license_valid_confirmed:
-            formData.licenseValidConfirmed,
+        startOdometer,
 
-          fit_to_drive_confirmed:
-            formData.fitToDriveConfirmed,
+        fuelBefore:
+          formData.fuelBefore,
 
-          authorized_driver_confirmed:
-            formData.authorizedDriverConfirmed,
+        conditionBefore:
+          condition,
 
-          policy_acknowledged_confirmed:
-            formData.policyAcknowledgedConfirmed,
+        preExistingDamage:
+          formData.preExistingDamage ===
+          "yes",
 
-          purpose:
-            request.purpose,
+        preExistingDamageDescription:
+          formData.preExistingDamageDescription,
 
-          destination:
-            request.destination,
+        preUseNotes:
+          formData.preUseNotes,
 
-          expected_return_at:
-            request.requested_return_at,
-
-          matches_approved_booking:
-            true,
-
-          start_odometer:
-            startOdometer,
-
-          fuel_before:
-            formData.fuelBefore,
-
-          condition_before:
-            condition,
-
-          pre_existing_damage:
-            formData.preExistingDamage ===
-            "yes",
-
-          pre_existing_damage_description:
-            formData.preExistingDamage ===
-            "yes"
-              ? formData.preExistingDamageDescription.trim()
-              : null,
-
-          pre_use_notes:
-            formData.preUseNotes.trim() ||
-            null,
-
-          expected_parking_location:
-            request.out_of_province
-              ? request.overnight_location
-              : vehicle.default_parking,
-
-          out_of_province:
-            request.out_of_province,
-
-          approved_itinerary:
-            request.itinerary,
-
-          approved_overnight_location:
-            request.overnight_location,
-
-          information_accuracy_confirmed:
-            formData.inspectionAccuracyConfirmed,
-
-          /*
-           * EMPLOYEE AUDIT TRAIL
-           */
-
-          pre_inspection_completed_by:
-            request.requested_driver_name,
-
-          pre_inspection_completed_by_role:
-            "employee",
-
-          pre_inspection_on_behalf:
-            false,
-
-          pre_inspection_completed_at:
-            new Date().toISOString(),
-
-          status:
-            "in-use",
-        })
-        .select()
-        .single();
-
-      if (tripError) {
-        throw tripError;
-      }
-
-
-      /*
-       * -------------------------------------------------
-       * LINK PRE-USE EVIDENCE TO TRIP
-       * -------------------------------------------------
-       */
-
-      const {
-        error: evidenceLinkError,
-      } = await supabase
-        .from("vehicle_evidence")
-        .update({
-          trip_id:
-            trip.id,
-        })
-        .eq(
-          "request_id",
-          request.id
-        )
-        .eq(
-          "evidence_stage",
-          "pre-use"
-        )
-        .is(
-          "trip_id",
-          null
-        );
-
-      if (
-        evidenceLinkError
-      ) {
-        console.error(
-          "Unable to link pre-use evidence:",
-          evidenceLinkError
-        );
-      }
-
-
-      /*
-       * -------------------------------------------------
-       * VEHICLE IS NOW IN USE
-       * -------------------------------------------------
-       */
-
-      const {
-        error: vehicleUpdateError,
-      } = await supabase
-        .from("vehicles")
-        .update({
-          status:
-            "in-use",
-
-          current_odometer:
-            startOdometer,
-        })
-        .eq(
-          "id",
-          vehicle.id
-        );
-
-      if (
-        vehicleUpdateError
-      ) {
-        throw vehicleUpdateError;
-      }
+        informationAccuracyConfirmed:
+          formData.inspectionAccuracyConfirmed,
+      });
 
 
       /*
