@@ -26,7 +26,10 @@ import { supabase } from "../lib/supabase";
 
 import { lookupVehicleEmployee } from "../lib/employeeLookup";
 
-import { completeVehicleRequestForEmployee } from "../lib/vehicleRequestLookup";
+import {
+  completeVehicleReturnForEmployee,
+  getVehicleTripForEmployee,
+} from "../lib/vehicleTripLookup";
 
 import AEDCLogo from "../Components/AEDCLogo";
 
@@ -259,21 +262,17 @@ function EmployeeVehicleReturn() {
        * ============================================
        */
 
-      const {
-        data: tripData,
-        error: tripError,
-      } = await supabase
-        .from("vehicle_trips")
-        .select("*")
-        .eq(
-          "id",
-          tripId
-        )
-        .single();
+      const tripData =
+        await getVehicleTripForEmployee(
+          tripId,
+          storedEmployeeNumber
+        );
 
 
-      if (tripError) {
-        throw tripError;
+      if (!tripData) {
+        throw new Error(
+          "You are not authorised to complete the return for this trip."
+        );
       }
 
 
@@ -1014,289 +1013,123 @@ function EmployeeVehicleReturn() {
       );
 
 
-      const now =
-        new Date()
-          .toISOString();
-
-
       const hasIncident =
         formData
           .newDamage ===
-          "yes" ||
+        "yes" ||
         formData
           .warningLightReported ===
-          "yes" ||
+        "yes" ||
         formData
           .mechanicalIssueReported ===
-          "yes";
+        "yes";
 
 
       /*
        * ============================================
-       * UPDATE TRIP
+       * COMPLETE VEHICLE RETURN
        * ============================================
+       *
+       * The database transaction updates the trip,
+       * updates the vehicle and completes the
+       * attached request as one restricted
+       * server-side operation.
        */
 
-      const {
-        data: updatedTrip,
-        error: tripError,
-      } = await supabase
-        .from(
-          "vehicle_trips"
-        )
-        .update({
-          returned_at:
-            now,
-
-          end_odometer:
-            endOdometer,
-
-          distance_travelled:
-            distance,
-
-          fuel_after:
-            formData
-              .fuelAfter,
-
-          fuel_purchased:
-            formData
-              .fuelPurchased ===
-            "yes",
-
-          fuel_amount:
-            formData
-              .fuelPurchased ===
-            "yes"
-              ? Number(
-                  formData
-                    .fuelAmount ||
-                    0
-                )
-              : 0,
-
-          fuel_receipt_submitted:
-            formData
-              .fuelReceiptSubmitted ===
-            "yes",
-
-          fuel_receipt_reference:
-            formData
-              .fuelReceiptSubmitted ===
-            "yes"
-              ? formData
-                  .fuelReceiptReference
-                  .trim() ||
-                null
-              : null,
-
-          condition_after:
-            conditionAfter,
-
-          condition_changes:
-            conditionChanges,
-
-          new_damage:
-            formData
-              .newDamage ===
-            "yes",
-
-          new_damage_description:
-            formData
-              .newDamage ===
-            "yes"
-              ? formData
-                  .newDamageDescription
-                  .trim()
-              : null,
-
-          warning_light_reported:
-            formData
-              .warningLightReported ===
-            "yes",
-
-          warning_light_description:
-            formData
-              .warningLightReported ===
-            "yes"
-              ? formData
-                  .warningLightDescription
-                  .trim()
-              : null,
-
-          mechanical_issue_reported:
-            formData
-              .mechanicalIssueReported ===
-            "yes",
-
-          mechanical_issue_description:
-            formData
-              .mechanicalIssueReported ===
-            "yes"
-              ? formData
-                  .mechanicalIssueDescription
-                  .trim()
-              : null,
-
-          post_use_notes:
-            formData
-              .postUseNotes
-              .trim() ||
-            null,
-
-          return_parking_location:
-            formData
-              .returnParkingLocation
-              .trim(),
-
-          returned_to_designated_bay:
-            formData
-              .returnedToDesignatedBay ===
-            "yes",
-
-          alternative_parking_approved:
-            false,
-
-          alternative_parking_reason:
-            formData
-              .returnedToDesignatedBay ===
-            "no"
-              ? formData
-                  .alternativeParkingReason
-                  .trim()
-              : null,
-
-          vehicle_locked:
-            formData
-              .vehicleLocked,
-
-          windows_closed:
-            formData
-              .windowsClosed,
-
-          personal_belongings_removed:
-            formData
-              .personalBelongingsRemoved,
-
-          company_property_removed:
-            formData
-              .companyPropertyRemoved,
-
-          keys_returned:
-            formData
-              .keysReturned,
-
-          keys_returned_to:
-            formData
-              .keysReturnedTo
-              .trim(),
-
-          return_condition_confirmed:
-            formData
-              .returnConditionConfirmed,
-
-          vehicle_secured_confirmed:
-            formData
-              .vehicleSecuredConfirmed,
-
-          information_accuracy_confirmed:
-            formData
-              .informationAccuracyConfirmed,
-
-          post_inspection_completed_by:
-            employee
-              .full_name,
-
-          post_inspection_completed_by_role:
-            "employee",
-
-          post_inspection_on_behalf:
-            false,
-
-          post_inspection_completed_at:
-            now,
-
-          status:
-            hasIncident
-              ? "incident-open"
-              : "returned",
-        })
-        .eq(
-          "id",
-          trip.id
-        )
-        .eq(
-          "employee_number",
-          employee
-            .employee_number
-        )
-        .select("*")
-        .maybeSingle();
-
-
-      if (
-        tripError
-      ) {
-        throw tripError;
-      }
-
-
-      if (
-        !updatedTrip
-      ) {
-        throw new Error(
-          "The return could not be saved because this trip does not belong to the current employee."
-        );
-      }
-
-
-      /*
-       * ============================================
-       * UPDATE VEHICLE
-       * ============================================
-       */
-
-      const {
-        error: vehicleError,
-      } = await supabase
-        .from(
-          "vehicles"
-        )
-        .update({
-          current_odometer:
-            endOdometer,
-
-          status:
-            hasIncident
-              ? "unavailable"
-              : "available",
-        })
-        .eq(
-          "id",
-          vehicle.id
-        );
-
-
-      if (
-        vehicleError
-      ) {
-        throw vehicleError;
-      }
-
-
-      /*
-       * ============================================
-       * COMPLETE REQUEST
-       * ============================================
-       */
-
-      if (
-        trip.request_id
-      ) {
-        await completeVehicleRequestForEmployee(
+      await completeVehicleReturnForEmployee({
+        tripId:
           trip.id,
-          employee.employee_number
-        );
-      }
+
+        employeeNumber:
+          employee.employee_number,
+
+        endOdometer,
+
+        fuelAfter:
+          formData.fuelAfter,
+
+        fuelPurchased:
+          formData.fuelPurchased ===
+          "yes",
+
+        fuelAmount:
+          Number(
+            formData.fuelAmount ||
+            0
+          ),
+
+        fuelReceiptSubmitted:
+          formData.fuelReceiptSubmitted ===
+          "yes",
+
+        fuelReceiptReference:
+          formData.fuelReceiptReference,
+
+        conditionAfter,
+
+        conditionChanges,
+
+        newDamage:
+          formData.newDamage ===
+          "yes",
+
+        newDamageDescription:
+          formData.newDamageDescription,
+
+        warningLightReported:
+          formData.warningLightReported ===
+          "yes",
+
+        warningLightDescription:
+          formData.warningLightDescription,
+
+        mechanicalIssueReported:
+          formData.mechanicalIssueReported ===
+          "yes",
+
+        mechanicalIssueDescription:
+          formData.mechanicalIssueDescription,
+
+        postUseNotes:
+          formData.postUseNotes,
+
+        returnParkingLocation:
+          formData.returnParkingLocation,
+
+        returnedToDesignatedBay:
+          formData.returnedToDesignatedBay ===
+          "yes",
+
+        alternativeParkingReason:
+          formData.alternativeParkingReason,
+
+        vehicleLocked:
+          formData.vehicleLocked,
+
+        windowsClosed:
+          formData.windowsClosed,
+
+        personalBelongingsRemoved:
+          formData.personalBelongingsRemoved,
+
+        companyPropertyRemoved:
+          formData.companyPropertyRemoved,
+
+        keysReturned:
+          formData.keysReturned,
+
+        keysReturnedTo:
+          formData.keysReturnedTo,
+
+        returnConditionConfirmed:
+          formData.returnConditionConfirmed,
+
+        vehicleSecuredConfirmed:
+          formData.vehicleSecuredConfirmed,
+
+        informationAccuracyConfirmed:
+          formData.informationAccuracyConfirmed,
+      });
 
 
       /*
