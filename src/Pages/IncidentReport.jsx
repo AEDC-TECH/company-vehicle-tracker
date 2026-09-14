@@ -22,6 +22,11 @@ import {
 
 import { supabase } from "../lib/supabase";
 
+import {
+  createVehicleIncidentReport,
+  getVehicleTripForIncident,
+} from "../lib/vehicleIncidentLookup";
+
 import VehicleEvidenceUpload from "../Components/VehicleEvidenceUpload";
 
 import "../Styles/VehicleForms.css";
@@ -122,22 +127,31 @@ function IncidentReport() {
     loadIncidentContext();
   }, [tripId]);
 
+  function getStoredEmployeeNumber() {
+    return String(
+      localStorage.getItem(
+        "aedc_employee_number"
+      ) || ""
+    )
+      .trim()
+      .toUpperCase() || null;
+  }
+
   async function loadIncidentContext() {
     try {
       setLoading(true);
       setErrorMessage("");
 
-      const {
-        data: tripData,
-        error: tripError,
-      } = await supabase
-        .from("vehicle_trips")
-        .select("*")
-        .eq("id", tripId)
-        .single();
+      const tripData =
+        await getVehicleTripForIncident(
+          tripId,
+          getStoredEmployeeNumber()
+        );
 
-      if (tripError) {
-        throw tripError;
+      if (!tripData) {
+        throw new Error(
+          "You are not authorised to access this incident report."
+        );
       }
 
       setTrip(tripData);
@@ -494,150 +508,95 @@ function IncidentReport() {
       setErrorMessage("");
 
       /*
-       * Check again immediately before
-       * inserting so that a second incident
-       * cannot accidentally be created from
-       * another browser tab.
+       * ============================================
+       * CREATE INCIDENT TRANSACTION
+       * ============================================
+       *
+       * The database checks for duplicates, creates
+       * the incident, marks the trip incident-open
+       * and marks the vehicle unavailable together.
        */
-      const {
-        data: duplicateIncident,
-        error: duplicateError,
-      } = await supabase
-        .from("vehicle_incidents")
-        .select("id")
-        .eq("trip_id", trip.id)
-        .limit(1)
-        .maybeSingle();
 
-      if (duplicateError) {
-        throw duplicateError;
-      }
-
-      if (duplicateIncident) {
-        throw new Error(
-          "An incident report already exists for this trip."
-        );
-      }
-
-      const {
-        data: incident,
-        error: incidentError,
-      } = await supabase
-        .from("vehicle_incidents")
-        .insert({
-          trip_id:
+      const incidentResult =
+        await createVehicleIncidentReport({
+          tripId:
             trip.id,
 
-          vehicle_id:
-            vehicle.id,
+          employeeNumber:
+            getStoredEmployeeNumber(),
 
-          driver_id:
-            trip.driver_id || null,
-
-          /*
-           * Confirmed against the actual
-           * vehicle_incidents table.
-           */
-          incident_type:
+          incidentType:
             formData.incidentType,
 
-          incident_at:
+          incidentAt:
             incidentAt.toISOString(),
 
           location:
-            formData.location.trim() ||
-            null,
+            formData.location,
 
           description:
-            formData.description.trim(),
+            formData.description,
 
-          injuries_reported:
+          injuriesReported:
             formData.injuriesReported ===
             "yes",
 
-          emergency_services_contacted:
+          emergencyServicesContacted:
             formData.emergencyServicesContacted ===
             "yes",
 
-          facilities_manager_notified:
+          facilitiesManagerNotified:
             formData.facilitiesManagerNotified ===
             "yes",
 
-          facilities_manager_notified_at:
+          facilitiesManagerNotifiedAt:
             managerNotifiedAt,
 
-          police_reported:
+          policeReported:
             formData.policeReported ===
             "yes",
 
-          police_station:
-            formData.policeReported ===
-            "yes"
-              ? formData.policeStation.trim() ||
-                null
-              : null,
+          policeStation:
+            formData.policeStation,
 
-          police_case_number:
-            formData.policeReported ===
-            "yes"
-              ? formData.policeCaseNumber.trim() ||
-                null
-              : null,
+          policeCaseNumber:
+            formData.policeCaseNumber,
 
-          third_party_details:
-            formData.thirdPartyDetails.trim() ||
-            null,
+          thirdPartyDetails:
+            formData.thirdPartyDetails,
 
-          witness_details:
-            formData.witnessDetails.trim() ||
-            null,
+          witnessDetails:
+            formData.witnessDetails,
 
-          third_party_insurance_details:
-            formData.thirdPartyInsuranceDetails.trim() ||
-            null,
+          thirdPartyInsuranceDetails:
+            formData.thirdPartyInsuranceDetails,
+        });
 
-          investigation_status:
-            "pending",
-
-          resolved: false,
-        })
-        .select()
-        .single();
-
-      if (incidentError) {
-        throw incidentError;
-      }
-
-      const {
-        error: tripUpdateError,
-      } = await supabase
-        .from("vehicle_trips")
-        .update({
-          status:
-            "incident-open",
-        })
-        .eq("id", trip.id);
-
-      if (tripUpdateError) {
-        throw tripUpdateError;
-      }
-
-      const {
-        error: vehicleUpdateError,
-      } = await supabase
-        .from("vehicles")
-        .update({
-          status:
-            "unavailable",
-        })
-        .eq(
-          "id",
-          vehicle.id
+      if (!incidentResult?.id) {
+        throw new Error(
+          "Unable to create the incident report."
         );
-
-      if (vehicleUpdateError) {
-        throw vehicleUpdateError;
       }
+
+      /*
+       * The restricted RPC returns only the fields
+       * needed for secure persistence. These display
+       * fields mirror the values just submitted so
+       * the existing evidence-stage UI remains
+       * unchanged without another unrestricted read.
+       */
+      const incident = {
+        ...incidentResult,
+
+        incident_type:
+          formData.incidentType,
+
+        incident_at:
+          incidentAt.toISOString(),
+
+        description:
+          formData.description.trim(),
+      };
 
       setCreatedIncident(
         incident
