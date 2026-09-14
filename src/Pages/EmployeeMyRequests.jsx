@@ -18,6 +18,7 @@ import {
 
 import { supabase } from "../lib/supabase";
 import { listVehicleRequestsForEmployee } from "../lib/vehicleRequestLookup";
+import { listVehicleTripsForEmployee } from "../lib/vehicleTripLookup";
 import AEDCLogo from "../Components/AEDCLogo";
 
 import "../Styles/EmployeeMyRequests.css";
@@ -77,30 +78,22 @@ function EmployeeMyRequests() {
           .from("vehicles")
           .select("*"),
 
-        supabase
-          .from("vehicle_trips")
-          .select("*")
-          .eq("employee_number", number)
-          .order("created_at", {
-            ascending: false,
-          }),
+        listVehicleTripsForEmployee(
+          number
+        ),
       ]);
 
       if (vehicleResult.error) {
         throw vehicleResult.error;
       }
 
-      if (tripResult.error) {
-        throw tripResult.error;
-      }
-
       setRequests(requestData || []);
       setVehicles(vehicleResult.data || []);
-      setTrips(tripResult.data || []);
+      setTrips(tripResult || []);
 
       const detectedName =
         requestData?.[0]?.requested_driver_name ||
-        tripResult.data?.[0]?.driver_name ||
+        tripResult?.[0]?.driver_name ||
         savedNameFallback();
 
       if (detectedName) {
