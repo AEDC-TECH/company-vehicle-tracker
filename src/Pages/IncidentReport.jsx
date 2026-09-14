@@ -24,6 +24,7 @@ import { supabase } from "../lib/supabase";
 
 import {
   createVehicleIncidentReport,
+  getVehicleIncidentForTrip,
   getVehicleTripForIncident,
 } from "../lib/vehicleIncidentLookup";
 
@@ -174,22 +175,11 @@ function IncidentReport() {
 
       setVehicle(vehicleData);
 
-      const {
-        data: incidentData,
-        error: incidentError,
-      } = await supabase
-        .from("vehicle_incidents")
-        .select("*")
-        .eq("trip_id", tripId)
-        .order("created_at", {
-          ascending: false,
-        })
-        .limit(1)
-        .maybeSingle();
-
-      if (incidentError) {
-        throw incidentError;
-      }
+      const incidentData =
+        await getVehicleIncidentForTrip(
+          tripId,
+          getStoredEmployeeNumber()
+        );
 
       setExistingIncident(
         incidentData

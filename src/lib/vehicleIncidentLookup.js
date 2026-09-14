@@ -43,6 +43,35 @@ export async function getVehicleTripForIncident(
 }
 
 
+export async function getVehicleIncidentForTrip(
+  tripId,
+  employeeNumber = null
+) {
+  if (!tripId) {
+    return null;
+  }
+
+  const { data, error } = await supabase.rpc(
+    "get_vehicle_incident_for_trip",
+    {
+      p_trip_id:
+        tripId,
+
+      p_employee_number:
+        normalizeEmployeeNumber(
+          employeeNumber
+        ),
+    }
+  );
+
+  if (error) {
+    throw error;
+  }
+
+  return data || null;
+}
+
+
 export async function createVehicleIncidentReport({
   tripId,
   employeeNumber = null,
