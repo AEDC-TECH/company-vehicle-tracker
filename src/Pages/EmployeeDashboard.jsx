@@ -32,6 +32,8 @@ import { lookupVehicleEmployee } from "../lib/employeeLookup";
 
 import { listVehicleRequestsForEmployee } from "../lib/vehicleRequestLookup";
 
+import { listVehicleTripsForEmployee } from "../lib/vehicleTripLookup";
+
 import AEDCLogo from "../Components/AEDCLogo";
 
 import "../Styles/EmployeeDashboard.css";
@@ -333,28 +335,14 @@ function EmployeeDashboard() {
         number
       ),
 
-      supabase
-        .from("vehicle_trips")
-        .select("*")
-        .eq(
-          "employee_number",
-          number
-        )
-        .order(
-          "created_at",
-          {
-            ascending: false,
-          }
-        ),
+      listVehicleTripsForEmployee(
+        number
+      ),
 
       supabase
         .from("vehicles")
         .select("*"),
     ]);
-
-    if (tripResult.error) {
-      throw tripResult.error;
-    }
 
     if (vehicleResult.error) {
       throw vehicleResult.error;
@@ -365,7 +353,7 @@ function EmployeeDashboard() {
     );
 
     setTrips(
-      tripResult.data || []
+      tripResult || []
     );
 
     setVehicles(
