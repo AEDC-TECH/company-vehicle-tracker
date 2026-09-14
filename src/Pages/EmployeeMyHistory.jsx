@@ -27,6 +27,8 @@ import { supabase } from "../lib/supabase";
 
 import { lookupVehicleEmployee } from "../lib/employeeLookup";
 
+import { listVehicleTripsForEmployee } from "../lib/vehicleTripLookup";
+
 import AEDCLogo from "../Components/AEDCLogo";
 
 import "../Styles/EmployeeMyHistory.css";
@@ -150,38 +152,14 @@ function EmployeeMyHistory() {
        * ============================================
        */
 
-      const {
-        data: tripData,
-        error: tripError,
-      } = await supabase
-        .from("vehicle_trips")
-        .select("*")
-        .eq(
-          "employee_number",
-          storedEmployeeNumber
-        )
-        .in(
-          "status",
+      const loadedTrips =
+        await listVehicleTripsForEmployee(
+          storedEmployeeNumber,
           [
             "returned",
             "incident-open",
           ]
-        )
-        .order(
-          "created_at",
-          {
-            ascending: false,
-          }
         );
-
-
-      if (tripError) {
-        throw tripError;
-      }
-
-
-      const loadedTrips =
-        tripData || [];
 
 
       setTrips(
