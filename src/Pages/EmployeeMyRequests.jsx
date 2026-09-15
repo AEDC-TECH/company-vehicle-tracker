@@ -16,9 +16,9 @@ import {
   FaTimesCircle,
 } from "react-icons/fa";
 
-import { supabase } from "../lib/supabase";
 import { listVehicleRequestsForEmployee } from "../lib/vehicleRequestLookup";
 import { listVehicleTripsForEmployee } from "../lib/vehicleTripLookup";
+import { listVehiclesForEmployee } from "../lib/vehicleLookup";
 import AEDCLogo from "../Components/AEDCLogo";
 
 import "../Styles/EmployeeMyRequests.css";
@@ -67,28 +67,24 @@ function EmployeeMyRequests() {
 
       const [
         requestData,
-        vehicleResult,
+        vehicleData,
         tripResult,
       ] = await Promise.all([
         listVehicleRequestsForEmployee(
           number
         ),
 
-        supabase
-          .from("vehicles")
-          .select("*"),
+        listVehiclesForEmployee(
+          number
+        ),
 
         listVehicleTripsForEmployee(
           number
         ),
       ]);
 
-      if (vehicleResult.error) {
-        throw vehicleResult.error;
-      }
-
       setRequests(requestData || []);
-      setVehicles(vehicleResult.data || []);
+      setVehicles(vehicleData || []);
       setTrips(tripResult || []);
 
       const detectedName =

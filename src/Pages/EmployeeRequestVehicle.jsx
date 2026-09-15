@@ -14,12 +14,15 @@ import {
   FaUser,
 } from "react-icons/fa";
 
-import { supabase } from "../lib/supabase";
 import { lookupVehicleEmployee } from "../lib/employeeLookup";
 import {
   checkVehicleRequestConflicts,
   createVehicleRequestForEmployee,
 } from "../lib/vehicleRequestLookup";
+import {
+  checkVehicleRequestabilityForEmployee,
+  listAvailableVehiclesForEmployee,
+} from "../lib/vehicleLookup";
 import AEDCLogo from "../Components/AEDCLogo";
 
 import "../Styles/EmployeeRequestVehicle.css";
@@ -71,7 +74,7 @@ function EmployeeRequestVehicle() {
     setEmployeeName(savedEmployeeName);
 
     loadEmployeeProfile(savedEmployeeNumber);
-    loadVehicles();
+    loadVehicles(savedEmployeeNumber);
   }, [navigate]);
 
   async function loadEmployeeProfile(number) {
@@ -105,29 +108,15 @@ function EmployeeRequestVehicle() {
     }
   }
 
-  async function loadVehicles() {
+  async function loadVehicles(number) {
     try {
       setLoadingVehicles(true);
       setErrorMessage("");
 
-      const {
-        data,
-        error,
-      } = await supabase
-        .from("vehicles")
-        .select("*")
-        .eq("active", true)
-        .eq("roadworthy", true)
-        .order("make", {
-          ascending: true,
-        })
-        .order("model", {
-          ascending: true,
-        });
-
-      if (error) {
-        throw error;
-      }
+      const data =
+        await listAvailableVehiclesForEmployee(
+          number
+        );
 
       setVehicles(data || []);
 
@@ -307,17 +296,16 @@ function EmployeeRequestVehicle() {
        * Check the vehicle again immediately before
        * creating the request.
        */
-      const {
-        data: currentVehicle,
-        error: vehicleError,
-      } = await supabase
-        .from("vehicles")
-        .select("*")
-        .eq("id", selectedVehicleId)
-        .single();
+      const currentVehicle =
+        await checkVehicleRequestabilityForEmployee(
+          selectedVehicleId,
+          employeeNumber
+        );
 
-      if (vehicleError) {
-        throw vehicleError;
+      if (!currentVehicle) {
+        throw new Error(
+          "The selected vehicle could not be found."
+        );
       }
 
       if (!currentVehicle.active) {

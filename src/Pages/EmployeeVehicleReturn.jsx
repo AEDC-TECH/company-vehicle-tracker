@@ -22,14 +22,14 @@ import {
   FaUser,
 } from "react-icons/fa";
 
-import { supabase } from "../lib/supabase";
-
 import { lookupVehicleEmployee } from "../lib/employeeLookup";
 
 import {
   completeVehicleReturnForEmployee,
   getVehicleTripForEmployee,
 } from "../lib/vehicleTripLookup";
+
+import { getVehicleForEmployeeContext } from "../lib/vehicleLookup";
 
 import {
   listVehiclePostUseEvidenceForTrip,
@@ -331,21 +331,23 @@ function EmployeeVehicleReturn() {
        * ============================================
        */
 
-      const {
-        data: vehicleData,
-        error: vehicleError,
-      } = await supabase
-        .from("vehicles")
-        .select("*")
-        .eq(
-          "id",
-          tripData.vehicle_id
-        )
-        .single();
+      const vehicleData =
+        await getVehicleForEmployeeContext({
+          vehicleId:
+            tripData.vehicle_id,
+
+          employeeNumber:
+            storedEmployeeNumber,
+
+          tripId:
+            tripData.id,
+        });
 
 
-      if (vehicleError) {
-        throw vehicleError;
+      if (!vehicleData) {
+        throw new Error(
+          "Unable to load the vehicle for this trip."
+        );
       }
 
 

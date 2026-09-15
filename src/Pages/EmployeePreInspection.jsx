@@ -23,11 +23,11 @@ import {
   FaUser,
 } from "react-icons/fa";
 
-import { supabase } from "../lib/supabase";
-
 import { lookupVehicleEmployee } from "../lib/employeeLookup";
 
 import { getVehicleRequestForEmployee } from "../lib/vehicleRequestLookup";
+
+import { getVehicleForEmployeeContext } from "../lib/vehicleLookup";
 
 import {
   completeVehiclePreInspectionForEmployee,
@@ -238,20 +238,21 @@ function EmployeePreInspection() {
        * -------------------------------------------------
        */
 
-      const {
-        data: vehicleData,
-        error: vehicleError,
-      } = await supabase
-        .from("vehicles")
-        .select("*")
-        .eq(
-          "id",
-          requestData.vehicle_id
-        )
-        .single();
+      const vehicleData =
+        await getVehicleForEmployeeContext({
+          vehicleId:
+            requestData.vehicle_id,
 
-      if (vehicleError) {
-        throw vehicleError;
+          employeeNumber:
+            currentEmployeeNumber,
+
+          requestId,
+        });
+
+      if (!vehicleData) {
+        throw new Error(
+          "Unable to load the vehicle for this approved booking."
+        );
       }
 
       setVehicle(vehicleData);
@@ -746,20 +747,21 @@ function EmployeePreInspection() {
        * -------------------------------------------------
        */
 
-      const {
-        data: latestVehicle,
-        error: latestVehicleError,
-      } = await supabase
-        .from("vehicles")
-        .select("*")
-        .eq(
-          "id",
-          vehicle.id
-        )
-        .single();
+      const latestVehicle =
+        await getVehicleForEmployeeContext({
+          vehicleId:
+            vehicle.id,
 
-      if (latestVehicleError) {
-        throw latestVehicleError;
+          employeeNumber,
+
+          requestId:
+            request.id,
+        });
+
+      if (!latestVehicle) {
+        throw new Error(
+          "This vehicle could not be loaded for your approved booking."
+        );
       }
 
       if (

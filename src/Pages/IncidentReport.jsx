@@ -20,13 +20,13 @@ import {
   FaMapMarkerAlt,
 } from "react-icons/fa";
 
-import { supabase } from "../lib/supabase";
-
 import {
   createVehicleIncidentReport,
   getVehicleIncidentForTrip,
   getVehicleTripForIncident,
 } from "../lib/vehicleIncidentLookup";
+
+import { getVehicleForEmployeeContext } from "../lib/vehicleLookup";
 
 import {
   countVehicleEvidenceForIncident,
@@ -161,20 +161,22 @@ function IncidentReport() {
 
       setTrip(tripData);
 
-      const {
-        data: vehicleData,
-        error: vehicleError,
-      } = await supabase
-        .from("vehicles")
-        .select("*")
-        .eq(
-          "id",
-          tripData.vehicle_id
-        )
-        .single();
+      const vehicleData =
+        await getVehicleForEmployeeContext({
+          vehicleId:
+            tripData.vehicle_id,
 
-      if (vehicleError) {
-        throw vehicleError;
+          employeeNumber:
+            getStoredEmployeeNumber(),
+
+          tripId:
+            tripData.id,
+        });
+
+      if (!vehicleData) {
+        throw new Error(
+          "Unable to load the vehicle for this incident report."
+        );
       }
 
       setVehicle(vehicleData);

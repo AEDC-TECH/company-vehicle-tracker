@@ -26,13 +26,13 @@ import {
   FaUser,
 } from "react-icons/fa";
 
-import { supabase } from "../lib/supabase";
-
 import { lookupVehicleEmployee } from "../lib/employeeLookup";
 
 import { listVehicleRequestsForEmployee } from "../lib/vehicleRequestLookup";
 
 import { listVehicleTripsForEmployee } from "../lib/vehicleTripLookup";
+
+import { listVehiclesForEmployee } from "../lib/vehicleLookup";
 
 import AEDCLogo from "../Components/AEDCLogo";
 
@@ -329,7 +329,7 @@ function EmployeeDashboard() {
     const [
       requestData,
       tripResult,
-      vehicleResult,
+      vehicleData,
     ] = await Promise.all([
       listVehicleRequestsForEmployee(
         number
@@ -339,14 +339,10 @@ function EmployeeDashboard() {
         number
       ),
 
-      supabase
-        .from("vehicles")
-        .select("*"),
+      listVehiclesForEmployee(
+        number
+      ),
     ]);
-
-    if (vehicleResult.error) {
-      throw vehicleResult.error;
-    }
 
     setRequests(
       requestData || []
@@ -357,7 +353,7 @@ function EmployeeDashboard() {
     );
 
     setVehicles(
-      vehicleResult.data || []
+      vehicleData || []
     );
   }
 

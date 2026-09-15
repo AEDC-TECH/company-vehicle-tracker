@@ -23,11 +23,11 @@ import {
   FaUser,
 } from "react-icons/fa";
 
-import { supabase } from "../lib/supabase";
-
 import { lookupVehicleEmployee } from "../lib/employeeLookup";
 
 import { listVehicleTripsForEmployee } from "../lib/vehicleTripLookup";
+
+import { listVehiclesForEmployee } from "../lib/vehicleLookup";
 
 import AEDCLogo from "../Components/AEDCLogo";
 
@@ -173,42 +173,10 @@ function EmployeeMyHistory() {
        * ============================================
        */
 
-      const vehicleIds = [
-        ...new Set(
-          loadedTrips
-            .map(
-              (trip) =>
-                trip.vehicle_id
-            )
-            .filter(Boolean)
-        ),
-      ];
-
-
-      if (
-        vehicleIds.length === 0
-      ) {
-        setVehicles([]);
-
-        return;
-      }
-
-
-      const {
-        data: vehicleData,
-        error: vehicleError,
-      } = await supabase
-        .from("vehicles")
-        .select("*")
-        .in(
-          "id",
-          vehicleIds
+      const vehicleData =
+        await listVehiclesForEmployee(
+          storedEmployeeNumber
         );
-
-
-      if (vehicleError) {
-        throw vehicleError;
-      }
 
 
       setVehicles(
