@@ -10,6 +10,8 @@ import {
 
 import { supabase } from "../lib/supabase";
 
+import { createVehicleEvidenceRecord } from "../lib/vehicleEvidenceLookup";
+
 import "../Styles/VehicleEvidenceUpload.css";
 
 function VehicleEvidenceUpload({
@@ -34,6 +36,16 @@ function VehicleEvidenceUpload({
 
   function chooseFiles() {
     fileInputRef.current?.click();
+  }
+
+  function getStoredEmployeeNumber() {
+    return String(
+      localStorage.getItem(
+        "aedc_employee_number"
+      ) || ""
+    )
+      .trim()
+      .toUpperCase() || null;
   }
 
   function sanitiseFileName(name) {
@@ -153,27 +165,32 @@ function VehicleEvidenceUpload({
           throw storageError;
         }
 
-        const {
-          data: evidenceRecord,
-          error: databaseError,
-        } = await supabase
-          .from("vehicle_evidence")
-          .insert({
-            vehicle_id: vehicleId,
-            trip_id: tripId,
-            request_id: requestId,
-            incident_id: incidentId,
-            evidence_stage: stage,
-            evidence_type: type,
-            storage_path: storagePath,
-            original_file_name: file.name,
-            mime_type: file.type,
-            file_size: file.size,
-          })
-          .select()
-          .single();
+        let evidenceRecord;
 
-        if (databaseError) {
+        try {
+          evidenceRecord =
+            await createVehicleEvidenceRecord({
+              employeeNumber:
+                getStoredEmployeeNumber(),
+
+              vehicleId,
+              tripId,
+              requestId,
+              incidentId,
+              stage,
+              type,
+              storagePath,
+
+              originalFileName:
+                file.name,
+
+              mimeType:
+                file.type,
+
+              fileSize:
+                file.size,
+            });
+        } catch (databaseError) {
           await supabase.storage
             .from("vehicle-evidence")
             .remove([storagePath]);

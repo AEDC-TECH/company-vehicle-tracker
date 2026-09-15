@@ -31,6 +31,10 @@ import {
   getVehicleTripForEmployee,
 } from "../lib/vehicleTripLookup";
 
+import {
+  listVehiclePostUseEvidenceForTrip,
+} from "../lib/vehicleEvidenceLookup";
+
 import AEDCLogo from "../Components/AEDCLogo";
 
 import VehicleEvidenceUpload from "../Components/VehicleEvidenceUpload";
@@ -420,28 +424,17 @@ function EmployeeVehicleReturn() {
        * ============================================
        */
 
-      const {
-        data: evidenceData,
-        error: evidenceError,
-      } = await supabase
-        .from(
-          "vehicle_evidence"
-        )
-        .select(
-          "id, evidence_type"
-        )
-        .eq(
-          "trip_id",
-          tripId
-        )
-        .eq(
-          "evidence_stage",
-          "post-use"
+      const evidenceData =
+        await listVehiclePostUseEvidenceForTrip(
+          tripId,
+          storedEmployeeNumber
         );
 
 
-      if (evidenceError) {
-        throw evidenceError;
+      if (evidenceData === null) {
+        throw new Error(
+          "You are not authorised to access evidence for this trip."
+        );
       }
 
 

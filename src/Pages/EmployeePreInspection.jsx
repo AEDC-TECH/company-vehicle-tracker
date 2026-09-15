@@ -34,6 +34,10 @@ import {
   getVehicleTripForEmployeeRequest,
 } from "../lib/vehicleTripLookup";
 
+import {
+  listVehiclePreUseEvidenceForRequest,
+} from "../lib/vehicleEvidenceLookup";
+
 import VehicleEvidenceUpload from "../Components/VehicleEvidenceUpload";
 import AEDCLogo from "../Components/AEDCLogo";
 
@@ -361,25 +365,16 @@ function EmployeePreInspection() {
        * -------------------------------------------------
        */
 
-      const {
-        data: existingEvidence,
-        error: evidenceError,
-      } = await supabase
-        .from("vehicle_evidence")
-        .select(
-          "id, evidence_type"
-        )
-        .eq(
-          "request_id",
-          requestId
-        )
-        .eq(
-          "evidence_stage",
-          "pre-use"
+      const existingEvidence =
+        await listVehiclePreUseEvidenceForRequest(
+          requestId,
+          currentEmployeeNumber
         );
 
-      if (evidenceError) {
-        throw evidenceError;
+      if (existingEvidence === null) {
+        throw new Error(
+          "You are not authorised to access evidence for this booking."
+        );
       }
 
       const evidence =

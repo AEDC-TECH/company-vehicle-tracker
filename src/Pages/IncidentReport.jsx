@@ -28,6 +28,10 @@ import {
   getVehicleTripForIncident,
 } from "../lib/vehicleIncidentLookup";
 
+import {
+  countVehicleEvidenceForIncident,
+} from "../lib/vehicleEvidenceLookup";
+
 import VehicleEvidenceUpload from "../Components/VehicleEvidenceUpload";
 
 import "../Styles/VehicleForms.css";
@@ -288,23 +292,20 @@ function IncidentReport() {
     incidentId
   ) {
     try {
-      const {
-        data,
-        error,
-      } = await supabase
-        .from("vehicle_evidence")
-        .select("id")
-        .eq(
-          "incident_id",
-          incidentId
+      const count =
+        await countVehicleEvidenceForIncident(
+          incidentId,
+          getStoredEmployeeNumber()
         );
 
-      if (error) {
-        throw error;
+      if (count === null) {
+        throw new Error(
+          "You are not authorised to access evidence for this incident."
+        );
       }
 
       setEvidenceCount(
-        (data || []).length
+        count
       );
     } catch (error) {
       console.error(
