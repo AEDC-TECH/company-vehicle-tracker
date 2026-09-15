@@ -165,38 +165,28 @@ function VehicleEvidenceUpload({
           throw storageError;
         }
 
-        let evidenceRecord;
+        const evidenceRecord =
+          await createVehicleEvidenceRecord({
+            employeeNumber:
+              getStoredEmployeeNumber(),
 
-        try {
-          evidenceRecord =
-            await createVehicleEvidenceRecord({
-              employeeNumber:
-                getStoredEmployeeNumber(),
+            vehicleId,
+            tripId,
+            requestId,
+            incidentId,
+            stage,
+            type,
+            storagePath,
 
-              vehicleId,
-              tripId,
-              requestId,
-              incidentId,
-              stage,
-              type,
-              storagePath,
+            originalFileName:
+              file.name,
 
-              originalFileName:
-                file.name,
+            mimeType:
+              file.type,
 
-              mimeType:
-                file.type,
-
-              fileSize:
-                file.size,
-            });
-        } catch (databaseError) {
-          await supabase.storage
-            .from("vehicle-evidence")
-            .remove([storagePath]);
-
-          throw databaseError;
-        }
+            fileSize:
+              file.size,
+          });
 
         completedUploads.push(
           evidenceRecord
