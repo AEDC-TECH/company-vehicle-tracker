@@ -23,6 +23,8 @@ import {
   FaUser,
 } from "react-icons/fa";
 
+import { supabase } from "../lib/supabase";
+
 import { lookupVehicleEmployee } from "../lib/employeeLookup";
 
 import { getVehicleRequestForEmployee } from "../lib/vehicleRequestLookup";
@@ -42,24 +44,93 @@ import VehicleEvidenceUpload from "../Components/VehicleEvidenceUpload";
 import AEDCLogo from "../Components/AEDCLogo";
 
 import "../Styles/EmployeePreInspection.css";
+import "../Styles/EmployeePreInspection-photo-requirements.css";
 
 
 const inspectionItems = [
   {
     key: "bodywork",
     label: "Exterior Bodywork",
+    category: "bodywork",
+    attentionSeverity: "minor",
+    damagedSeverity: "major",
   },
   {
     key: "tyres",
-    label: "Tyres",
+    label: "Tyres & Wheels",
+    category: "tyres",
+    attentionSeverity: "major",
+    damagedSeverity: "critical",
   },
   {
     key: "windscreen",
-    label: "Windscreen",
+    label: "Windscreen & Windows",
+    category: "windscreen",
+    attentionSeverity: "minor",
+    damagedSeverity: "major",
   },
   {
     key: "lights",
-    label: "Lights",
+    label: "Lights & Indicators",
+    category: "lights",
+    attentionSeverity: "minor",
+    damagedSeverity: "major",
+  },
+  {
+    key: "brakes",
+    label: "Brakes",
+    category: "brakes",
+    attentionSeverity: "major",
+    damagedSeverity: "critical",
+  },
+  {
+    key: "steering",
+    label: "Steering",
+    category: "steering",
+    attentionSeverity: "major",
+    damagedSeverity: "critical",
+  },
+  {
+    key: "horn",
+    label: "Horn",
+    category: "electrical",
+    attentionSeverity: "minor",
+    damagedSeverity: "major",
+  },
+  {
+    key: "seatbelts",
+    label: "Seatbelts",
+    category: "safety-equipment",
+    attentionSeverity: "major",
+    damagedSeverity: "critical",
+  },
+  {
+    key: "mirrors",
+    label: "Mirrors",
+    category: "safety-equipment",
+    attentionSeverity: "minor",
+    damagedSeverity: "major",
+  },
+  {
+    key: "wipers",
+    label: "Wipers & Washers",
+    category: "electrical",
+    attentionSeverity: "minor",
+    damagedSeverity: "major",
+  },
+  {
+    key: "fluidLeaks",
+    label: "Fluid Leaks",
+    category: "fluids",
+    attentionSeverity: "major",
+    damagedSeverity: "critical",
+  },
+  {
+    key: "safetyEquipment",
+    label: "Safety Equipment",
+    category: "safety-equipment",
+    attentionSeverity: "major",
+    damagedSeverity: "critical",
   },
 ];
 
@@ -73,6 +144,61 @@ const initialCondition =
     },
     {}
   );
+
+
+const initialDefectDetails =
+  inspectionItems.reduce(
+    (result, item) => {
+      result[item.key] = "";
+
+      return result;
+    },
+    {}
+  );
+
+
+function getLogicalEvidenceType(
+  item
+) {
+  const storedType =
+    String(
+      item?.evidence_type || ""
+    )
+      .trim()
+      .toLowerCase();
+
+  const storagePath =
+    String(
+      item?.storage_path || ""
+    )
+      .trim()
+      .toLowerCase();
+
+  const directionalTypes = [
+    "vehicle-front",
+    "vehicle-rear",
+    "vehicle-driver-side",
+    "vehicle-passenger-side",
+  ];
+
+  for (const type of directionalTypes) {
+    if (
+      storagePath.includes(
+        `/${type}/`
+      ) ||
+      storagePath.includes(
+        `/${type}--`
+      ) ||
+      storagePath.includes(
+        `/${type}-`
+      )
+    ) {
+      return type;
+    }
+  }
+
+  return storedType;
+}
 
 
 function EmployeePreInspection() {
@@ -101,9 +227,30 @@ function EmployeePreInspection() {
   const [condition, setCondition] =
     useState(initialCondition);
 
+
   const [
-    preUseEvidenceCount,
-    setPreUseEvidenceCount,
+    defectDetails,
+    setDefectDetails,
+  ] = useState(initialDefectDetails);
+
+  const [
+    frontPhotoCount,
+    setFrontPhotoCount,
+  ] = useState(0);
+
+  const [
+    rearPhotoCount,
+    setRearPhotoCount,
+  ] = useState(0);
+
+  const [
+    driverSidePhotoCount,
+    setDriverSidePhotoCount,
+  ] = useState(0);
+
+  const [
+    passengerSidePhotoCount,
+    setPassengerSidePhotoCount,
   ] = useState(0);
 
   const [
@@ -381,11 +528,43 @@ function EmployeePreInspection() {
       const evidence =
         existingEvidence || [];
 
-      setPreUseEvidenceCount(
+      setFrontPhotoCount(
         evidence.filter(
           (item) =>
-            item.evidence_type ===
-            "vehicle-condition"
+            getLogicalEvidenceType(
+              item
+            ) ===
+            "vehicle-front"
+        ).length
+      );
+
+      setRearPhotoCount(
+        evidence.filter(
+          (item) =>
+            getLogicalEvidenceType(
+              item
+            ) ===
+            "vehicle-rear"
+        ).length
+      );
+
+      setDriverSidePhotoCount(
+        evidence.filter(
+          (item) =>
+            getLogicalEvidenceType(
+              item
+            ) ===
+            "vehicle-driver-side"
+        ).length
+      );
+
+      setPassengerSidePhotoCount(
+        evidence.filter(
+          (item) =>
+            getLogicalEvidenceType(
+              item
+            ) ===
+            "vehicle-passenger-side"
         ).length
       );
 
@@ -452,6 +631,87 @@ function EmployeePreInspection() {
         [key]: value,
       })
     );
+
+    if (value === "good") {
+      setDefectDetails(
+        (previous) => ({
+          ...previous,
+          [key]: "",
+        })
+      );
+    }
+  }
+
+
+  function handleDefectDescriptionChange(
+    key,
+    value
+  ) {
+    setDefectDetails(
+      (previous) => ({
+        ...previous,
+        [key]: value,
+      })
+    );
+  }
+
+
+  function getConditionSeverity(
+    item,
+    value
+  ) {
+    if (value === "attention") {
+      return item.attentionSeverity;
+    }
+
+    if (value === "damaged") {
+      return item.damagedSeverity;
+    }
+
+    return null;
+  }
+
+
+  function buildInspectionDefects() {
+    return inspectionItems
+      .filter(
+        (item) =>
+          condition[item.key] !==
+          "good"
+      )
+      .map((item) => {
+        const value =
+          condition[item.key];
+
+        const severity =
+          getConditionSeverity(
+            item,
+            value
+          );
+
+        return {
+          category:
+            item.category,
+
+          severity,
+
+          title:
+            `${item.label} ${
+              value === "damaged"
+                ? "defect"
+                : "requires attention"
+            }`,
+
+          description:
+            defectDetails[
+              item.key
+            ].trim(),
+
+          vehicle_grounded:
+            severity ===
+            "critical",
+        };
+      });
   }
 
 
@@ -603,6 +863,90 @@ function EmployeePreInspection() {
     ) {
       setErrorMessage(
         "Enter your driver's licence number."
+      );
+
+      return;
+    }
+
+
+    /*
+     * -------------------------------------------------
+     * INSPECTION DEFECTS
+     * -------------------------------------------------
+     */
+
+    const inspectionDefects =
+      buildInspectionDefects();
+
+    const missingDefectDescription =
+      inspectionItems.find(
+        (item) =>
+          condition[item.key] !==
+            "good" &&
+          !defectDetails[
+            item.key
+          ].trim()
+      );
+
+    if (missingDefectDescription) {
+      setErrorMessage(
+        `Describe the issue found under ${missingDefectDescription.label}.`
+      );
+
+      return;
+    }
+
+
+    /*
+     * -------------------------------------------------
+     * MANDATORY 4-SIDE EXTERIOR PHOTOS
+     * -------------------------------------------------
+     */
+
+    const missingExteriorPhotos = [];
+
+    if (frontPhotoCount === 0) {
+      missingExteriorPhotos.push(
+        "front"
+      );
+    }
+
+    if (rearPhotoCount === 0) {
+      missingExteriorPhotos.push(
+        "rear"
+      );
+    }
+
+    if (driverSidePhotoCount === 0) {
+      missingExteriorPhotos.push(
+        "driver side"
+      );
+    }
+
+    if (passengerSidePhotoCount === 0) {
+      missingExteriorPhotos.push(
+        "passenger side"
+      );
+    }
+
+    if (
+      missingExteriorPhotos.length >
+      0
+    ) {
+      setErrorMessage(
+        `Upload all 4 required exterior vehicle photos before starting the trip. Missing: ${missingExteriorPhotos.join(
+          ", "
+        )}.`
+      );
+
+      return;
+    }
+
+    if (
+      odometerEvidenceCount === 0
+    ) {
+      setErrorMessage(
+        "Upload the required starting odometer photo before starting the trip."
       );
 
       return;
@@ -787,6 +1131,80 @@ function EmployeePreInspection() {
         throw new Error(
           "The vehicle has already been taken or is no longer available."
         );
+      }
+
+
+      /*
+       * -------------------------------------------------
+       * SAVE FORMAL FLEET INSPECTION
+       * -------------------------------------------------
+       *
+       * This restricted RPC verifies the employee,
+       * approved booking and vehicle before creating
+       * the inspection and any defect records.
+       */
+
+      const {
+        data: inspectionResult,
+        error: inspectionError,
+      } = await supabase.rpc(
+        "submit_fleet_pretrip_inspection",
+        {
+          p_request_id:
+            request.id,
+
+          p_employee_number:
+            employeeNumber,
+
+          p_odometer:
+            startOdometer,
+
+          p_fuel_level:
+            formData.fuelBefore,
+
+          p_checklist:
+            condition,
+
+          p_damage_reported:
+            formData.preExistingDamage ===
+            "yes",
+
+          p_notes:
+            formData.preUseNotes.trim() ||
+            null,
+
+          p_defects:
+            inspectionDefects,
+        }
+      );
+
+      if (inspectionError) {
+        throw inspectionError;
+      }
+
+      if (
+        inspectionResult?.can_start_trip ===
+        false
+      ) {
+        window.alert(
+          `Critical vehicle defect recorded.\n\n${inspectionResult.critical_defect_count || 1} critical defect${
+            Number(
+              inspectionResult.critical_defect_count ||
+                1
+            ) === 1
+              ? ""
+              : "s"
+          } found.\n\nThe trip has NOT been started and the vehicle has been blocked from use pending Fleet Admin review.`
+        );
+
+        navigate(
+          "/employee/my-requests",
+          {
+            replace: true,
+          }
+        );
+
+        return;
       }
 
 
@@ -1353,96 +1771,281 @@ function EmployeePreInspection() {
 
             <div>
               <h2>
-                Vehicle Condition
+                Pre-Trip Safety Inspection
               </h2>
 
               <p>
-                Physically inspect each area
-                before driving away.
+                Check every item before
+                driving. Any item marked
+                Attention or Defect must be
+                described.
               </p>
             </div>
           </div>
 
-          <div className="employee-preinspection-inspection-grid">
+          <div className="employee-preinspection-logistics-summary">
+            <div>
+              <span>
+                Checklist
+              </span>
+
+              <strong>
+                {
+                  inspectionItems.length
+                }{" "}
+                items
+              </strong>
+            </div>
+
+            <div>
+              <span>
+                Issues Found
+              </span>
+
+              <strong>
+                {
+                  inspectionItems.filter(
+                    (item) =>
+                      condition[
+                        item.key
+                      ] !== "good"
+                  ).length
+                }
+              </strong>
+            </div>
+
+            <div
+              className={
+                inspectionItems.some(
+                  (item) =>
+                    getConditionSeverity(
+                      item,
+                      condition[
+                        item.key
+                      ]
+                    ) === "critical"
+                )
+                  ? "employee-preinspection-summary-critical"
+                  : ""
+              }
+            >
+              <span>
+                Critical
+              </span>
+
+              <strong>
+                {
+                  inspectionItems.filter(
+                    (item) =>
+                      getConditionSeverity(
+                        item,
+                        condition[
+                          item.key
+                        ]
+                      ) ===
+                      "critical"
+                  ).length
+                }
+              </strong>
+            </div>
+          </div>
+
+          <div className="employee-preinspection-inspection-grid employee-preinspection-logistics-grid">
             {inspectionItems.map(
-              (item) => (
-                <article
-                  key={item.key}
-                  className="employee-preinspection-inspection-item"
-                >
-                  <div>
-                    <FaCar />
+              (item) => {
+                const selected =
+                  condition[
+                    item.key
+                  ];
 
-                    <strong>
-                      {item.label}
-                    </strong>
-                  </div>
+                const severity =
+                  getConditionSeverity(
+                    item,
+                    selected
+                  );
 
-                  <div className="employee-preinspection-condition-buttons">
-                    <button
-                      type="button"
-                      className={
-                        condition[
-                          item.key
-                        ] ===
-                        "good"
-                          ? "employee-condition-button employee-condition-good"
-                          : "employee-condition-button"
-                      }
-                      onClick={() =>
-                        handleConditionChange(
-                          item.key,
+                return (
+                  <article
+                    key={item.key}
+                    className={`employee-preinspection-inspection-item employee-preinspection-logistics-item ${
+                      selected !==
+                      "good"
+                        ? "employee-preinspection-item-has-defect"
+                        : ""
+                    }`}
+                  >
+                    <div className="employee-preinspection-item-heading">
+                      <FaCar />
+
+                      <div>
+                        <strong>
+                          {
+                            item.label
+                          }
+                        </strong>
+
+                        <span>
+                          {selected ===
                           "good"
-                        )
-                      }
-                    >
-                      Good
-                    </button>
+                            ? "No issue identified"
+                            : severity ===
+                              "critical"
+                            ? "Critical — trip will be blocked"
+                            : `${severity} defect`}
+                        </span>
+                      </div>
+                    </div>
 
-                    <button
-                      type="button"
-                      className={
-                        condition[
-                          item.key
-                        ] ===
-                        "attention"
-                          ? "employee-condition-button employee-condition-attention"
-                          : "employee-condition-button"
-                      }
-                      onClick={() =>
-                        handleConditionChange(
-                          item.key,
+                    <div className="employee-preinspection-condition-buttons">
+                      <button
+                        type="button"
+                        className={
+                          selected ===
+                          "good"
+                            ? "employee-condition-button employee-condition-good"
+                            : "employee-condition-button"
+                        }
+                        onClick={() =>
+                          handleConditionChange(
+                            item.key,
+                            "good"
+                          )
+                        }
+                      >
+                        Good
+                      </button>
+
+                      <button
+                        type="button"
+                        className={
+                          selected ===
                           "attention"
-                        )
-                      }
-                    >
-                      Attention
-                    </button>
+                            ? "employee-condition-button employee-condition-attention"
+                            : "employee-condition-button"
+                        }
+                        onClick={() =>
+                          handleConditionChange(
+                            item.key,
+                            "attention"
+                          )
+                        }
+                      >
+                        Attention
+                      </button>
 
-                    <button
-                      type="button"
-                      className={
-                        condition[
-                          item.key
-                        ] ===
-                        "damaged"
-                          ? "employee-condition-button employee-condition-damaged"
-                          : "employee-condition-button"
-                      }
-                      onClick={() =>
-                        handleConditionChange(
-                          item.key,
+                      <button
+                        type="button"
+                        className={
+                          selected ===
                           "damaged"
-                        )
-                      }
-                    >
-                      Damaged
-                    </button>
-                  </div>
-                </article>
-              )
+                            ? "employee-condition-button employee-condition-damaged"
+                            : "employee-condition-button"
+                        }
+                        onClick={() =>
+                          handleConditionChange(
+                            item.key,
+                            "damaged"
+                          )
+                        }
+                      >
+                        Defect
+                      </button>
+                    </div>
+
+                    {selected !==
+                      "good" && (
+                      <div className="employee-preinspection-defect-detail">
+                        <div className="employee-preinspection-defect-meta">
+                          <span>
+                            Severity
+                          </span>
+
+                          <strong
+                            className={`employee-preinspection-severity employee-preinspection-severity-${severity}`}
+                          >
+                            {
+                              severity
+                            }
+                          </strong>
+                        </div>
+
+                        <label>
+                          Describe the issue *
+
+                          <textarea
+                            value={
+                              defectDetails[
+                                item.key
+                              ]
+                            }
+                            onChange={(
+                              event
+                            ) =>
+                              handleDefectDescriptionChange(
+                                item.key,
+                                event
+                                  .target
+                                  .value
+                              )
+                            }
+                            rows="3"
+                            placeholder={`Describe the ${item.label.toLowerCase()} issue clearly...`}
+                            required
+                          />
+                        </label>
+
+                        {severity ===
+                          "critical" && (
+                          <div className="employee-preinspection-critical-warning">
+                            <FaExclamationTriangle />
+
+                            <span>
+                              This defect is
+                              classified as
+                              critical. The
+                              vehicle will not
+                              be released for
+                              this trip.
+                            </span>
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </article>
+                );
+              }
             )}
           </div>
+
+          {inspectionItems.some(
+            (item) =>
+              getConditionSeverity(
+                item,
+                condition[
+                  item.key
+                ]
+              ) === "critical"
+          ) && (
+            <div className="employee-preinspection-trip-blocked">
+              <FaShieldAlt />
+
+              <div>
+                <strong>
+                  Trip will be blocked
+                </strong>
+
+                <p>
+                  One or more critical
+                  defects have been
+                  identified. Submit the
+                  inspection to record the
+                  defects and remove the
+                  vehicle from operational
+                  availability.
+                </p>
+              </div>
+            </div>
+          )}
         </section>
 
 
@@ -1541,36 +2144,439 @@ function EmployeePreInspection() {
 
             <div>
               <h2>
-                Pre-Use Photographs
+                Mandatory Vehicle Photos
               </h2>
 
               <p>
-                Capture photographic evidence
-                of the vehicle before departure.
+                Take four clear exterior photos
+                before departure. The trip cannot
+                start until all four sides are
+                uploaded.
               </p>
             </div>
           </div>
 
-          <VehicleEvidenceUpload
-            vehicleId={
-              vehicle.id
-            }
-            requestId={
-              request.id
-            }
-            stage="pre-use"
-            type="vehicle-condition"
-            title="Vehicle Condition Photos"
-            description={`Photograph the exterior condition of the ${formatVehicleName()} before departure.`}
-            onUploaded={
-              (files) =>
-                setPreUseEvidenceCount(
-                  (current) =>
-                    current +
-                    files.length
-                )
-            }
-          />
+
+          <div className="employee-preinspection-photo-rule">
+            <FaExclamationTriangle />
+
+            <div>
+              <strong>
+                Photo Quality Rules
+              </strong>
+
+              <p>
+                Stand far enough away to show the
+                complete side of the vehicle. Keep
+                the full vehicle inside the frame,
+                use good lighting, avoid blurry
+                images, and make sure the
+                registration plate is visible in
+                the front and rear photos where
+                possible.
+              </p>
+            </div>
+          </div>
+
+
+          <div className="employee-preinspection-photo-guide">
+            <article
+              className={
+                frontPhotoCount > 0
+                  ? "employee-preinspection-photo-guide-card complete"
+                  : "employee-preinspection-photo-guide-card"
+              }
+            >
+              <span className="employee-preinspection-photo-step">
+                1 / 4
+              </span>
+
+              <div className="employee-preinspection-photo-icon">
+                FRONT
+              </div>
+
+              <h3>
+                Front of Vehicle
+              </h3>
+
+              <p>
+                Stand directly in front of the
+                vehicle. Capture the full front,
+                both headlights, bumper,
+                windscreen and registration plate.
+              </p>
+
+              <strong>
+                {frontPhotoCount > 0
+                  ? "✓ Uploaded"
+                  : "Required"}
+              </strong>
+            </article>
+
+
+            <article
+              className={
+                rearPhotoCount > 0
+                  ? "employee-preinspection-photo-guide-card complete"
+                  : "employee-preinspection-photo-guide-card"
+              }
+            >
+              <span className="employee-preinspection-photo-step">
+                2 / 4
+              </span>
+
+              <div className="employee-preinspection-photo-icon">
+                REAR
+              </div>
+
+              <h3>
+                Rear of Vehicle
+              </h3>
+
+              <p>
+                Stand directly behind the vehicle.
+                Capture the full rear, tail lights,
+                rear window, bumper and
+                registration plate.
+              </p>
+
+              <strong>
+                {rearPhotoCount > 0
+                  ? "✓ Uploaded"
+                  : "Required"}
+              </strong>
+            </article>
+
+
+            <article
+              className={
+                driverSidePhotoCount > 0
+                  ? "employee-preinspection-photo-guide-card complete"
+                  : "employee-preinspection-photo-guide-card"
+              }
+            >
+              <span className="employee-preinspection-photo-step">
+                3 / 4
+              </span>
+
+              <div className="employee-preinspection-photo-icon">
+                DRIVER
+              </div>
+
+              <h3>
+                Driver Side
+              </h3>
+
+              <p>
+                Stand square to the driver's side.
+                Capture the entire side from front
+                wheel to rear wheel, including
+                doors, mirrors and body panels.
+              </p>
+
+              <strong>
+                {driverSidePhotoCount > 0
+                  ? "✓ Uploaded"
+                  : "Required"}
+              </strong>
+            </article>
+
+
+            <article
+              className={
+                passengerSidePhotoCount > 0
+                  ? "employee-preinspection-photo-guide-card complete"
+                  : "employee-preinspection-photo-guide-card"
+              }
+            >
+              <span className="employee-preinspection-photo-step">
+                4 / 4
+              </span>
+
+              <div className="employee-preinspection-photo-icon">
+                PASSENGER
+              </div>
+
+              <h3>
+                Passenger Side
+              </h3>
+
+              <p>
+                Stand square to the passenger side.
+                Capture the entire side from front
+                wheel to rear wheel, including
+                doors, mirrors and body panels.
+              </p>
+
+              <strong>
+                {passengerSidePhotoCount > 0
+                  ? "✓ Uploaded"
+                  : "Required"}
+              </strong>
+            </article>
+          </div>
+
+
+          <div className="employee-preinspection-photo-uploads">
+            <div className="employee-preinspection-photo-upload-slot">
+              <div className="employee-preinspection-photo-upload-heading">
+                <span>
+                  PHOTO 1 OF 4
+                </span>
+
+                <strong>
+                  Front View
+                </strong>
+
+                <small>
+                  Full front of the vehicle,
+                  straight-on, clear and well lit.
+                </small>
+              </div>
+
+              <VehicleEvidenceUpload
+                vehicleId={
+                  vehicle.id
+                }
+                requestId={
+                  request.id
+                }
+                stage="pre-use"
+                type="vehicle-front"
+                title="Upload Front Photo"
+                description="Take one clear photo showing the complete front of the vehicle."
+                required
+                multiple={false}
+                imagesOnly
+              expectedVehicle={
+                vehicle
+              }
+              preferCamera
+                onUploaded={
+                  (files) =>
+                    setFrontPhotoCount(
+                      (current) =>
+                        current +
+                        files.length
+                    )
+                }
+              />
+            </div>
+
+
+            <div className="employee-preinspection-photo-upload-slot">
+              <div className="employee-preinspection-photo-upload-heading">
+                <span>
+                  PHOTO 2 OF 4
+                </span>
+
+                <strong>
+                  Rear View
+                </strong>
+
+                <small>
+                  Full rear of the vehicle,
+                  straight-on, clear and well lit.
+                </small>
+              </div>
+
+              <VehicleEvidenceUpload
+                vehicleId={
+                  vehicle.id
+                }
+                requestId={
+                  request.id
+                }
+                stage="pre-use"
+                type="vehicle-rear"
+                title="Upload Rear Photo"
+                description="Take one clear photo showing the complete rear of the vehicle."
+                required
+                multiple={false}
+                imagesOnly
+              expectedVehicle={
+                vehicle
+              }
+              preferCamera
+                onUploaded={
+                  (files) =>
+                    setRearPhotoCount(
+                      (current) =>
+                        current +
+                        files.length
+                    )
+                }
+              />
+            </div>
+
+
+            <div className="employee-preinspection-photo-upload-slot">
+              <div className="employee-preinspection-photo-upload-heading">
+                <span>
+                  PHOTO 3 OF 4
+                </span>
+
+                <strong>
+                  Driver-Side View
+                </strong>
+
+                <small>
+                  Entire driver's side from front
+                  wheel to rear wheel.
+                </small>
+              </div>
+
+              <VehicleEvidenceUpload
+                vehicleId={
+                  vehicle.id
+                }
+                requestId={
+                  request.id
+                }
+                stage="pre-use"
+                type="vehicle-driver-side"
+                title="Upload Driver-Side Photo"
+                description="Take one clear photo showing the full driver's side of the vehicle."
+                required
+                multiple={false}
+                imagesOnly
+              expectedVehicle={
+                vehicle
+              }
+              preferCamera
+                onUploaded={
+                  (files) =>
+                    setDriverSidePhotoCount(
+                      (current) =>
+                        current +
+                        files.length
+                    )
+                }
+              />
+            </div>
+
+
+            <div className="employee-preinspection-photo-upload-slot">
+              <div className="employee-preinspection-photo-upload-heading">
+                <span>
+                  PHOTO 4 OF 4
+                </span>
+
+                <strong>
+                  Passenger-Side View
+                </strong>
+
+                <small>
+                  Entire passenger side from front
+                  wheel to rear wheel.
+                </small>
+              </div>
+
+              <VehicleEvidenceUpload
+                vehicleId={
+                  vehicle.id
+                }
+                requestId={
+                  request.id
+                }
+                stage="pre-use"
+                type="vehicle-passenger-side"
+                title="Upload Passenger-Side Photo"
+                description="Take one clear photo showing the full passenger side of the vehicle."
+                required
+                multiple={false}
+                imagesOnly
+              expectedVehicle={
+                vehicle
+              }
+              preferCamera
+                onUploaded={
+                  (files) =>
+                    setPassengerSidePhotoCount(
+                      (current) =>
+                        current +
+                        files.length
+                    )
+                }
+              />
+            </div>
+          </div>
+
+
+          <div className="employee-preinspection-four-photo-status">
+            <div
+              className={
+                frontPhotoCount > 0
+                  ? "complete"
+                  : ""
+              }
+            >
+              <span>
+                Front
+              </span>
+
+              <strong>
+                {frontPhotoCount > 0
+                  ? "✓"
+                  : "Missing"}
+              </strong>
+            </div>
+
+            <div
+              className={
+                rearPhotoCount > 0
+                  ? "complete"
+                  : ""
+              }
+            >
+              <span>
+                Rear
+              </span>
+
+              <strong>
+                {rearPhotoCount > 0
+                  ? "✓"
+                  : "Missing"}
+              </strong>
+            </div>
+
+            <div
+              className={
+                driverSidePhotoCount > 0
+                  ? "complete"
+                  : ""
+              }
+            >
+              <span>
+                Driver Side
+              </span>
+
+              <strong>
+                {driverSidePhotoCount > 0
+                  ? "✓"
+                  : "Missing"}
+              </strong>
+            </div>
+
+            <div
+              className={
+                passengerSidePhotoCount > 0
+                  ? "complete"
+                  : ""
+              }
+            >
+              <span>
+                Passenger Side
+              </span>
+
+              <strong>
+                {passengerSidePhotoCount > 0
+                  ? "✓"
+                  : "Missing"}
+              </strong>
+            </div>
+          </div>
+
 
           <VehicleEvidenceUpload
             vehicleId={
@@ -1582,8 +2588,17 @@ function EmployeePreInspection() {
             stage="pre-use"
             type="odometer"
             title="Starting Odometer Photo"
-            description="Photograph the dashboard clearly showing the starting odometer."
+            description="Photograph the dashboard clearly showing the starting odometer reading."
+            required
             multiple={false}
+            imagesOnly
+              expectedVehicle={
+                vehicle
+              }
+              expectedOdometer={
+                formData.startOdometer
+              }
+              preferCamera
             onUploaded={
               (files) =>
                 setOdometerEvidenceCount(
@@ -1593,6 +2608,7 @@ function EmployeePreInspection() {
                 )
             }
           />
+
 
           {formData.preExistingDamage ===
             "yes" && (
@@ -1606,8 +2622,9 @@ function EmployeePreInspection() {
               stage="pre-use"
               type="pre-existing-damage"
               title="Pre-Existing Damage Photos"
-              description="Upload clear photographs of all damage already present before the trip."
+              description="Upload close-up photographs of every scratch, dent, crack or other damage already present."
               required
+              imagesOnly
               onUploaded={
                 (files) =>
                   setDamageEvidenceCount(
@@ -1619,24 +2636,38 @@ function EmployeePreInspection() {
             />
           )}
 
+
           <div className="employee-preinspection-evidence-summary">
             <div>
               <span>
-                Vehicle Condition Photos
+                Required Exterior Photos
               </span>
 
               <strong>
-                {preUseEvidenceCount}
+                {
+                  [
+                    frontPhotoCount,
+                    rearPhotoCount,
+                    driverSidePhotoCount,
+                    passengerSidePhotoCount,
+                  ].filter(
+                    (count) =>
+                      count > 0
+                  ).length
+                }
+                /4
               </strong>
             </div>
 
             <div>
               <span>
-                Odometer Photos
+                Required Odometer Photo
               </span>
 
               <strong>
-                {odometerEvidenceCount}
+                {odometerEvidenceCount > 0
+                  ? "✓"
+                  : "Missing"}
               </strong>
             </div>
 
@@ -1804,9 +2835,9 @@ function EmployeePreInspection() {
             <p>
               Submit this logbook only after
               physically inspecting the vehicle.
-              Once submitted, the trip will be
-              opened and the vehicle will be
-              recorded as IN USE.
+              A safe inspection will continue to
+              trip start. Critical defects are
+              recorded and will block vehicle use.
             </p>
           </div>
         </section>
@@ -1834,7 +2865,18 @@ function EmployeePreInspection() {
             <FaClipboardCheck />
 
             {submitting
-              ? "Starting Trip..."
+              ? "Submitting Inspection..."
+              : inspectionItems.some(
+                  (item) =>
+                    getConditionSeverity(
+                      item,
+                      condition[
+                        item.key
+                      ]
+                    ) ===
+                    "critical"
+                )
+              ? "Submit Critical Defect Report"
               : "Complete Inspection & Take Vehicle"}
           </button>
         </div>

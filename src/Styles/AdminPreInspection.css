@@ -1,0 +1,126 @@
+/* ==========================================================
+   AEDC ADMIN PRE-USE INSPECTION
+   Adds only the Admin-specific audit presentation.
+   The main page deliberately reuses EmployeePreInspection.css
+   so Admin and Employee inspections stay visually identical.
+========================================================== */
+
+.admin-preinspection-audit-card {
+  border-top: 4px solid #b38b2e;
+}
+
+.admin-preinspection-audit-heading {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+.admin-preinspection-audit-icon {
+  width: 44px;
+  height: 44px;
+  flex: 0 0 44px;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  background: #fff8e5;
+  color: #9a741d;
+  font-size: 1rem;
+}
+
+.admin-preinspection-audit-heading > div:last-child {
+  min-width: 0;
+}
+
+.admin-preinspection-audit-heading span {
+  display: block;
+  margin-bottom: 4px;
+  color: #b38b2e;
+  font-size: 0.58rem;
+  font-weight: 850;
+  letter-spacing: 1.35px;
+}
+
+.admin-preinspection-audit-heading h2 {
+  margin: 0;
+  color: #253244;
+  font-size: 1.05rem;
+  font-weight: 850;
+  letter-spacing: -0.02em;
+}
+
+.admin-preinspection-audit-heading p {
+  margin: 5px 0 0;
+  color: #788493;
+  font-size: 0.72rem;
+  line-height: 1.5;
+}
+
+.admin-preinspection-audit-note,
+.admin-preinspection-driver-status {
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
+  margin-bottom: 18px;
+  padding: 13px 14px;
+  border-radius: 10px;
+}
+
+.admin-preinspection-audit-note {
+  border: 1px solid #ead8a7;
+  background: #fff9e9;
+  color: #735918;
+}
+
+.admin-preinspection-audit-note > svg,
+.admin-preinspection-driver-status > svg {
+  flex: 0 0 auto;
+  margin-top: 2px;
+}
+
+.admin-preinspection-audit-note strong,
+.admin-preinspection-driver-status strong {
+  display: block;
+  margin-bottom: 3px;
+  font-size: 0.72rem;
+  font-weight: 850;
+}
+
+.admin-preinspection-audit-note p,
+.admin-preinspection-driver-status span {
+  display: block;
+  margin: 0;
+  font-size: 0.67rem;
+  line-height: 1.5;
+}
+
+.admin-preinspection-driver-status.success {
+  border: 1px solid #b9dfc7;
+  background: #eef9f2;
+  color: #1d7648;
+}
+
+.admin-preinspection-driver-status.error {
+  border: 1px solid #efc3be;
+  background: #fff4f3;
+  color: #a8342b;
+}
+
+/* Admin routes already receive the global AdminNavbar from
+   ProtectedAdminRoute, so the reused employee inspection page
+   starts directly with the inspection hero. */
+.employee-preinspection-page {
+  min-height: 100vh;
+}
+
+@media (max-width: 640px) {
+  .admin-preinspection-audit-heading {
+    gap: 11px;
+  }
+
+  .admin-preinspection-audit-icon {
+    width: 40px;
+    height: 40px;
+    flex-basis: 40px;
+  }
+}

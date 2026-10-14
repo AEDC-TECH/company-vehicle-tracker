@@ -842,24 +842,7 @@ function EmployeeRegister() {
               <FaArrowLeft />
             </Link>
 
-            <AEDCLogo
-              compact
-              className="employee-register-logo"
-            />
 
-            <div>
-              <span>
-                AEDC VEHICLE MANAGEMENT
-              </span>
-
-              <h1>
-                Employee Register
-              </h1>
-
-              <p>
-                Facilities Manager / Admin
-              </p>
-            </div>
           </div>
 
           <button

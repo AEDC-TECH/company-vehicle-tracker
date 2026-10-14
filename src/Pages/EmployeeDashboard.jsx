@@ -426,6 +426,106 @@ function EmployeeDashboard() {
   }
 
 
+  /*
+   * =====================================================
+   * PRE-INSPECTION RESERVATION COUNTDOWN
+   * =====================================================
+   */
+
+  function getReservationCountdown(
+    expiresAt
+  ) {
+    if (!expiresAt) {
+      return {
+        expired: false,
+        urgent: false,
+        label:
+          "Reservation deadline not recorded",
+      };
+    }
+
+
+    const expiryTime =
+      new Date(
+        expiresAt
+      ).getTime();
+
+
+    if (
+      !Number.isFinite(
+        expiryTime
+      )
+    ) {
+      return {
+        expired: false,
+        urgent: false,
+        label:
+          "Reservation deadline unavailable",
+      };
+    }
+
+
+    const remainingMs =
+      expiryTime -
+      currentTime.getTime();
+
+
+    if (
+      remainingMs <= 0
+    ) {
+      return {
+        expired: true,
+        urgent: true,
+        label:
+          "Reservation expired",
+      };
+    }
+
+
+    const totalMinutes =
+      Math.max(
+        1,
+        Math.ceil(
+          remainingMs /
+            60000
+        )
+      );
+
+
+    const hours =
+      Math.floor(
+        totalMinutes /
+          60
+      );
+
+
+    const minutes =
+      totalMinutes % 60;
+
+
+    let label = "";
+
+
+    if (hours > 0) {
+      label =
+        `${hours}h ${minutes}m remaining`;
+    } else {
+      label =
+        `${minutes}m remaining`;
+    }
+
+
+    return {
+      expired: false,
+
+      urgent:
+        totalMinutes <= 30,
+
+      label,
+    };
+  }
+
+
   function formatStatus(status) {
     if (!status) {
       return "UNKNOWN";
@@ -447,9 +547,56 @@ function EmployeeDashboard() {
 
   const approvedRequests =
     requests.filter(
-      (request) =>
-        request.status ===
-        "approved"
+      (request) => {
+        if (
+          request.status !==
+          "approved"
+        ) {
+          return false;
+        }
+
+
+        /*
+         * The database marks an expired hold
+         * with preinspection_expired_at.
+         */
+
+        if (
+          request.preinspection_expired_at
+        ) {
+          return false;
+        }
+
+
+        /*
+         * Hide an expired reservation immediately
+         * in the browser, even if the five-minute
+         * database scheduler has not run yet.
+         */
+
+        if (
+          request.preinspection_expires_at
+        ) {
+          const expiryTime =
+            new Date(
+              request.preinspection_expires_at
+            ).getTime();
+
+
+          if (
+            Number.isFinite(
+              expiryTime
+            ) &&
+            expiryTime <=
+              currentTime.getTime()
+          ) {
+            return false;
+          }
+        }
+
+
+        return true;
+      }
     );
 
 
@@ -865,9 +1012,42 @@ function EmployeeDashboard() {
 
   /*
    * =====================================================
-   * EMPLOYEE DASHBOARD
+   * EMPLOYEE REQUEST SAFETY
+   * =====================================================
+   *
+   * An employee should not create another request while:
+   *
+   * 1. an approved request is waiting for pre-use inspection
+   * 2. the employee already has an active vehicle trip
+   *
+   * This keeps one employee inside one vehicle lifecycle
+   * at a time.
    * =====================================================
    */
+
+  const hasApprovedAwaitingInspection =
+    approvedRequests.some(
+      (request) =>
+        !trips.some(
+          (trip) =>
+            trip.request_id ===
+            request.id
+        )
+    );
+
+
+  const requestVehicleBlocked =
+    hasApprovedAwaitingInspection ||
+    activeTrips.length > 0;
+
+
+  const requestVehicleBlockReason =
+    activeTrips.length > 0
+      ? "Return your active company vehicle before submitting another vehicle request."
+      : hasApprovedAwaitingInspection
+      ? "Complete the mandatory pre-use inspection for your approved request before submitting another vehicle request."
+      : "";
+
 
   return (
     <main className="employee-portal-page">
@@ -977,15 +1157,53 @@ function EmployeeDashboard() {
             </p>
           </div>
 
-          <Link
-            to="/employee/request-vehicle"
-            className="employee-primary-action"
-          >
-            <FaPlus />
+          {requestVehicleBlocked ? (
+            <button
+              type="button"
+              className="employee-primary-action employee-primary-action-disabled"
+              disabled
+              title={requestVehicleBlockReason}
+            >
+              <FaPlus />
 
-            Request Vehicle
-          </Link>
+              Request Vehicle
+            </button>
+          ) : (
+            <Link
+              to="/employee/request-vehicle"
+              className="employee-primary-action"
+            >
+              <FaPlus />
+
+              Request Vehicle
+            </Link>
+          )}
         </section>
+
+
+        {requestVehicleBlocked && (
+          <div className="employee-request-block-notice">
+            <FaClipboardCheck />
+
+            <div>
+              <strong>
+                New vehicle request temporarily unavailable
+              </strong>
+
+              <span>
+                {requestVehicleBlockReason}
+              </span>
+
+              {hasApprovedAwaitingInspection &&
+                activeTrips.length === 0 && (
+                  <span>
+                    Use the approved request below to start
+                    the pre-use inspection.
+                  </span>
+                )}
+            </div>
+          </div>
+        )}
 
 
         {/* =============================================
@@ -1272,6 +1490,13 @@ function EmployeeDashboard() {
                     return null;
                   }
 
+
+                  const reservationCountdown =
+                    getReservationCountdown(
+                      request.preinspection_expires_at
+                    );
+
+
                   return (
                     <article
                       key={
@@ -1332,14 +1557,49 @@ function EmployeeDashboard() {
                       </div>
 
 
+                      <div
+                        className={
+                          `employee-reservation-countdown ${
+                            reservationCountdown.urgent
+                              ? "urgent"
+                              : ""
+                          }`
+                        }
+                      >
+                        <FaClock />
+
+                        <div>
+
+                          <span>
+                            VEHICLE RESERVED FOR PRE-INSPECTION
+                          </span>
+
+                          <strong>
+                            {
+                              reservationCountdown.label
+                            }
+                          </strong>
+
+                          {request.preinspection_expires_at && (
+                            <small>
+                              Reservation expires{" "}
+                              {formatDate(
+                                request.preinspection_expires_at
+                              )}
+                            </small>
+                          )}
+
+                        </div>
+                      </div>
+
+
                       <div className="employee-inspection-notice">
                         <FaClipboardCheck />
 
                         <span>
                           Complete the mandatory
-                          pre-use inspection
-                          before taking the
-                          vehicle.
+                          pre-use inspection before
+                          the reservation expires.
                         </span>
                       </div>
 
@@ -1444,24 +1704,47 @@ function EmployeeDashboard() {
         ============================================= */}
 
         <section className="employee-quick-links">
-          <Link
-            to="/employee/request-vehicle"
-          >
-            <FaPlus />
+          {requestVehicleBlocked ? (
+            <div
+              className="employee-quick-link-disabled"
+              aria-disabled="true"
+              title={requestVehicleBlockReason}
+            >
+              <FaPlus />
 
-            <div>
-              <strong>
-                Request Vehicle
-              </strong>
+              <div>
+                <strong>
+                  Request Vehicle
+                </strong>
 
-              <span>
-                Submit a new company
-                vehicle request
-              </span>
+                <span>
+                  Complete the current vehicle
+                  workflow first
+                </span>
+              </div>
+
+              <FaClipboardCheck />
             </div>
+          ) : (
+            <Link
+              to="/employee/request-vehicle"
+            >
+              <FaPlus />
 
-            <FaArrowRight />
-          </Link>
+              <div>
+                <strong>
+                  Request Vehicle
+                </strong>
+
+                <span>
+                  Submit a new company
+                  vehicle request
+                </span>
+              </div>
+
+              <FaArrowRight />
+            </Link>
+          )}
 
 
           <Link
@@ -1477,6 +1760,26 @@ function EmployeeDashboard() {
               <span>
                 View only your own
                 booking requests
+              </span>
+            </div>
+
+            <FaArrowRight />
+          </Link>
+
+
+          <Link
+            to="/employee/deliveries"
+          >
+            <FaClipboardCheck />
+
+            <div>
+              <strong>
+                My Deliveries
+              </strong>
+
+              <span>
+                Record proof of delivery
+                for transport jobs
               </span>
             </div>
 

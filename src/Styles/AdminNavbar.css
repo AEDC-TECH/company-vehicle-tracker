@@ -1,0 +1,647 @@
+/* ==========================================================
+   AEDC SHARED ADMIN NAVBAR
+   SAME DESIGN AS ORIGINAL FLEET DASHBOARD
+========================================================== */
+
+.dashboard-header,
+.dashboard-header * {
+  box-sizing: border-box;
+}
+
+
+/* ==========================================================
+   HEADER
+========================================================== */
+
+.dashboard-header {
+  width: 100%;
+
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+
+  background: #ffffff;
+
+  border-bottom:
+    1px solid
+    #e4e8ed;
+
+  box-shadow:
+    0 4px 18px
+    rgba(
+      15,
+      23,
+      42,
+      0.04
+    );
+}
+
+
+/* ==========================================================
+   INNER
+========================================================== */
+
+.dashboard-header-inner {
+  width:
+    min(
+      1180px,
+      calc(
+        100% - 48px
+      )
+    );
+
+  min-height: 88px;
+
+  margin:
+    0 auto;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content:
+    space-between;
+
+  gap: 28px;
+}
+
+
+/* ==========================================================
+   AEDC BRAND
+========================================================== */
+
+.dashboard-brand {
+  min-width: 0;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 15px;
+}
+
+
+.admin-navbar-brand-link {
+  color: inherit;
+
+  text-decoration: none;
+}
+
+
+.dashboard-brand-logo {
+  flex-shrink: 0;
+}
+
+
+.dashboard-brand-text {
+  min-width: 0;
+}
+
+
+.dashboard-brand-text span {
+  display: block;
+
+  margin-bottom:
+    3px;
+
+  color: #b38b2e;
+
+  font-size:
+    0.6rem;
+
+  font-weight:
+    850;
+
+  letter-spacing:
+    1.4px;
+
+  text-transform:
+    uppercase;
+}
+
+
+.dashboard-brand-text h1 {
+  margin: 0;
+
+  color: #11145f;
+
+  font-size:
+    1.25rem;
+
+  font-weight:
+    850;
+
+  line-height:
+    1.2;
+}
+
+
+/* ==========================================================
+   ACTIONS
+========================================================== */
+
+.dashboard-header-actions {
+  display: flex;
+
+  align-items: center;
+
+  gap: 9px;
+
+  flex-shrink: 0;
+}
+
+
+/* ==========================================================
+   SYSTEM STATUS + TIME
+========================================================== */
+
+.dashboard-navbar-status,
+.dashboard-navbar-time {
+  min-height: 40px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  padding:
+    7px 11px;
+
+  border:
+    1px solid
+    #e1e5ea;
+
+  border-radius:
+    8px;
+
+  background:
+    #f8f9fb;
+}
+
+
+.dashboard-navbar-status > div,
+.dashboard-navbar-time > div {
+  min-width: 0;
+}
+
+
+.dashboard-navbar-status small,
+.dashboard-navbar-status strong,
+.dashboard-navbar-time small,
+.dashboard-navbar-time strong {
+  display: block;
+
+  white-space:
+    nowrap;
+}
+
+
+.dashboard-navbar-status small,
+.dashboard-navbar-time small {
+  color:
+    #9099a3;
+
+  font-size:
+    0.43rem;
+
+  font-weight:
+    850;
+
+  letter-spacing:
+    0.8px;
+}
+
+
+.dashboard-navbar-status strong {
+  margin-top:
+    1px;
+
+  color:
+    #218653;
+
+  font-size:
+    0.57rem;
+
+  font-weight:
+    900;
+
+  letter-spacing:
+    0.55px;
+}
+
+
+.dashboard-navbar-time strong {
+  margin-top:
+    1px;
+
+  color:
+    #11145f;
+
+  font-size:
+    0.61rem;
+
+  font-weight:
+    900;
+
+  letter-spacing:
+    0.45px;
+}
+
+
+.dashboard-navbar-time svg {
+  flex-shrink: 0;
+
+  color:
+    #b38b2e;
+
+  font-size:
+    0.72rem;
+}
+
+
+/* ==========================================================
+   GREEN LIVE DOT
+========================================================== */
+
+.dashboard-navbar-live-dot {
+  width: 7px;
+
+  height: 7px;
+
+  flex-shrink: 0;
+
+  border-radius:
+    50%;
+
+  background:
+    #43b978;
+
+  box-shadow:
+    0 0 0 4px
+    rgba(
+      67,
+      185,
+      120,
+      0.10
+    ),
+    0 0 10px
+    rgba(
+      67,
+      185,
+      120,
+      0.35
+    );
+
+  animation:
+    dashboardNavbarLivePulse
+    1.8s
+    ease-in-out
+    infinite;
+}
+
+
+@keyframes dashboardNavbarLivePulse {
+
+  0%,
+  100% {
+    opacity: 1;
+
+    transform:
+      scale(1);
+  }
+
+
+  50% {
+    opacity: 0.65;
+
+    transform:
+      scale(0.85);
+  }
+
+}
+
+
+/* ==========================================================
+   MANAGE VEHICLES + REFRESH
+========================================================== */
+
+.dashboard-header-link,
+.dashboard-refresh-button {
+  min-height: 40px;
+
+  display:
+    inline-flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  gap: 7px;
+
+  padding:
+    9px 14px;
+
+  border-radius:
+    8px;
+
+  font-family:
+    inherit;
+
+  font-size:
+    0.66rem;
+
+  font-weight:
+    800;
+
+  text-decoration:
+    none;
+
+  white-space:
+    nowrap;
+
+  cursor:
+    pointer;
+
+  transition:
+    0.2s ease;
+}
+
+
+/* ==========================================================
+   MANAGE VEHICLES
+========================================================== */
+
+.dashboard-header-link {
+  border:
+    1px solid
+    #d9dee4;
+
+  background:
+    #ffffff;
+
+  color:
+    #596572;
+}
+
+
+.dashboard-header-link:hover {
+  border-color:
+    #11145f;
+
+  color:
+    #11145f;
+
+  background:
+    #f5f5fb;
+}
+
+
+/* ==========================================================
+   REFRESH
+========================================================== */
+
+.dashboard-refresh-button {
+  border:
+    1px solid
+    #11145f;
+
+  background:
+    #11145f;
+
+  color:
+    #ffffff;
+}
+
+
+.dashboard-refresh-button:hover:not(
+  :disabled
+) {
+  background:
+    #1c2177;
+
+  transform:
+    translateY(
+      -1px
+    );
+}
+
+
+.dashboard-refresh-button:disabled {
+  opacity: 0.65;
+
+  cursor:
+    wait;
+}
+
+
+.admin-navbar-refresh-spin {
+  animation:
+    adminNavbarRefreshSpin
+    0.8s
+    linear
+    infinite;
+}
+
+
+@keyframes adminNavbarRefreshSpin {
+
+  to {
+    transform:
+      rotate(
+        360deg
+      );
+  }
+
+}
+
+
+/* ==========================================================
+   LOGOUT
+========================================================== */
+
+.dashboard-logout-button {
+  min-height: 40px;
+
+  display:
+    inline-flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  gap: 7px;
+
+  padding:
+    9px 14px;
+
+  border:
+    1px solid
+    #edc1bd;
+
+  border-radius:
+    8px;
+
+  background:
+    #fff4f3;
+
+  color:
+    #b42318;
+
+  font:
+    inherit;
+
+  font-size:
+    0.66rem;
+
+  font-weight:
+    800;
+
+  white-space:
+    nowrap;
+
+  cursor:
+    pointer;
+
+  transition:
+    0.2s ease;
+}
+
+
+.dashboard-logout-button:hover:not(
+  :disabled
+) {
+  border-color:
+    #b42318;
+
+  background:
+    #b42318;
+
+  color:
+    #ffffff;
+
+  transform:
+    translateY(
+      -1px
+    );
+}
+
+
+.dashboard-logout-button:disabled {
+  opacity: 0.6;
+
+  cursor:
+    not-allowed;
+}
+
+
+/* ==========================================================
+   RESPONSIVE
+========================================================== */
+
+@media (
+  max-width: 1080px
+) {
+
+  .dashboard-navbar-status {
+    display: none;
+  }
+
+}
+
+
+@media (
+  max-width: 920px
+) {
+
+  .dashboard-navbar-time {
+    display: none;
+  }
+
+}
+
+
+@media (
+  max-width: 760px
+) {
+
+  .dashboard-header {
+    position:
+      relative;
+  }
+
+
+  .dashboard-header-inner {
+    width:
+      calc(
+        100% - 30px
+      );
+
+    min-height:
+      auto;
+
+    flex-direction:
+      column;
+
+    align-items:
+      stretch;
+
+    padding:
+      15px 0;
+  }
+
+
+  .dashboard-header-actions {
+    width: 100%;
+  }
+
+
+  .dashboard-header-link,
+  .dashboard-refresh-button,
+  .dashboard-logout-button {
+    flex: 1;
+  }
+
+}
+
+
+@media (
+  max-width: 520px
+) {
+
+  .dashboard-brand-text h1 {
+    font-size:
+      1rem;
+  }
+
+
+  .dashboard-header-actions {
+    flex-direction:
+      column;
+  }
+
+
+  .dashboard-header-link,
+  .dashboard-refresh-button,
+  .dashboard-logout-button {
+    width: 100%;
+  }
+
+}
+
+
+@media (
+  prefers-reduced-motion:
+    reduce
+) {
+
+  .dashboard-navbar-live-dot,
+  .admin-navbar-refresh-spin {
+    animation: none;
+  }
+
+}

@@ -1,0 +1,108 @@
+.feature-route-state {
+  min-height: 100vh;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 24px;
+
+  background:
+    linear-gradient(
+      180deg,
+      #f6f7fb,
+      #eef1f5
+    );
+
+  color: #293743;
+}
+
+
+.feature-route-card {
+  width: min(520px, 100%);
+
+  padding: 34px;
+
+  border: 1px solid #e0e4e9;
+  border-radius: 18px;
+
+  background: #ffffff;
+
+  text-align: center;
+
+  box-shadow:
+    0 16px 44px
+    rgba(32, 44, 58, 0.08);
+}
+
+
+.feature-route-icon {
+  width: 58px;
+  height: 58px;
+
+  margin: 0 auto 14px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 16px;
+
+  background: #f0f1f8;
+  color: #11145f;
+
+  font-size: 1.2rem;
+}
+
+
+.feature-route-card > span {
+  color: #b38b2e;
+
+  font-size: 0.62rem;
+  font-weight: 900;
+  letter-spacing: 0.8px;
+}
+
+
+.feature-route-card h1 {
+  margin: 7px 0 0;
+
+  color: #273642;
+
+  font-size: 1.45rem;
+}
+
+
+.feature-route-card p {
+  margin: 10px auto 0;
+
+  color: #78838e;
+
+  font-size: 0.73rem;
+  line-height: 1.65;
+}
+
+
+.feature-route-card a {
+  width: fit-content;
+  min-height: 42px;
+
+  margin: 20px auto 0;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  padding: 0 14px;
+
+  border-radius: 9px;
+
+  background: #11145f;
+  color: #ffffff;
+
+  font-size: 0.67rem;
+  font-weight: 850;
+
+  text-decoration: none;
+}

@@ -16,6 +16,8 @@ import {
 
 import { supabase } from "../lib/supabase";
 
+import AdminNavbar from "./AdminNavbar";
+
 
 function ProtectedAdminRoute() {
   const location = useLocation();
@@ -206,7 +208,13 @@ function ProtectedAdminRoute() {
   }
 
 
-  return <Outlet />;
+  return (
+    <>
+      <AdminNavbar />
+
+      <Outlet />
+    </>
+  );
 }
 
 

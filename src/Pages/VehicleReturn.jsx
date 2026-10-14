@@ -24,9 +24,14 @@ import {
 
 import { supabase } from "../lib/supabase";
 
+import {
+  formatAssignedVehicleName,
+} from "../lib/vehiclePhotoVerifier";
+
 import VehicleEvidenceUpload from "../Components/VehicleEvidenceUpload";
 
 import "../Styles/VehicleForms.css";
+import "../Styles/VehicleReturnAdminPhotos.css";
 
 const inspectionItems = [
   {
@@ -52,6 +57,50 @@ const severity = {
   attention: 1,
   damaged: 2,
 };
+
+function getLogicalEvidenceType(
+  item
+) {
+  const storedType =
+    String(
+      item?.evidence_type || ""
+    )
+      .trim()
+      .toLowerCase();
+
+  const storagePath =
+    String(
+      item?.storage_path || ""
+    )
+      .trim()
+      .toLowerCase();
+
+  const directionalTypes = [
+    "vehicle-front",
+    "vehicle-rear",
+    "vehicle-driver-side",
+    "vehicle-passenger-side",
+  ];
+
+  for (const type of directionalTypes) {
+    if (
+      storagePath.includes(
+        `/${type}/`
+      ) ||
+      storagePath.includes(
+        `/${type}--`
+      ) ||
+      storagePath.includes(
+        `/${type}-`
+      )
+    ) {
+      return type;
+    }
+  }
+
+  return storedType;
+}
+
 
 function VehicleReturn() {
   const { usageId } = useParams();
@@ -80,6 +129,31 @@ function VehicleReturn() {
   const [
     damageEvidenceCount,
     setDamageEvidenceCount,
+  ] = useState(0);
+
+  const [
+    frontPhotoCount,
+    setFrontPhotoCount,
+  ] = useState(0);
+
+  const [
+    rearPhotoCount,
+    setRearPhotoCount,
+  ] = useState(0);
+
+  const [
+    driverSidePhotoCount,
+    setDriverSidePhotoCount,
+  ] = useState(0);
+
+  const [
+    passengerSidePhotoCount,
+    setPassengerSidePhotoCount,
+  ] = useState(0);
+
+  const [
+    odometerEvidenceCount,
+    setOdometerEvidenceCount,
   ] = useState(0);
 
   const [formData, setFormData] =
@@ -244,7 +318,7 @@ function VehicleReturn() {
         error: evidenceError,
       } = await supabase
         .from("vehicle_evidence")
-        .select("id, evidence_type")
+        .select("id, evidence_type, storage_path")
         .eq("trip_id", usageId)
         .eq(
           "evidence_stage",
@@ -255,10 +329,65 @@ function VehicleReturn() {
         throw evidenceError;
       }
 
-      setDamageEvidenceCount(
-        (evidenceData || []).filter(
+      const postUseEvidence =
+        evidenceData || [];
+
+      setFrontPhotoCount(
+        postUseEvidence.filter(
           (item) =>
-            item.evidence_type ===
+            getLogicalEvidenceType(
+              item
+            ) ===
+            "vehicle-front"
+        ).length
+      );
+
+      setRearPhotoCount(
+        postUseEvidence.filter(
+          (item) =>
+            getLogicalEvidenceType(
+              item
+            ) ===
+            "vehicle-rear"
+        ).length
+      );
+
+      setDriverSidePhotoCount(
+        postUseEvidence.filter(
+          (item) =>
+            getLogicalEvidenceType(
+              item
+            ) ===
+            "vehicle-driver-side"
+        ).length
+      );
+
+      setPassengerSidePhotoCount(
+        postUseEvidence.filter(
+          (item) =>
+            getLogicalEvidenceType(
+              item
+            ) ===
+            "vehicle-passenger-side"
+        ).length
+      );
+
+      setOdometerEvidenceCount(
+        postUseEvidence.filter(
+          (item) =>
+            getLogicalEvidenceType(
+              item
+            ) ===
+            "odometer"
+        ).length
+      );
+
+      setDamageEvidenceCount(
+        postUseEvidence.filter(
+          (item) =>
+            getLogicalEvidenceType(
+              item
+            ) ===
             "new-damage"
         ).length
       );
@@ -306,19 +435,12 @@ function VehicleReturn() {
   }
 
   const vehicleName = useMemo(() => {
-    if (!vehicle) {
-      return "Company Vehicle";
-    }
-
-    const make =
-      vehicle.make?.trim() || "";
-
-    const model =
-      vehicle.model?.trim() || "";
-
-    const name = `${make} ${model}`.trim();
-
-    return name || "Company Vehicle";
+    return (
+      formatAssignedVehicleName(
+        vehicle
+      ) ||
+      "Company Vehicle"
+    );
   }, [vehicle]);
 
   const conditionChanges =
@@ -418,6 +540,65 @@ function VehicleReturn() {
 
       return;
     }
+
+    /*
+     * ============================================
+     * MANDATORY RETURN PHOTO VALIDATION
+     * ============================================
+     */
+
+    const missingReturnPhotos = [];
+
+    if (frontPhotoCount === 0) {
+      missingReturnPhotos.push(
+        "front"
+      );
+    }
+
+    if (rearPhotoCount === 0) {
+      missingReturnPhotos.push(
+        "rear"
+      );
+    }
+
+    if (
+      driverSidePhotoCount === 0
+    ) {
+      missingReturnPhotos.push(
+        "driver side"
+      );
+    }
+
+    if (
+      passengerSidePhotoCount === 0
+    ) {
+      missingReturnPhotos.push(
+        "passenger side"
+      );
+    }
+
+    if (
+      missingReturnPhotos.length > 0
+    ) {
+      alert(
+        `Upload all 4 required return exterior photos before completing this return. Missing: ${missingReturnPhotos.join(
+          ", "
+        )}.`
+      );
+
+      return;
+    }
+
+    if (
+      odometerEvidenceCount === 0
+    ) {
+      alert(
+        "Upload the required return odometer photo before completing this return."
+      );
+
+      return;
+    }
+
 
     if (
       fuelLowerThanDeparture &&
@@ -886,7 +1067,7 @@ function VehicleReturn() {
 
   if (loading) {
     return (
-      <main className="vehicle-form-page">
+      <main className="vehicle-form-page admin-return-page">
         <div className="page-loading">
           Loading active trip...
         </div>
@@ -900,7 +1081,7 @@ function VehicleReturn() {
     errorMessage
   ) {
     return (
-      <main className="vehicle-form-page">
+      <main className="vehicle-form-page admin-return-page">
         <div className="page-loading">
           <div>
             <h2>
@@ -933,7 +1114,7 @@ function VehicleReturn() {
     );
 
   return (
-    <main className="vehicle-form-page">
+    <main className="vehicle-form-page admin-return-page">
       <header className="form-header">
         <div className="form-header-inner">
           <Link
@@ -1406,56 +1587,392 @@ function VehicleReturn() {
 
             <div>
               <h2>
-                Return Photographs
+                Mandatory Return Photographs
               </h2>
 
               <p>
-                Add photographic evidence of
-                the vehicle condition at return.
+                Admin must capture the same four
+                exterior views and the return
+                odometer when completing a trip
+                on behalf of the driver.
               </p>
             </div>
           </div>
 
-          <VehicleEvidenceUpload
-            vehicleId={vehicle.id}
-            tripId={trip.id}
-            requestId={trip.request_id}
-            stage="post-use"
-            type="vehicle-condition"
-            title="Post-Use Vehicle Photos"
-            description={`Photograph the exterior condition of the ${vehicleName} after use.`}
-          />
 
-          <VehicleEvidenceUpload
-            vehicleId={vehicle.id}
-            tripId={trip.id}
-            requestId={trip.request_id}
-            stage="post-use"
-            type="odometer"
-            title="Ending Odometer Photo"
-            description="Photograph the dashboard showing the ending odometer."
-            multiple={false}
-          />
+          <div className="admin-return-photo-notice">
+            <FaExclamationTriangle />
 
-          {formData.newDamage ===
-            "yes" && (
+            <div>
+              <strong>
+                Same evidence standard applies
+              </strong>
+
+              <p>
+                Capture the complete front, rear,
+                driver side and passenger side.
+                Front and rear photos must show the
+                assigned registration clearly enough
+                for the local verification check.
+              </p>
+            </div>
+          </div>
+
+
+          <div className="admin-return-photo-grid">
+
+            <div className="admin-return-photo-slot">
+              <div className="admin-return-photo-slot-heading">
+                <span>
+                  PHOTO 1 OF 4
+                </span>
+
+                <strong>
+                  Front View
+                </strong>
+
+                <small>
+                  Match the pre-trip front angle.
+                  Registration plate must be clear.
+                </small>
+              </div>
+
+              <VehicleEvidenceUpload
+                vehicleId={vehicle.id}
+                tripId={trip.id}
+                requestId={trip.request_id}
+                stage="post-use"
+                type="vehicle-front"
+                title="Upload Front Return Photo"
+                description="Take one clear photo showing the complete front of the assigned vehicle."
+                required
+                multiple={false}
+                imagesOnly
+                expectedVehicle={vehicle}
+                preferCamera
+                employeeNumberOverride={
+                  trip.employee_number
+                }
+                onUploaded={(files) =>
+                  setFrontPhotoCount(
+                    (current) =>
+                      current +
+                      files.length
+                  )
+                }
+              />
+            </div>
+
+
+            <div className="admin-return-photo-slot">
+              <div className="admin-return-photo-slot-heading">
+                <span>
+                  PHOTO 2 OF 4
+                </span>
+
+                <strong>
+                  Rear View
+                </strong>
+
+                <small>
+                  Match the pre-trip rear angle.
+                  Registration plate must be clear.
+                </small>
+              </div>
+
+              <VehicleEvidenceUpload
+                vehicleId={vehicle.id}
+                tripId={trip.id}
+                requestId={trip.request_id}
+                stage="post-use"
+                type="vehicle-rear"
+                title="Upload Rear Return Photo"
+                description="Take one clear photo showing the complete rear of the assigned vehicle."
+                required
+                multiple={false}
+                imagesOnly
+                expectedVehicle={vehicle}
+                preferCamera
+                employeeNumberOverride={
+                  trip.employee_number
+                }
+                onUploaded={(files) =>
+                  setRearPhotoCount(
+                    (current) =>
+                      current +
+                      files.length
+                  )
+                }
+              />
+            </div>
+
+
+            <div className="admin-return-photo-slot">
+              <div className="admin-return-photo-slot-heading">
+                <span>
+                  PHOTO 3 OF 4
+                </span>
+
+                <strong>
+                  Driver-Side View
+                </strong>
+
+                <small>
+                  Show the complete driver's side
+                  from front wheel to rear wheel.
+                </small>
+              </div>
+
+              <VehicleEvidenceUpload
+                vehicleId={vehicle.id}
+                tripId={trip.id}
+                requestId={trip.request_id}
+                stage="post-use"
+                type="vehicle-driver-side"
+                title="Upload Driver-Side Return Photo"
+                description="Take one clear photo showing the full driver's side of the assigned vehicle."
+                required
+                multiple={false}
+                imagesOnly
+                expectedVehicle={vehicle}
+                preferCamera
+                employeeNumberOverride={
+                  trip.employee_number
+                }
+                onUploaded={(files) =>
+                  setDriverSidePhotoCount(
+                    (current) =>
+                      current +
+                      files.length
+                  )
+                }
+              />
+            </div>
+
+
+            <div className="admin-return-photo-slot">
+              <div className="admin-return-photo-slot-heading">
+                <span>
+                  PHOTO 4 OF 4
+                </span>
+
+                <strong>
+                  Passenger-Side View
+                </strong>
+
+                <small>
+                  Show the complete passenger side
+                  from front wheel to rear wheel.
+                </small>
+              </div>
+
+              <VehicleEvidenceUpload
+                vehicleId={vehicle.id}
+                tripId={trip.id}
+                requestId={trip.request_id}
+                stage="post-use"
+                type="vehicle-passenger-side"
+                title="Upload Passenger-Side Return Photo"
+                description="Take one clear photo showing the full passenger side of the assigned vehicle."
+                required
+                multiple={false}
+                imagesOnly
+                expectedVehicle={vehicle}
+                preferCamera
+                employeeNumberOverride={
+                  trip.employee_number
+                }
+                onUploaded={(files) =>
+                  setPassengerSidePhotoCount(
+                    (current) =>
+                      current +
+                      files.length
+                  )
+                }
+              />
+            </div>
+
+          </div>
+
+
+          <div className="admin-return-photo-status">
+
+            <div
+              className={
+                frontPhotoCount > 0
+                  ? "complete"
+                  : ""
+              }
+            >
+              <span>Front</span>
+
+              <strong>
+                {frontPhotoCount > 0
+                  ? "✓ Uploaded"
+                  : "Missing"}
+              </strong>
+            </div>
+
+            <div
+              className={
+                rearPhotoCount > 0
+                  ? "complete"
+                  : ""
+              }
+            >
+              <span>Rear</span>
+
+              <strong>
+                {rearPhotoCount > 0
+                  ? "✓ Uploaded"
+                  : "Missing"}
+              </strong>
+            </div>
+
+            <div
+              className={
+                driverSidePhotoCount > 0
+                  ? "complete"
+                  : ""
+              }
+            >
+              <span>Driver Side</span>
+
+              <strong>
+                {driverSidePhotoCount > 0
+                  ? "✓ Uploaded"
+                  : "Missing"}
+              </strong>
+            </div>
+
+            <div
+              className={
+                passengerSidePhotoCount > 0
+                  ? "complete"
+                  : ""
+              }
+            >
+              <span>Passenger Side</span>
+
+              <strong>
+                {passengerSidePhotoCount > 0
+                  ? "✓ Uploaded"
+                  : "Missing"}
+              </strong>
+            </div>
+
+          </div>
+
+
+          <div className="admin-return-odometer-slot">
+            <div className="admin-return-photo-slot-heading">
+              <span>
+                REQUIRED ODOMETER PHOTO
+              </span>
+
+              <strong>
+                Return Odometer
+              </strong>
+
+              <small>
+                Photograph the dashboard so the
+                ending odometer can be read clearly.
+              </small>
+            </div>
+
             <VehicleEvidenceUpload
               vehicleId={vehicle.id}
               tripId={trip.id}
               requestId={trip.request_id}
               stage="post-use"
-              type="new-damage"
-              title="New Damage Photos"
-              description="Photograph every area of newly reported damage clearly."
+              type="odometer"
+              title="Ending Odometer Photo"
+              description="Photograph the dashboard clearly showing the ending odometer reading."
               required
+              multiple={false}
+              imagesOnly
+              expectedVehicle={vehicle}
+              expectedOdometer={
+                formData.endOdometer
+              }
+              preferCamera
+              employeeNumberOverride={
+                trip.employee_number
+              }
               onUploaded={(files) =>
-                setDamageEvidenceCount(
+                setOdometerEvidenceCount(
                   (current) =>
                     current +
                     files.length
                 )
               }
             />
+          </div>
+
+
+          <div className="admin-return-required-summary">
+
+            <div>
+              <span>
+                Required Exterior Photos
+              </span>
+
+              <strong>
+                {
+                  [
+                    frontPhotoCount,
+                    rearPhotoCount,
+                    driverSidePhotoCount,
+                    passengerSidePhotoCount,
+                  ].filter(
+                    (count) =>
+                      count > 0
+                  ).length
+                }
+                /4
+              </strong>
+            </div>
+
+            <div>
+              <span>
+                Return Odometer Photo
+              </span>
+
+              <strong>
+                {odometerEvidenceCount > 0
+                  ? "✓ Uploaded"
+                  : "Missing"}
+              </strong>
+            </div>
+
+          </div>
+
+
+          {formData.newDamage ===
+            "yes" && (
+            <div className="admin-return-damage-photo">
+              <VehicleEvidenceUpload
+                vehicleId={vehicle.id}
+                tripId={trip.id}
+                requestId={trip.request_id}
+                stage="post-use"
+                type="new-damage"
+                title="New Damage Photos"
+                description="Photograph every area of newly reported damage clearly."
+                required
+                imagesOnly
+                employeeNumberOverride={
+                  trip.employee_number
+                }
+                onUploaded={(files) =>
+                  setDamageEvidenceCount(
+                    (current) =>
+                      current +
+                      files.length
+                  )
+                }
+              />
+            </div>
           )}
         </section>
 

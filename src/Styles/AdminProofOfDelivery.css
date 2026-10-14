@@ -1,0 +1,1241 @@
+/* ============================================================
+   ADMIN PROOF OF DELIVERY
+   ============================================================ */
+
+.admin-pod-page {
+  min-height: 100vh;
+  background: #f5f7fa;
+  color: #27313c;
+}
+
+.admin-pod-header {
+  border-bottom: 1px solid #e2e6ea;
+  background: #ffffff;
+}
+
+.admin-pod-header-inner {
+  width: min(1240px, calc(100% - 34px));
+  min-height: 92px;
+  margin: 0 auto;
+
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.admin-pod-back {
+  width: 42px;
+  height: 42px;
+
+  flex: 0 0 42px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid #dce2e8;
+  border-radius: 11px;
+
+  background: #ffffff;
+  color: #11145f;
+
+  text-decoration: none;
+}
+
+.admin-pod-logo {
+  flex: 0 0 auto;
+}
+
+.admin-pod-header-copy {
+  min-width: 0;
+  flex: 1;
+}
+
+.admin-pod-header-copy > span {
+  color: #b38b2e;
+  font-size: 0.59rem;
+  font-weight: 900;
+  letter-spacing: 0.65px;
+}
+
+.admin-pod-header-copy h1 {
+  margin: 3px 0 0;
+
+  color: #263746;
+  font-size: 1.5rem;
+  font-weight: 900;
+}
+
+.admin-pod-header-copy p {
+  margin: 3px 0 0;
+
+  color: #7c8894;
+  font-size: 0.7rem;
+}
+
+.admin-pod-header-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.admin-pod-header-actions button {
+  min-height: 42px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+
+  padding: 0 13px;
+
+  border: 1px solid #dce2e8;
+  border-radius: 9px;
+
+  background: #ffffff;
+  color: #4e5b67;
+
+  font: inherit;
+  font-size: 0.65rem;
+  font-weight: 850;
+
+  cursor: pointer;
+}
+
+.admin-pod-header-actions button.primary {
+  border-color: #11145f;
+  background: #11145f;
+  color: #ffffff;
+}
+
+
+.admin-pod-content {
+  width: min(1240px, calc(100% - 34px));
+  margin: 0 auto;
+  padding: 28px 0 70px;
+
+  display: grid;
+  gap: 16px;
+}
+
+
+.admin-pod-message {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+
+  padding: 12px 14px;
+
+  border-radius: 10px;
+
+  font-size: 0.7rem;
+  line-height: 1.5;
+}
+
+.admin-pod-message.error {
+  border: 1px solid #edc0c0;
+  background: #fff3f3;
+  color: #a61b1b;
+}
+
+.admin-pod-message.success {
+  border: 1px solid #b9dec6;
+  background: #f0faf3;
+  color: #177747;
+}
+
+.admin-pod-message.warning {
+  border: 1px solid #e7d4a4;
+  background: #fffaf0;
+  color: #755a19;
+}
+
+
+.admin-pod-overview {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.admin-pod-overview > div {
+  padding: 16px;
+
+  border: 1px solid #e2e6eb;
+  border-radius: 12px;
+
+  background: #ffffff;
+}
+
+.admin-pod-overview span,
+.admin-pod-overview strong,
+.admin-pod-overview small {
+  display: block;
+}
+
+.admin-pod-overview span {
+  color: #8b95a1;
+  font-size: 0.54rem;
+  font-weight: 900;
+  letter-spacing: 0.45px;
+}
+
+.admin-pod-overview strong {
+  margin-top: 4px;
+
+  color: #2c3945;
+  font-size: 0.82rem;
+  font-weight: 900;
+}
+
+.admin-pod-overview small {
+  margin-top: 3px;
+
+  color: #7f8b96;
+  font-size: 0.59rem;
+}
+
+
+.admin-pod-route-card {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+
+  padding: 17px;
+
+  border: 1px solid #e2e6eb;
+  border-radius: 13px;
+
+  background: #ffffff;
+}
+
+.admin-pod-route-card > div {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 4px 9px;
+
+  min-width: 0;
+}
+
+.admin-pod-route-card svg {
+  grid-row: span 2;
+  margin-top: 2px;
+
+  color: #11145f;
+}
+
+.admin-pod-route-card span {
+  color: #8a95a0;
+
+  font-size: 0.55rem;
+  font-weight: 900;
+}
+
+.admin-pod-route-card strong {
+  overflow-wrap: anywhere;
+
+  color: #34414d;
+  font-size: 0.7rem;
+}
+
+
+.admin-pod-card {
+  padding: 22px;
+
+  border: 1px solid #e1e6eb;
+  border-radius: 14px;
+
+  background: #ffffff;
+
+  box-shadow:
+    0 10px 26px
+    rgba(31, 40, 55, 0.045);
+}
+
+.admin-pod-card-heading {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+
+  margin-bottom: 18px;
+}
+
+.admin-pod-card-heading > svg {
+  width: 38px;
+  height: 38px;
+
+  flex: 0 0 38px;
+
+  padding: 10px;
+
+  border-radius: 10px;
+
+  background: #f0f1f8;
+  color: #11145f;
+}
+
+.admin-pod-card-heading > div {
+  flex: 1;
+}
+
+.admin-pod-card-heading span {
+  display: block;
+
+  color: #8a94a0;
+  font-size: 0.52rem;
+  font-weight: 900;
+  letter-spacing: 0.5px;
+}
+
+.admin-pod-card-heading h2 {
+  margin: 3px 0 0;
+
+  color: #283744;
+  font-size: 1rem;
+  font-weight: 900;
+}
+
+.admin-pod-method {
+  padding: 6px 9px;
+
+  border-radius: 999px;
+
+  background: #eef0f7;
+  color: #11145f;
+
+  font-size: 0.52rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.admin-pod-method.paper {
+  background: #fff6de;
+  color: #8d6916;
+}
+
+.admin-pod-method.digital {
+  background: #eaf7ef;
+  color: #177747;
+}
+
+
+.admin-pod-details {
+  display: grid;
+  grid-template-columns:
+    repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.admin-pod-details > div {
+  min-width: 0;
+
+  padding: 12px;
+
+  border: 1px solid #e5e9ed;
+  border-radius: 10px;
+
+  background: #f8fafc;
+}
+
+.admin-pod-details span,
+.admin-pod-details strong {
+  display: block;
+}
+
+.admin-pod-details span {
+  color: #8a95a0;
+  font-size: 0.55rem;
+  font-weight: 850;
+}
+
+.admin-pod-details strong {
+  margin-top: 4px;
+
+  overflow-wrap: anywhere;
+
+  color: #34414d;
+  font-size: 0.67rem;
+}
+
+
+.admin-pod-notes,
+.admin-pod-signature,
+.admin-pod-paper-attached {
+  margin-top: 16px;
+}
+
+.admin-pod-notes {
+  padding: 14px;
+
+  border: 1px solid #e2e7eb;
+  border-radius: 10px;
+
+  background: #fafbfc;
+}
+
+.admin-pod-notes span {
+  color: #8a94a0;
+  font-size: 0.53rem;
+  font-weight: 900;
+}
+
+.admin-pod-notes p {
+  margin: 6px 0 0;
+
+  color: #52606d;
+  font-size: 0.68rem;
+  line-height: 1.55;
+}
+
+
+.admin-pod-signature {
+  padding: 14px;
+
+  border: 1px solid #cce1d4;
+  border-radius: 11px;
+
+  background: #f4fbf6;
+}
+
+.admin-pod-signature > div {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+
+  color: #177747;
+
+  font-size: 0.56rem;
+  font-weight: 900;
+}
+
+.admin-pod-signature img {
+  width: min(440px, 100%);
+  height: 150px;
+
+  display: block;
+
+  margin-top: 10px;
+
+  object-fit: contain;
+
+  border: 1px solid #d8e5dd;
+  border-radius: 8px;
+
+  background: #ffffff;
+}
+
+.admin-pod-signature small {
+  display: block;
+
+  margin-top: 7px;
+
+  color: #65766d;
+  font-size: 0.58rem;
+}
+
+
+.admin-pod-paper-attached {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+
+  padding: 13px;
+
+  border: 1px solid #d9ddeb;
+  border-radius: 10px;
+
+  background: #f6f7fc;
+}
+
+.admin-pod-paper-attached > svg {
+  color: #11145f;
+}
+
+.admin-pod-paper-attached > div {
+  min-width: 0;
+  flex: 1;
+}
+
+.admin-pod-paper-attached span,
+.admin-pod-paper-attached strong,
+.admin-pod-paper-attached small {
+  display: block;
+}
+
+.admin-pod-paper-attached span {
+  color: #777f9a;
+  font-size: 0.49rem;
+  font-weight: 900;
+}
+
+.admin-pod-paper-attached strong {
+  margin-top: 3px;
+
+  color: #2d3a46;
+  font-size: 0.66rem;
+}
+
+.admin-pod-paper-attached small {
+  margin-top: 2px;
+
+  color: #7f8994;
+  font-size: 0.54rem;
+}
+
+.admin-pod-paper-attached a {
+  padding: 8px 10px;
+
+  border-radius: 8px;
+
+  background: #11145f;
+  color: #ffffff;
+
+  font-size: 0.58rem;
+  font-weight: 850;
+
+  text-decoration: none;
+}
+
+
+.admin-pod-empty {
+  text-align: center;
+}
+
+.admin-pod-empty > svg {
+  color: #11145f;
+  font-size: 1.6rem;
+}
+
+.admin-pod-empty h2 {
+  margin: 9px 0 0;
+  font-size: 1rem;
+}
+
+.admin-pod-empty p {
+  max-width: 720px;
+  margin: 7px auto 0;
+
+  color: #76818c;
+  font-size: 0.68rem;
+  line-height: 1.6;
+}
+
+
+/* PAPER POD FORM */
+
+.admin-paper-pod-form {
+  display: grid;
+  gap: 14px;
+}
+
+.admin-paper-grid {
+  display: grid;
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.admin-paper-grid label {
+  display: grid;
+  gap: 6px;
+
+  color: #3b4955;
+  font-size: 0.64rem;
+  font-weight: 800;
+}
+
+.admin-paper-grid label.full {
+  grid-column: 1 / -1;
+}
+
+.admin-paper-grid input,
+.admin-paper-grid select,
+.admin-paper-grid textarea {
+  width: 100%;
+
+  border: 1px solid #dce2e7;
+  border-radius: 9px;
+
+  background: #ffffff;
+  color: #31404d;
+
+  font: inherit;
+  font-size: 0.7rem;
+}
+
+.admin-paper-grid input,
+.admin-paper-grid select {
+  min-height: 42px;
+  padding: 0 11px;
+}
+
+.admin-paper-grid textarea {
+  padding: 10px 11px;
+  resize: vertical;
+}
+
+
+.admin-paper-file {
+  min-height: 86px;
+
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  padding: 14px;
+
+  border: 1px dashed #bfcbd5;
+  border-radius: 11px;
+
+  background: #f8fafc;
+
+  cursor: pointer;
+}
+
+.admin-paper-file > svg {
+  color: #11145f;
+  font-size: 1.1rem;
+}
+
+.admin-paper-file > div {
+  flex: 1;
+}
+
+.admin-paper-file strong,
+.admin-paper-file span {
+  display: block;
+}
+
+.admin-paper-file strong {
+  color: #34414d;
+  font-size: 0.7rem;
+}
+
+.admin-paper-file span {
+  margin-top: 3px;
+
+  color: #7f8b96;
+  font-size: 0.59rem;
+}
+
+.admin-paper-file input {
+  max-width: 280px;
+}
+
+
+.admin-paper-selected {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+
+  padding: 11px 12px;
+
+  border: 1px solid #b9dec6;
+  border-radius: 9px;
+
+  background: #f1faf4;
+}
+
+.admin-paper-selected svg {
+  color: #177747;
+}
+
+.admin-paper-selected strong,
+.admin-paper-selected span {
+  display: block;
+}
+
+.admin-paper-selected strong {
+  color: #31543e;
+  font-size: 0.64rem;
+}
+
+.admin-paper-selected span {
+  margin-top: 2px;
+
+  color: #6b7d70;
+  font-size: 0.55rem;
+}
+
+
+.admin-paper-submit {
+  width: fit-content;
+  min-height: 42px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+
+  padding: 0 14px;
+
+  border: 1px solid #11145f;
+  border-radius: 9px;
+
+  background: #11145f;
+  color: #ffffff;
+
+  font: inherit;
+  font-size: 0.64rem;
+  font-weight: 900;
+
+  cursor: pointer;
+}
+
+.admin-paper-submit:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+
+.admin-pod-loading {
+  min-height: 70vh;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 8px;
+
+  padding: 30px;
+
+  text-align: center;
+}
+
+.admin-pod-loading > svg {
+  color: #11145f;
+  font-size: 1.5rem;
+}
+
+.admin-pod-loading h2 {
+  margin: 0;
+}
+
+.admin-pod-loading p {
+  max-width: 560px;
+  margin: 0;
+
+  color: #76818c;
+}
+
+
+/* ============================================================
+   PRINTABLE BLANK DELIVERY NOTE / POD
+   Hidden normally.
+   ============================================================ */
+
+.blank-pod-print {
+  display: none;
+}
+
+
+@media print {
+
+  @page {
+    size: A4;
+    margin: 8mm;
+  }
+
+  html,
+  body {
+    background: #ffffff !important;
+
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  .admin-pod-page {
+    min-height: auto;
+
+    background: #ffffff !important;
+  }
+
+
+  /*
+   * ============================================
+   * LIGHT YELLOW PAPER
+   * ============================================
+   */
+
+  .blank-pod-print {
+    display: block;
+
+    width: 100%;
+
+    padding: 12px;
+
+    border: 1px solid #eadfb6;
+    border-radius: 12px;
+
+    background: #fffbea !important;
+    color: #2f2f2f;
+
+    box-sizing: border-box;
+
+    font-family:
+      Arial,
+      Helvetica,
+      sans-serif;
+  }
+
+
+  /*
+   * ============================================
+   * BRAND HEADER
+   * ============================================
+   */
+
+  .blank-pod-brand {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 18px;
+
+    padding: 11px 13px;
+
+    border: none;
+    border-radius: 9px;
+
+    background: #11145f !important;
+  }
+
+  .blank-pod-brand strong,
+  .blank-pod-brand span {
+    display: block;
+  }
+
+  .blank-pod-brand strong {
+    color: #ffffff !important;
+
+    font-size: 14pt;
+    letter-spacing: 0.4px;
+  }
+
+  .blank-pod-brand span {
+    color: #f5e4a5 !important;
+
+    font-size: 8pt;
+    font-weight: 700;
+
+    letter-spacing: 0.7px;
+  }
+
+
+  /*
+   * ============================================
+   * REFERENCES
+   * ============================================
+   */
+
+  .blank-pod-reference {
+    display: grid;
+
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(0, 1fr)
+      );
+
+    gap: 7px;
+
+    margin-top: 8px;
+  }
+
+  .blank-pod-reference > div,
+  .blank-pod-grid > div,
+  .blank-pod-goods > div {
+    padding: 7px 8px;
+
+    border: 1px solid #eee4bf;
+    border-radius: 7px;
+
+    background:
+      rgba(
+        255,
+        253,
+        244,
+        0.9
+      ) !important;
+  }
+
+  .blank-pod-reference span,
+  .blank-pod-grid span,
+  .blank-pod-goods span {
+    display: block;
+
+    color: #8d8056 !important;
+
+    font-size: 6.2pt;
+    font-weight: 700;
+
+    text-transform: uppercase;
+    letter-spacing: 0.45px;
+  }
+
+  .blank-pod-reference strong,
+  .blank-pod-grid strong,
+  .blank-pod-goods strong {
+    display: block;
+
+    margin-top: 3px;
+
+    color: #2f2f2f !important;
+
+    font-size: 7.8pt;
+    font-weight: 700;
+
+    line-height: 1.35;
+  }
+
+
+  /*
+   * ============================================
+   * SECTIONS
+   * ============================================
+   */
+
+  .blank-pod-section {
+    margin-top: 8px;
+    padding: 8px;
+
+    border: 1px solid #efe6c6;
+    border-radius: 9px;
+
+    background:
+      rgba(
+        255,
+        250,
+        232,
+        0.62
+      ) !important;
+
+    break-inside: avoid;
+  }
+
+  .blank-pod-section h2 {
+    margin: 0 0 6px;
+
+    padding: 5px 7px;
+
+    border-radius: 6px;
+
+    background: #f8f1d6 !important;
+    color: #8f6f1d !important;
+
+    font-size: 7.5pt;
+    text-transform: uppercase;
+    letter-spacing: 0.65px;
+  }
+
+  .blank-pod-grid {
+    display: grid;
+
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(0, 1fr)
+      );
+
+    gap: 6px;
+  }
+
+  .blank-pod-grid .wide {
+    grid-column: 1 / -1;
+  }
+
+  .blank-pod-goods {
+    display: grid;
+
+    grid-template-columns:
+      2fr 1fr 1fr;
+
+    gap: 6px;
+  }
+
+
+  /*
+   * ============================================
+   * GOODS TABLE
+   * ============================================
+   */
+
+  .blank-pod-table {
+    width: 100%;
+
+    margin-top: 6px;
+
+    border-collapse: separate;
+    border-spacing: 0;
+
+    table-layout: fixed;
+
+    overflow: hidden;
+
+    border: 1px solid #eadfb6;
+    border-radius: 7px;
+
+    font-size: 6.8pt;
+  }
+
+  .blank-pod-table th,
+  .blank-pod-table td {
+    height: 21px;
+
+    padding: 4px 5px;
+
+    border-right:
+      1px solid
+      #f0e8cb;
+
+    border-bottom:
+      1px solid
+      #f0e8cb;
+
+    text-align: left;
+    vertical-align: top;
+  }
+
+  .blank-pod-table th:last-child,
+  .blank-pod-table td:last-child {
+    border-right: none;
+  }
+
+  .blank-pod-table
+  tr:last-child td {
+    border-bottom: none;
+  }
+
+  .blank-pod-table th {
+    background: #f8f1d6 !important;
+    color: #6d5a1c !important;
+
+    font-weight: 700;
+  }
+
+  .blank-pod-table td {
+    background:
+      rgba(
+        255,
+        255,
+        255,
+        0.34
+      ) !important;
+  }
+
+
+  /*
+   * ============================================
+   * DELIVERY RESULT CHECKBOXES
+   * ============================================
+   */
+
+  .blank-pod-checks {
+    display: grid;
+
+    grid-template-columns:
+      repeat(
+        4,
+        1fr
+      );
+
+    gap: 6px;
+
+    margin-top: 2px;
+  }
+
+  .blank-pod-checks span {
+    padding: 6px 7px;
+
+    border: 1px solid #efe4bc;
+    border-radius: 7px;
+
+    background:
+      rgba(
+        255,
+        252,
+        240,
+        0.92
+      ) !important;
+
+    color: #554f3c !important;
+
+    font-size: 6.8pt;
+    font-weight: 600;
+  }
+
+
+  /*
+   * ============================================
+   * VERY LIGHT WRITING LINES
+   * ============================================
+   */
+
+  .blank-pod-lines {
+    margin-top: 6px;
+
+    font-size: 6.8pt;
+  }
+
+  .blank-pod-lines p {
+    margin: 0 0 3px;
+
+    color: #5f583f !important;
+
+    font-weight: 700;
+  }
+
+  .blank-pod-lines > div {
+    height: 14px;
+
+    margin-bottom: 3px;
+
+    border-bottom:
+      1px solid
+      rgba(
+        115,
+        104,
+        67,
+        0.18
+      );
+  }
+
+
+  /*
+   * ============================================
+   * CUSTOMER SIGN-OFF
+   * ============================================
+   */
+
+  .blank-pod-signoff p {
+    margin: 0 0 5px;
+
+    color: #514b38 !important;
+
+    font-size: 6.8pt;
+    line-height: 1.45;
+  }
+
+  .blank-pod-sign-grid {
+    display: grid;
+
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(0, 1fr)
+      );
+
+    gap: 6px 13px;
+  }
+
+  .blank-pod-sign-grid > div {
+    height: 30px;
+
+    padding-top: 17px;
+
+    border-bottom:
+      1px solid
+      rgba(
+        110,
+        99,
+        61,
+        0.22
+      );
+  }
+
+  .blank-pod-sign-grid span {
+    color: #7f7247 !important;
+
+    font-size: 6.1pt;
+    font-weight: 700;
+
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+  }
+
+
+  /*
+   * ============================================
+   * FOOTER
+   * ============================================
+   */
+
+  .blank-pod-footer {
+    margin-top: 8px;
+    padding-top: 6px;
+
+    border-top:
+      1px solid
+      #eadfb6;
+
+    color: #8b835f !important;
+
+    font-size: 5.8pt;
+    text-align: center;
+  }
+}
+
+
+@media (max-width: 900px) {
+  .admin-pod-overview,
+  .admin-pod-details {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+}
+
+
+@media (max-width: 720px) {
+  .admin-pod-header-inner {
+    align-items: flex-start;
+    flex-wrap: wrap;
+
+    padding: 14px 0;
+  }
+
+  .admin-pod-logo {
+    display: none;
+  }
+
+  .admin-pod-header-actions {
+    width: 100%;
+  }
+
+  .admin-pod-header-actions button {
+    flex: 1;
+  }
+
+  .admin-pod-route-card,
+  .admin-paper-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-paper-grid label.full {
+    grid-column: auto;
+  }
+
+  .admin-paper-file {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .admin-paper-file input {
+    max-width: 100%;
+  }
+}
+
+
+@media (max-width: 520px) {
+  .admin-pod-header-inner,
+  .admin-pod-content {
+    width: calc(100% - 22px);
+  }
+
+  .admin-pod-overview,
+  .admin-pod-details {
+    grid-template-columns: 1fr;
+  }
+}

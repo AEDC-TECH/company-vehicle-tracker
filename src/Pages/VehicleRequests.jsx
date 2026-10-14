@@ -205,26 +205,9 @@ function VehicleRequests() {
               <FaArrowLeft />
             </Link>
 
-            <AEDCLogo
-              compact
-              className="vehicle-requests-logo"
-            />
 
-            <div className="vehicle-requests-heading">
-              <span>
-                AEDC VEHICLE MANAGEMENT
-              </span>
 
-              <h1>
-                Vehicle Requests
-              </h1>
-
-              <p>
-                Review, approve and process company
-                vehicle bookings.
-              </p>
-            </div>
-          </div>
+           </div>
 
           <Link
             to="/request-vehicle"

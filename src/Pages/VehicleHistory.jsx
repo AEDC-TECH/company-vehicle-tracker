@@ -28,6 +28,7 @@ import VehicleEvidenceGallery from "../Components/VehicleEvidenceGallery";
 import AEDCLogo from "../Components/AEDCLogo";
 
 import "../Styles/VehicleForms.css";
+import "../Styles/VehicleHistory.css";
 
 const inspectionLabels = {
   bodywork: "Exterior Bodywork",
@@ -73,26 +74,24 @@ function VehicleHistory() {
       const {
         data,
         error,
-      } = await supabase
-        .from("vehicle_trips")
-        .select("*")
-        .order(
-          "created_at",
-          {
-            ascending: false,
-          }
-        );
+      } = await supabase.rpc(
+        "admin_list_vehicle_trip_history"
+      );
 
       if (error) {
         throw error;
       }
 
-      setHistory(data || []);
+      setHistory(
+        data || []
+      );
     } catch (error) {
       console.error(
         "History load error:",
         error
       );
+
+      setHistory([]);
 
       setErrorMessage(
         error.message ||
@@ -214,6 +213,31 @@ function VehicleHistory() {
       .toUpperCase();
   }
 
+  const totalTrips =
+    history.length;
+
+  const activeTrips =
+    history.filter(
+      (trip) =>
+        trip.status === "in-use"
+    ).length;
+
+  const completedTrips =
+    history.filter(
+      (trip) =>
+        trip.status === "returned"
+    ).length;
+
+  const incidentTrips =
+    history.filter(
+      (trip) =>
+        trip.status === "incident-open" ||
+        trip.new_damage ||
+        trip.warning_light_reported ||
+        trip.mechanical_issue_reported
+    ).length;
+
+
   if (loading) {
     return (
       <main className="vehicle-form-page">
@@ -237,15 +261,8 @@ function VehicleHistory() {
           </Link>
 
           <div className="form-brand">
-  <AEDCLogo
-    compact
-    className="form-brand-logo"
-  />
 
-  <span>
-    Digital Logbook
-  </span>
-</div>
+       </div>
         </div>
       </header>
 
@@ -270,15 +287,102 @@ function VehicleHistory() {
       </section>
 
       <section className="history-content">
+        <section className="history-overview-grid">
+          <article className="history-overview-card">
+            <div className="history-overview-icon">
+              <FaHistory />
+            </div>
+
+            <div>
+              <span>
+                TOTAL RECORDS
+              </span>
+
+              <strong>
+                {totalTrips}
+              </strong>
+
+              <small>
+                All recorded vehicle trips
+              </small>
+            </div>
+          </article>
+
+          <article className="history-overview-card history-overview-active">
+            <div className="history-overview-icon">
+              <FaCar />
+            </div>
+
+            <div>
+              <span>
+                CURRENTLY IN USE
+              </span>
+
+              <strong>
+                {activeTrips}
+              </strong>
+
+              <small>
+                Active fleet journeys
+              </small>
+            </div>
+          </article>
+
+          <article className="history-overview-card history-overview-complete">
+            <div className="history-overview-icon">
+              <FaCheckCircle />
+            </div>
+
+            <div>
+              <span>
+                COMPLETED
+              </span>
+
+              <strong>
+                {completedTrips}
+              </strong>
+
+              <small>
+                Vehicles returned
+              </small>
+            </div>
+          </article>
+
+          <article className="history-overview-card history-overview-alert">
+            <div className="history-overview-icon">
+              <FaExclamationTriangle />
+            </div>
+
+            <div>
+              <span>
+                WITH ISSUES
+              </span>
+
+              <strong>
+                {incidentTrips}
+              </strong>
+
+              <small>
+                Damage, faults or incidents
+              </small>
+            </div>
+          </article>
+        </section>
+
         <div className="history-toolbar">
           <div>
             <span>
-              VOLKSWAGEN POLO TSI
+              FLEET ACTIVITY
             </span>
 
             <h2>
               Digital Logbook
             </h2>
+
+            <p className="history-toolbar-copy">
+              Search and review every recorded
+              vehicle journey in one place.
+            </p>
           </div>
 
           <div className="history-filter-controls">
@@ -386,19 +490,27 @@ function VehicleHistory() {
                   }`}
                 >
                   <div className="policy-history-header">
-                    <div>
+                    <div className="history-driver-identity">
                       <span className="booking-reference">
                         {trip.booking_reference ||
                           "NO BOOKING REFERENCE"}
                       </span>
 
+                      <span className="history-card-eyebrow">
+                        DRIVER
+                      </span>
+
                       <h3>
-                        {trip.driver_name}
+                        {trip.driver_name ||
+                          "Driver not recorded"}
                       </h3>
 
                       <p>
                         {trip.department ||
                           "Department not recorded"}
+                        {trip.employee_number
+                          ? ` · ${trip.employee_number}`
+                          : ""}
                       </p>
                     </div>
 
@@ -1231,6 +1343,11 @@ function VehicleHistory() {
                             <h4>
                               Photos & Supporting Records
                             </h4>
+
+                            <p className="logbook-section-description">
+                              Select any uploaded image or PDF
+                              below to view the original evidence.
+                            </p>
                           </div>
                         </div>
 

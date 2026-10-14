@@ -1,0 +1,1186 @@
+/* ============================================================
+   ADMIN VEHICLE RETURN
+   Aligned with the newer AEDC fleet admin design language.
+   Imported AFTER VehicleForms.css.
+   ============================================================ */
+
+
+/* ============================================================
+   PAGE
+   ============================================================ */
+
+.admin-return-page {
+  min-height: 100vh;
+
+  background:
+    radial-gradient(
+      circle at 8% 14%,
+      rgba(17, 20, 95, 0.045) 0,
+      rgba(17, 20, 95, 0.045) 120px,
+      transparent 121px
+    ),
+    radial-gradient(
+      circle at 95% 42%,
+      rgba(179, 139, 46, 0.05) 0,
+      rgba(179, 139, 46, 0.05) 155px,
+      transparent 156px
+    ),
+    #f5f7fa;
+
+  color: #27313c;
+}
+
+
+/* ============================================================
+   TOP BAR
+   ============================================================ */
+
+.admin-return-page .form-header {
+  position: relative;
+  z-index: 20;
+
+  min-height: 72px;
+
+  display: flex;
+  align-items: center;
+
+  border-bottom:
+    1px solid
+    rgba(220, 225, 231, 0.9);
+
+  background:
+    rgba(255, 255, 255, 0.98);
+
+  box-shadow:
+    0 3px 12px
+    rgba(31, 40, 55, 0.035);
+}
+
+.admin-return-page .form-header-inner {
+  width:
+    min(
+      1240px,
+      calc(100% - 34px)
+    );
+
+  margin: 0 auto;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.admin-return-page .back-button {
+  min-height: 42px;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  padding: 0 14px;
+
+  border:
+    1px solid
+    #dce2e8;
+
+  border-radius: 11px;
+
+  background: #ffffff;
+  color: #34404c;
+
+  font-size: 0.78rem;
+  font-weight: 850;
+
+  text-decoration: none;
+
+  transition:
+    border-color 0.18s ease,
+    background 0.18s ease,
+    transform 0.18s ease;
+}
+
+.admin-return-page .back-button:hover {
+  border-color: #b8c3ce;
+  background: #f8fafc;
+  transform: translateY(-1px);
+}
+
+.admin-return-page .form-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+
+  color: #15283c;
+
+  font-size: 0.82rem;
+  font-weight: 900;
+}
+
+.admin-return-page .form-brand svg {
+  color: #11145f;
+}
+
+
+/* ============================================================
+   HERO
+   ============================================================ */
+
+.admin-return-page .form-hero {
+  position: relative;
+  overflow: hidden;
+
+  min-height: 285px;
+
+  display: flex;
+  align-items: flex-start;
+
+  padding: 60px 0 82px;
+
+  background:
+    linear-gradient(
+      115deg,
+      #10145d 0%,
+      #171d74 55%,
+      #222986 100%
+    );
+}
+
+.admin-return-page .form-hero::before,
+.admin-return-page .form-hero::after {
+  content: "";
+
+  position: absolute;
+
+  border-radius: 50%;
+
+  pointer-events: none;
+}
+
+.admin-return-page .form-hero::before {
+  width: 340px;
+  height: 340px;
+
+  top: -165px;
+  right: -70px;
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.09);
+}
+
+.admin-return-page .form-hero::after {
+  width: 215px;
+  height: 215px;
+
+  right: 125px;
+  bottom: -150px;
+
+  background:
+    rgba(179, 139, 46, 0.13);
+}
+
+.admin-return-page .form-hero-inner {
+  position: relative;
+  z-index: 2;
+
+  width:
+    min(
+      1240px,
+      calc(100% - 34px)
+    );
+
+  margin: 0 auto;
+}
+
+.admin-return-page .form-hero-inner > span {
+  display: inline-block;
+
+  color: #d7b45e;
+
+  font-size: 0.68rem;
+  font-weight: 900;
+  letter-spacing: 1.45px;
+}
+
+.admin-return-page .form-hero h1 {
+  max-width: 800px;
+
+  margin: 10px 0 0;
+
+  color: #ffffff;
+
+  font-size:
+    clamp(
+      2.15rem,
+      4.2vw,
+      3.8rem
+    );
+
+  line-height: 0.98;
+  letter-spacing: -2px;
+}
+
+.admin-return-page .form-hero p {
+  max-width: 720px;
+
+  margin: 18px 0 0;
+
+  color:
+    rgba(
+      255,
+      255,
+      255,
+      0.74
+    );
+
+  font-size: 0.86rem;
+  line-height: 1.65;
+}
+
+
+/* ============================================================
+   FORM LAYOUT
+   ============================================================ */
+
+.admin-return-page .vehicle-form {
+  position: relative;
+  z-index: 5;
+
+  width:
+    min(
+      1240px,
+      calc(100% - 34px)
+    );
+
+  margin: -42px auto 0;
+  padding: 0 0 80px;
+
+  display: grid;
+  gap: 18px;
+}
+
+
+/* ============================================================
+   CARDS
+   ============================================================ */
+
+.admin-return-page .form-card {
+  margin: 0;
+
+  padding: 28px;
+
+  border:
+    1px solid
+    rgba(220, 226, 232, 0.96);
+
+  border-radius: 18px;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.985
+    );
+
+  box-shadow:
+    0 15px 38px
+    rgba(31, 40, 55, 0.065);
+}
+
+.admin-return-page .form-card:first-child {
+  padding: 30px;
+}
+
+
+/* Booking reference */
+
+.admin-return-page .booking-reference {
+  display: inline-flex;
+  align-items: center;
+
+  min-height: 25px;
+
+  padding: 0 9px;
+
+  border-radius: 999px;
+
+  background:
+    rgba(179, 139, 46, 0.12);
+
+  color: #987015;
+
+  font-size: 0.58rem;
+  font-weight: 900;
+  letter-spacing: 0.55px;
+}
+
+.admin-return-page .form-card > h2 {
+  margin: 18px 0 17px;
+
+  color: #202d3a;
+
+  font-size: 1.25rem;
+  font-weight: 900;
+}
+
+
+/* ============================================================
+   SECTION HEADINGS
+   ============================================================ */
+
+.admin-return-page .form-section-heading {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+
+  margin-bottom: 22px;
+}
+
+.admin-return-page .form-section-heading > span {
+  width: 42px;
+  height: 42px;
+
+  flex: 0 0 42px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 12px;
+
+  background: #11145f;
+  color: #ffffff;
+
+  font-size: 0.7rem;
+  font-weight: 900;
+  letter-spacing: 0.25px;
+
+  box-shadow:
+    0 8px 18px
+    rgba(17, 20, 95, 0.18);
+}
+
+.admin-return-page .form-section-heading h2 {
+  margin: 1px 0 0;
+
+  color: #202d3a;
+
+  font-size: 1.14rem;
+  font-weight: 900;
+}
+
+.admin-return-page .form-section-heading p {
+  margin: 5px 0 0;
+
+  color: #788491;
+
+  font-size: 0.73rem;
+  line-height: 1.55;
+}
+
+
+/* ============================================================
+   CURRENT TRIP / INFO GRID
+   ============================================================ */
+
+.admin-return-page .request-info-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      4,
+      minmax(0, 1fr)
+    );
+
+  gap: 12px;
+}
+
+.admin-return-page .request-info-grid > div {
+  min-width: 0;
+
+  padding: 15px 16px;
+
+  border:
+    1px solid
+    #e1e6eb;
+
+  border-radius: 12px;
+
+  background: #f8fafc;
+}
+
+.admin-return-page .request-info-grid span,
+.admin-return-page .request-info-grid strong {
+  display: block;
+}
+
+.admin-return-page .request-info-grid span {
+  color: #87919c;
+
+  font-size: 0.66rem;
+  font-weight: 800;
+}
+
+.admin-return-page .request-info-grid strong {
+  margin-top: 4px;
+
+  overflow-wrap: anywhere;
+
+  color: #273542;
+
+  font-size: 0.84rem;
+  font-weight: 900;
+}
+
+
+/* ============================================================
+   INPUTS
+   ============================================================ */
+
+.admin-return-page .form-grid {
+  gap: 15px;
+}
+
+.admin-return-page .input-group label {
+  margin-bottom: 7px;
+
+  color: #344452;
+
+  font-size: 0.7rem;
+  font-weight: 850;
+}
+
+.admin-return-page
+.input-group input,
+.admin-return-page
+.input-group select,
+.admin-return-page
+.input-group textarea {
+  min-height: 48px;
+
+  border:
+    1px solid
+    #d8e0e7;
+
+  border-radius: 11px;
+
+  background: #ffffff;
+  color: #283744;
+
+  box-shadow: none;
+
+  font-size: 0.8rem;
+
+  transition:
+    border-color 0.18s ease,
+    box-shadow 0.18s ease,
+    background 0.18s ease;
+}
+
+.admin-return-page
+.input-group textarea {
+  min-height: 110px;
+}
+
+.admin-return-page
+.input-group input:focus,
+.admin-return-page
+.input-group select:focus,
+.admin-return-page
+.input-group textarea:focus {
+  outline: none;
+
+  border-color: #444ba6;
+
+  box-shadow:
+    0 0 0 3px
+    rgba(17, 20, 95, 0.09);
+}
+
+.admin-return-page
+.input-group input:disabled {
+  background: #f4f6f8;
+  color: #687681;
+}
+
+
+/* ============================================================
+   CALCULATED VALUES / FUEL
+   ============================================================ */
+
+.admin-return-page .return-calculated-value,
+.admin-return-page .fuel-comparison-box {
+  border:
+    1px solid
+    #dfe5ea;
+
+  border-radius: 12px;
+
+  background: #f8fafc;
+}
+
+.admin-return-page .return-calculated-value {
+  min-height: 50px;
+
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  padding: 0 14px;
+}
+
+.admin-return-page .return-calculated-value svg {
+  color: #1d61a8;
+}
+
+.admin-return-page .return-calculated-value strong {
+  color: #293946;
+}
+
+.admin-return-page .fuel-comparison-box {
+  margin-bottom: 18px;
+  padding: 16px;
+
+  display: grid;
+  grid-template-columns:
+    auto 1fr 1fr;
+
+  align-items: center;
+  gap: 16px;
+}
+
+.admin-return-page .fuel-comparison-box > svg {
+  color: #11145f;
+}
+
+.admin-return-page .fuel-comparison-box span {
+  color: #84909b;
+}
+
+.admin-return-page .fuel-comparison-box strong {
+  color: #2d3a46;
+}
+
+
+/* ============================================================
+   INSPECTION
+   ============================================================ */
+
+.admin-return-page .inspection-grid {
+  gap: 12px;
+}
+
+.admin-return-page .inspection-item {
+  padding: 15px;
+
+  border:
+    1px solid
+    #e1e6eb;
+
+  border-radius: 12px;
+
+  background: #fafbfc;
+}
+
+.admin-return-page .inspection-item > strong {
+  color: #34414d;
+}
+
+.admin-return-page .condition-button {
+  border-radius: 9px;
+
+  font-weight: 800;
+}
+
+.admin-return-page .selected-good {
+  border-color: #acd5bb;
+  background: #eaf7ef;
+  color: #167747;
+}
+
+.admin-return-page .selected-attention {
+  border-color: #ead6a2;
+  background: #fff8e8;
+  color: #956d12;
+}
+
+.admin-return-page .selected-damaged {
+  border-color: #e9b7b2;
+  background: #fff0ee;
+  color: #a54136;
+}
+
+
+/* ============================================================
+   WARNINGS
+   ============================================================ */
+
+.admin-return-page .damage-warning {
+  border:
+    1px solid
+    #ead6a2;
+
+  border-radius: 12px;
+
+  background: #fffaf0;
+  color: #7c601c;
+}
+
+
+/* ============================================================
+   REQUIRED PHOTO SECTION
+   ============================================================ */
+
+.admin-return-page .admin-return-photo-notice {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+
+  margin-bottom: 20px;
+  padding: 14px 16px;
+
+  border:
+    1px solid
+    #e6d5a8;
+
+  border-radius: 12px;
+
+  background: #fffaf0;
+  color: #72591e;
+}
+
+.admin-return-page
+.admin-return-photo-notice > svg {
+  flex: 0 0 auto;
+  margin-top: 3px;
+
+  color: #ad821b;
+}
+
+.admin-return-page
+.admin-return-photo-notice strong {
+  display: block;
+
+  font-size: 0.76rem;
+  font-weight: 900;
+}
+
+.admin-return-page
+.admin-return-photo-notice p {
+  margin: 5px 0 0;
+
+  font-size: 0.68rem;
+  line-height: 1.55;
+}
+
+
+.admin-return-page .admin-return-photo-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      2,
+      minmax(0, 1fr)
+    );
+
+  gap: 14px;
+}
+
+
+.admin-return-page .admin-return-photo-slot,
+.admin-return-page .admin-return-odometer-slot {
+  min-width: 0;
+
+  padding: 14px;
+
+  border:
+    1px solid
+    #e1e6eb;
+
+  border-radius: 14px;
+
+  background: #fafbfc;
+}
+
+
+.admin-return-page
+.admin-return-photo-slot-heading {
+  margin-bottom: 12px;
+  padding-bottom: 11px;
+
+  border-bottom:
+    1px solid
+    #e8ecef;
+}
+
+.admin-return-page
+.admin-return-photo-slot-heading span,
+.admin-return-page
+.admin-return-photo-slot-heading strong,
+.admin-return-page
+.admin-return-photo-slot-heading small {
+  display: block;
+}
+
+.admin-return-page
+.admin-return-photo-slot-heading span {
+  color: #b08623;
+
+  font-size: 0.58rem;
+  font-weight: 900;
+  letter-spacing: 0.55px;
+}
+
+.admin-return-page
+.admin-return-photo-slot-heading strong {
+  margin-top: 4px;
+
+  color: #263745;
+
+  font-size: 0.87rem;
+}
+
+.admin-return-page
+.admin-return-photo-slot-heading small {
+  margin-top: 4px;
+
+  color: #83909b;
+
+  font-size: 0.64rem;
+  line-height: 1.45;
+}
+
+
+.admin-return-page .admin-return-photo-status {
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      4,
+      minmax(0, 1fr)
+    );
+
+  gap: 9px;
+
+  margin-top: 14px;
+}
+
+
+.admin-return-page
+.admin-return-photo-status > div {
+  padding: 10px 11px;
+
+  border:
+    1px solid
+    #ead1ce;
+
+  border-radius: 10px;
+
+  background: #fff7f6;
+}
+
+.admin-return-page
+.admin-return-photo-status > div.complete {
+  border-color: #bee0ca;
+  background: #f1faf4;
+}
+
+.admin-return-page
+.admin-return-photo-status span,
+.admin-return-page
+.admin-return-photo-status strong {
+  display: block;
+}
+
+.admin-return-page
+.admin-return-photo-status span {
+  color: #7b8793;
+
+  font-size: 0.61rem;
+  font-weight: 800;
+}
+
+.admin-return-page
+.admin-return-photo-status strong {
+  margin-top: 3px;
+
+  color: #a23d33;
+
+  font-size: 0.68rem;
+}
+
+.admin-return-page
+.admin-return-photo-status
+> div.complete strong {
+  color: #177747;
+}
+
+
+.admin-return-page
+.admin-return-odometer-slot {
+  margin-top: 16px;
+}
+
+
+.admin-return-page
+.admin-return-required-summary {
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      2,
+      minmax(0, 1fr)
+    );
+
+  gap: 10px;
+
+  margin-top: 14px;
+}
+
+
+.admin-return-page
+.admin-return-required-summary > div {
+  padding: 12px 14px;
+
+  border:
+    1px solid
+    #dfe5ea;
+
+  border-radius: 11px;
+
+  background: #f7f9fb;
+}
+
+.admin-return-page
+.admin-return-required-summary span,
+.admin-return-page
+.admin-return-required-summary strong {
+  display: block;
+}
+
+.admin-return-page
+.admin-return-required-summary span {
+  color: #77838f;
+
+  font-size: 0.65rem;
+  font-weight: 800;
+}
+
+.admin-return-page
+.admin-return-required-summary strong {
+  margin-top: 3px;
+
+  color: #273946;
+
+  font-size: 0.82rem;
+  font-weight: 900;
+}
+
+.admin-return-page
+.admin-return-damage-photo {
+  margin-top: 18px;
+}
+
+
+/* ============================================================
+   SECURITY / DECLARATION
+   ============================================================ */
+
+.admin-return-page .security-checklist,
+.admin-return-page .declaration-list {
+  display: grid;
+  gap: 10px;
+}
+
+.admin-return-page .confirmation-check {
+  min-height: 48px;
+
+  display: flex;
+  align-items: center;
+  gap: 11px;
+
+  padding: 11px 13px;
+
+  border:
+    1px solid
+    #e0e6eb;
+
+  border-radius: 10px;
+
+  background: #fafbfc;
+
+  color: #43505c;
+}
+
+.admin-return-page
+.confirmation-check input {
+  width: 17px;
+  height: 17px;
+
+  accent-color: #11145f;
+}
+
+
+/* ============================================================
+   KEY RETURN
+   ============================================================ */
+
+.admin-return-page .key-return-box {
+  border:
+    1px solid
+    #dfe5ea;
+
+  border-radius: 13px;
+
+  background: #f8fafc;
+}
+
+.admin-return-page .key-return-box > svg {
+  color: #b38b2e;
+}
+
+
+/* ============================================================
+   ACTIONS
+   ============================================================ */
+
+.admin-return-page .form-actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 11px;
+
+  padding: 4px 0 0;
+}
+
+.admin-return-page .cancel-button,
+.admin-return-page .submit-button {
+  min-height: 48px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  padding: 0 18px;
+
+  border-radius: 11px;
+
+  font-size: 0.76rem;
+  font-weight: 900;
+
+  text-decoration: none;
+
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease,
+    background 0.18s ease;
+}
+
+.admin-return-page .cancel-button {
+  border:
+    1px solid
+    #d6dee5;
+
+  background: #ffffff;
+  color: #4a5865;
+}
+
+.admin-return-page .submit-button {
+  border: 0;
+
+  background:
+    linear-gradient(
+      135deg,
+      #11145f,
+      #252b8d
+    );
+
+  color: #ffffff;
+
+  box-shadow:
+    0 10px 22px
+    rgba(17, 20, 95, 0.18);
+}
+
+.admin-return-page
+.submit-button:not(:disabled):hover {
+  transform: translateY(-1px);
+
+  box-shadow:
+    0 13px 27px
+    rgba(17, 20, 95, 0.23);
+}
+
+.admin-return-page .submit-button:disabled {
+  opacity: 0.62;
+  cursor: not-allowed;
+}
+
+
+/* ============================================================
+   LOADING / ERROR STATES
+   ============================================================ */
+
+.admin-return-page .page-loading {
+  min-height: 60vh;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 40px 20px;
+
+  color: #52606d;
+}
+
+.admin-return-page .page-loading > div {
+  width:
+    min(
+      560px,
+      100%
+    );
+
+  padding: 28px;
+
+  border:
+    1px solid
+    #e0e5ea;
+
+  border-radius: 16px;
+
+  background: #ffffff;
+
+  box-shadow:
+    0 14px 34px
+    rgba(31, 40, 55, 0.07);
+
+  text-align: center;
+}
+
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+
+@media (max-width: 1000px) {
+  .admin-return-page .request-info-grid {
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(0, 1fr)
+      );
+  }
+
+  .admin-return-page
+  .admin-return-photo-status {
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(0, 1fr)
+      );
+  }
+}
+
+
+@media (max-width: 760px) {
+  .admin-return-page .form-header {
+    min-height: 64px;
+  }
+
+  .admin-return-page .form-brand span {
+    font-size: 0.72rem;
+  }
+
+  .admin-return-page .form-hero {
+    min-height: auto;
+
+    padding: 44px 0 72px;
+  }
+
+  .admin-return-page .form-hero h1 {
+    font-size:
+      clamp(
+        2rem,
+        10vw,
+        3rem
+      );
+
+    letter-spacing: -1.3px;
+  }
+
+  .admin-return-page .vehicle-form {
+    margin-top: -30px;
+  }
+
+  .admin-return-page .form-card {
+    padding: 20px;
+    border-radius: 15px;
+  }
+
+  .admin-return-page .form-card:first-child {
+    padding: 21px;
+  }
+
+  .admin-return-page
+  .admin-return-photo-grid,
+  .admin-return-page
+  .admin-return-required-summary {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-return-page .fuel-comparison-box {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+@media (max-width: 560px) {
+  .admin-return-page .form-header-inner,
+  .admin-return-page .form-hero-inner,
+  .admin-return-page .vehicle-form {
+    width:
+      min(
+        100% - 22px,
+        1240px
+      );
+  }
+
+  .admin-return-page .back-button {
+    min-height: 40px;
+    padding: 0 11px;
+  }
+
+  .admin-return-page .form-brand {
+    font-size: 0.7rem;
+  }
+
+  .admin-return-page .request-info-grid,
+  .admin-return-page
+  .admin-return-photo-status {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-return-page .form-section-heading {
+    gap: 11px;
+  }
+
+  .admin-return-page
+  .form-section-heading > span {
+    width: 38px;
+    height: 38px;
+
+    flex-basis: 38px;
+  }
+
+  .admin-return-page .form-actions {
+    flex-direction: column-reverse;
+  }
+
+  .admin-return-page .cancel-button,
+  .admin-return-page .submit-button {
+    width: 100%;
+  }
+}

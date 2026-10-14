@@ -1,0 +1,183 @@
+/*
+  SYSTEM FEATURE VISIBILITY
+  -------------------------
+  FeatureProvider writes attributes like:
+
+  data-feature-fuel="on"
+  data-feature-fuel="off"
+
+  onto the <html> element.
+
+  These rules hide navigation/actions for disabled modules.
+  Route access will be blocked separately in the next steps.
+*/
+
+
+/* ============================================================
+   VEHICLE REQUESTS
+   ============================================================ */
+
+html[data-feature-vehicle-requests="off"]
+a[href="/request-vehicle"],
+
+html[data-feature-vehicle-requests="off"]
+a[href="/requests"],
+
+html[data-feature-vehicle-requests="off"]
+a[href^="/requests/"],
+
+html[data-feature-vehicle-requests="off"]
+a[href^="/checkout/"],
+
+html[data-feature-vehicle-requests="off"]
+a[href="/employee/request-vehicle"],
+
+html[data-feature-vehicle-requests="off"]
+a[href="/employee/my-requests"],
+
+html[data-feature-vehicle-requests="off"]
+a[href^="/employee/pre-inspection/"] {
+  display: none !important;
+}
+
+
+/* Hide dashboard booking/request sections when requests are OFF */
+
+html[data-feature-vehicle-requests="off"]
+.dashboard-section:has(
+  a[href^="/requests/"]
+) {
+  display: none !important;
+}
+
+
+/* ============================================================
+   TRIP HISTORY
+   ============================================================ */
+
+html[data-feature-trip-history="off"]
+a[href="/history"],
+
+html[data-feature-trip-history="off"]
+a[href="/employee/my-history"] {
+  display: none !important;
+}
+
+
+/* ============================================================
+   EMPLOYEES
+   ============================================================ */
+
+html[data-feature-employees="off"]
+a[href="/employees"] {
+  display: none !important;
+}
+
+
+/* ============================================================
+   DRIVERS
+   ============================================================ */
+
+html[data-feature-drivers="off"]
+a[href="/drivers"] {
+  display: none !important;
+}
+
+
+/* ============================================================
+   DEFECTS
+   ============================================================ */
+
+html[data-feature-defects="off"]
+a[href="/defects"] {
+  display: none !important;
+}
+
+
+/* ============================================================
+   MAINTENANCE
+   ============================================================ */
+
+html[data-feature-maintenance="off"]
+a[href="/maintenance"] {
+  display: none !important;
+}
+
+
+/* ============================================================
+   FUEL
+   ============================================================ */
+
+html[data-feature-fuel="off"]
+a[href="/fuel"] {
+  display: none !important;
+}
+
+
+/* ============================================================
+   CUSTOMERS
+   ============================================================ */
+
+html[data-feature-customers="off"]
+a[href="/customers"] {
+  display: none !important;
+}
+
+
+/* ============================================================
+   TRANSPORT JOBS
+   ============================================================ */
+
+html[data-feature-transport-jobs="off"]
+a[href="/jobs"] {
+  display: none !important;
+}
+
+
+/* ============================================================
+   DISPATCH
+   ============================================================ */
+
+html[data-feature-dispatch="off"]
+a[href="/dispatch"] {
+  display: none !important;
+}
+
+
+/* ============================================================
+   POD
+   ============================================================ */
+
+html[data-feature-pod="off"]
+a[href^="/pod/job/"],
+
+html[data-feature-pod="off"]
+a[href="/employee/deliveries"],
+
+html[data-feature-pod="off"]
+a[href^="/employee/pod/"] {
+  display: none !important;
+}
+
+
+/* ============================================================
+   INCIDENTS
+   ============================================================ */
+
+html[data-feature-incidents="off"]
+a[href^="/incidents/report/"] {
+  display: none !important;
+}
+
+
+/* ============================================================
+   EMPLOYEE PORTAL
+   ============================================================ */
+
+html[data-feature-employee-portal="off"]
+a[href="/employee"],
+
+html[data-feature-employee-portal="off"]
+a[href^="/employee/"] {
+  display: none !important;
+}

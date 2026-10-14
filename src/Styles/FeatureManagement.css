@@ -1,0 +1,1480 @@
+/* ==========================================================
+   AEDC FEATURE MANAGEMENT
+========================================================== */
+
+:root {
+  --feature-navy:
+    #11145f;
+
+  --feature-navy-dark:
+    #0c104d;
+
+  --feature-gold:
+    #b38b2e;
+
+  --feature-green:
+    #218653;
+
+  --feature-green-soft:
+    #ebf8f1;
+
+  --feature-red:
+    #b42318;
+
+  --feature-red-soft:
+    #fff4f3;
+
+  --feature-bg:
+    #f5f7fa;
+
+  --feature-card:
+    #ffffff;
+
+  --feature-text:
+    #253244;
+
+  --feature-muted:
+    #758190;
+
+  --feature-light:
+    #98a2ad;
+
+  --feature-border:
+    #e0e5ea;
+
+  --feature-shadow:
+    0 6px 22px
+    rgba(
+      15,
+      23,
+      42,
+      0.045
+    );
+}
+
+
+/* ==========================================================
+   RESET
+========================================================== */
+
+.feature-management-page,
+.feature-management-page * {
+  box-sizing:
+    border-box;
+}
+
+
+/* ==========================================================
+   PAGE
+========================================================== */
+
+.feature-management-page {
+  width: 100%;
+
+  min-height:
+    100vh;
+
+  margin: 0;
+
+  background:
+    var(
+      --feature-bg
+    );
+
+  color:
+    var(
+      --feature-text
+    );
+
+  font-family:
+    Inter,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+}
+
+
+/* ==========================================================
+   HERO
+========================================================== */
+
+.feature-management-hero {
+  position: relative;
+
+  width: 100%;
+
+  overflow: hidden;
+
+  background:
+    linear-gradient(
+      135deg,
+      #10145d 0%,
+      #202779 100%
+    );
+}
+
+
+.feature-management-hero::before {
+  content: "";
+
+  position: absolute;
+
+  width: 330px;
+
+  height: 330px;
+
+  right: -70px;
+
+  top: -165px;
+
+  border-radius:
+    50%;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.025
+    );
+
+  border:
+    45px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.018
+    );
+}
+
+
+.feature-management-hero::after {
+  content: "";
+
+  position: absolute;
+
+  width: 220px;
+
+  height: 220px;
+
+  left: 7%;
+
+  bottom: -170px;
+
+  border-radius:
+    50%;
+
+  background:
+    rgba(
+      179,
+      139,
+      46,
+      0.09
+    );
+}
+
+
+.feature-management-hero-inner {
+  position: relative;
+
+  z-index: 2;
+
+  width:
+    min(
+      1180px,
+      calc(
+        100% - 48px
+      )
+    );
+
+  min-height:
+    220px;
+
+  margin:
+    0 auto;
+
+  padding:
+    48px 0;
+
+  display: flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    space-between;
+
+  gap: 40px;
+}
+
+
+/* ==========================================================
+   HERO COPY
+========================================================== */
+
+.feature-management-hero-copy {
+  max-width:
+    720px;
+}
+
+
+.feature-management-hero-copy > span {
+  display: block;
+
+  margin-bottom:
+    10px;
+
+  color:
+    #e0b84d;
+
+  font-size:
+    0.68rem;
+
+  font-weight:
+    850;
+
+  letter-spacing:
+    2px;
+
+  text-transform:
+    uppercase;
+}
+
+
+.feature-management-hero-copy h2 {
+  margin: 0;
+
+  color:
+    #ffffff;
+
+  font-size:
+    clamp(
+      2rem,
+      4vw,
+      3rem
+    );
+
+  font-weight:
+    850;
+
+  line-height:
+    1.05;
+
+  letter-spacing:
+    -0.045em;
+}
+
+
+.feature-management-hero-copy p {
+  max-width:
+    680px;
+
+  margin:
+    14px
+    0
+    0;
+
+  color:
+    rgba(
+      255,
+      255,
+      255,
+      0.76
+    );
+
+  font-size:
+    0.93rem;
+
+  line-height:
+    1.65;
+}
+
+
+/* ==========================================================
+   HERO SUMMARY
+========================================================== */
+
+.feature-management-summary {
+  min-width:
+    150px;
+
+  padding:
+    18px
+    22px;
+
+  border:
+    1px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.13
+    );
+
+  border-radius:
+    14px;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.08
+    );
+
+  backdrop-filter:
+    blur(10px);
+
+  text-align:
+    center;
+}
+
+
+.feature-management-summary small {
+  display: block;
+
+  color:
+    rgba(
+      255,
+      255,
+      255,
+      0.68
+    );
+
+  font-size:
+    0.54rem;
+
+  font-weight:
+    850;
+
+  letter-spacing:
+    1.25px;
+}
+
+
+.feature-management-summary strong {
+  display: block;
+
+  margin-top:
+    6px;
+
+  color:
+    #ffffff;
+
+  font-size:
+    1.75rem;
+
+  font-weight:
+    900;
+}
+
+
+.feature-management-summary strong span {
+  margin-left:
+    3px;
+
+  color:
+    rgba(
+      255,
+      255,
+      255,
+      0.48
+    );
+
+  font-size:
+    0.85rem;
+}
+
+
+/* ==========================================================
+   MAIN CONTENT
+========================================================== */
+
+.feature-management-content {
+  width:
+    min(
+      1180px,
+      calc(
+        100% - 48px
+      )
+    );
+
+  margin:
+    0 auto;
+
+  padding:
+    32px
+    0
+    80px;
+}
+
+
+/* ==========================================================
+   INTRO CARD
+========================================================== */
+
+.feature-management-intro {
+  display: grid;
+
+  grid-template-columns:
+    auto
+    minmax(
+      0,
+      1fr
+    )
+    auto;
+
+  align-items:
+    center;
+
+  gap: 18px;
+
+  padding:
+    23px
+    24px;
+
+  margin-bottom:
+    32px;
+
+  border:
+    1px solid
+    var(
+      --feature-border
+    );
+
+  border-radius:
+    16px;
+
+  background:
+    #ffffff;
+
+  box-shadow:
+    var(
+      --feature-shadow
+    );
+}
+
+
+.feature-management-intro-icon {
+  width: 48px;
+
+  height: 48px;
+
+  display: grid;
+
+  place-items:
+    center;
+
+  border-radius:
+    13px;
+
+  background:
+    #f1f1fb;
+
+  color:
+    var(
+      --feature-navy
+    );
+
+  font-size:
+    1.15rem;
+}
+
+
+.feature-management-intro-copy > span {
+  display: block;
+
+  margin-bottom:
+    5px;
+
+  color:
+    var(
+      --feature-gold
+    );
+
+  font-size:
+    0.58rem;
+
+  font-weight:
+    850;
+
+  letter-spacing:
+    1.25px;
+
+  text-transform:
+    uppercase;
+}
+
+
+.feature-management-intro-copy h2 {
+  margin: 0;
+
+  color:
+    var(
+      --feature-text
+    );
+
+  font-size:
+    1.08rem;
+
+  font-weight:
+    850;
+
+  letter-spacing:
+    -0.02em;
+}
+
+
+.feature-management-intro-copy p {
+  max-width:
+    700px;
+
+  margin:
+    7px
+    0
+    0;
+
+  color:
+    var(
+      --feature-muted
+    );
+
+  font-size:
+    0.77rem;
+
+  line-height:
+    1.6;
+}
+
+
+/* ==========================================================
+   SAFETY NOTE
+========================================================== */
+
+.feature-management-safety-note {
+  max-width:
+    290px;
+
+  display: flex;
+
+  align-items:
+    flex-start;
+
+  gap: 9px;
+
+  padding:
+    12px
+    14px;
+
+  border:
+    1px solid
+    rgba(
+      179,
+      139,
+      46,
+      0.3
+    );
+
+  border-radius:
+    10px;
+
+  background:
+    #fffaec;
+
+  color:
+    #785f1c;
+
+  font-size:
+    0.67rem;
+
+  font-weight:
+    650;
+
+  line-height:
+    1.45;
+}
+
+
+.feature-management-safety-note svg {
+  margin-top:
+    2px;
+
+  flex-shrink:
+    0;
+
+  color:
+    var(
+      --feature-gold
+    );
+}
+
+
+/* ==========================================================
+   MESSAGES
+========================================================== */
+
+.feature-management-message {
+  display: flex;
+
+  align-items:
+    center;
+
+  gap: 10px;
+
+  margin-bottom:
+    22px;
+
+  padding:
+    13px
+    15px;
+
+  border-radius:
+    10px;
+
+  font-size:
+    0.75rem;
+
+  font-weight:
+    700;
+}
+
+
+.feature-management-message.error {
+  border:
+    1px solid
+    #efc3be;
+
+  background:
+    var(
+      --feature-red-soft
+    );
+
+  color:
+    var(
+      --feature-red
+    );
+}
+
+
+.feature-management-message.success {
+  border:
+    1px solid
+    #b7dfc7;
+
+  background:
+    var(
+      --feature-green-soft
+    );
+
+  color:
+    var(
+      --feature-green
+    );
+}
+
+
+.feature-management-success-dot {
+  width: 8px;
+
+  height: 8px;
+
+  flex-shrink:
+    0;
+
+  border-radius:
+    50%;
+
+  background:
+    var(
+      --feature-green
+    );
+}
+
+
+/* ==========================================================
+   GROUP
+========================================================== */
+
+.feature-management-group {
+  margin-top:
+    31px;
+}
+
+
+.feature-management-group:first-of-type {
+  margin-top: 0;
+}
+
+
+.feature-management-group-heading {
+  display: flex;
+
+  align-items:
+    center;
+
+  gap: 14px;
+
+  margin-bottom:
+    13px;
+}
+
+
+.feature-management-group-heading h2 {
+  margin: 0;
+
+  color:
+    #626e7c;
+
+  font-size:
+    0.64rem;
+
+  font-weight:
+    850;
+
+  letter-spacing:
+    1.45px;
+
+  text-transform:
+    uppercase;
+
+  white-space:
+    nowrap;
+}
+
+
+.feature-management-group-heading::after {
+  content: "";
+
+  width: 100%;
+
+  height: 1px;
+
+  background:
+    #dfe4e9;
+}
+
+
+/* ==========================================================
+   GRID
+========================================================== */
+
+.feature-management-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      2,
+      minmax(
+        0,
+        1fr
+      )
+    );
+
+  gap: 14px;
+}
+
+
+/* ==========================================================
+   CARD
+========================================================== */
+
+.feature-management-card {
+  position: relative;
+
+  min-height:
+    138px;
+
+  display: flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    space-between;
+
+  gap: 22px;
+
+  overflow: hidden;
+
+  padding:
+    21px
+    20px
+    21px
+    19px;
+
+  border:
+    1px solid
+    var(
+      --feature-border
+    );
+
+  border-radius:
+    14px;
+
+  background:
+    #ffffff;
+
+  box-shadow:
+    0 3px 12px
+    rgba(
+      15,
+      23,
+      42,
+      0.03
+    );
+
+  transition:
+    transform
+      0.2s
+      ease,
+    border-color
+      0.2s
+      ease,
+    box-shadow
+      0.2s
+      ease;
+}
+
+
+.feature-management-card::before {
+  content: "";
+
+  position:
+    absolute;
+
+  top: 0;
+
+  bottom: 0;
+
+  left: 0;
+
+  width: 4px;
+
+  background:
+    #aab4be;
+}
+
+
+.feature-management-card:hover {
+  transform:
+    translateY(
+      -2px
+    );
+
+  border-color:
+    #cfd6dd;
+
+  box-shadow:
+    0 12px 28px
+    rgba(
+      15,
+      23,
+      42,
+      0.07
+    );
+}
+
+
+/* ==========================================================
+   ENABLED
+========================================================== */
+
+.feature-management-card.is-enabled::before {
+  background:
+    var(
+      --feature-green
+    );
+}
+
+
+/* ==========================================================
+   DISABLED
+========================================================== */
+
+.feature-management-card.is-disabled {
+  background:
+    #fafbfc;
+
+  box-shadow:
+    none;
+}
+
+
+.feature-management-card.is-disabled::before {
+  background:
+    #aeb7c0;
+}
+
+
+.feature-management-card.is-disabled
+.feature-management-card-copy {
+  opacity:
+    0.78;
+}
+
+
+/* ==========================================================
+   COPY
+========================================================== */
+
+.feature-management-card-copy {
+  min-width: 0;
+
+  flex: 1;
+}
+
+
+.feature-management-card-title-row {
+  display: flex;
+
+  align-items:
+    center;
+
+  flex-wrap: wrap;
+
+  gap: 8px;
+}
+
+
+.feature-management-card h3 {
+  margin: 0;
+
+  color:
+    #273446;
+
+  font-size:
+    0.94rem;
+
+  font-weight:
+    850;
+
+  letter-spacing:
+    -0.018em;
+}
+
+
+.feature-management-card p {
+  margin:
+    7px
+    0
+    0;
+
+  color:
+    var(
+      --feature-muted
+    );
+
+  font-size:
+    0.72rem;
+
+  line-height:
+    1.5;
+}
+
+
+/* ==========================================================
+   ON/OFF STATUS CHIP
+========================================================== */
+
+.feature-management-status {
+  display:
+    inline-flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  min-height:
+    19px;
+
+  padding:
+    2px
+    7px;
+
+  border-radius:
+    999px;
+
+  font-size:
+    0.51rem;
+
+  font-weight:
+    900;
+
+  letter-spacing:
+    0.5px;
+
+  text-transform:
+    uppercase;
+}
+
+
+.feature-management-status.enabled {
+  background:
+    var(
+      --feature-green-soft
+    );
+
+  color:
+    var(
+      --feature-green
+    );
+}
+
+
+.feature-management-status.disabled {
+  background:
+    #eceff2;
+
+  color:
+    #6f7a86;
+}
+
+
+/* ==========================================================
+   DEPENDENCIES
+========================================================== */
+
+.feature-management-dependencies {
+  color:
+    #9a761f
+    !important;
+
+  font-size:
+    0.63rem
+    !important;
+
+  font-weight:
+    700;
+}
+
+
+/* ==========================================================
+   METADATA
+========================================================== */
+
+.feature-management-meta {
+  display: block;
+
+  margin-top:
+    8px;
+
+  color:
+    var(
+      --feature-light
+    );
+
+  font-size:
+    0.6rem;
+
+  line-height:
+    1.4;
+
+  overflow-wrap:
+    anywhere;
+}
+
+
+/* ==========================================================
+   TOGGLE WRAPPER
+========================================================== */
+
+.feature-management-toggle-wrapper {
+  flex:
+    0 0 auto;
+
+  display: flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+}
+
+
+/* ==========================================================
+   TOGGLE
+========================================================== */
+
+.feature-management-toggle {
+  position: relative;
+
+  width: 82px;
+
+  height: 40px;
+
+  display: flex;
+
+  align-items:
+    center;
+
+  border: 0;
+
+  border-radius:
+    999px;
+
+  padding:
+    4px 5px;
+
+  outline: none;
+
+  cursor: pointer;
+
+  transition:
+    transform
+      0.2s
+      ease,
+    background
+      0.2s
+      ease,
+    box-shadow
+      0.2s
+      ease;
+}
+
+
+.feature-management-toggle:hover:not(
+  :disabled
+) {
+  transform:
+    scale(
+      1.025
+    );
+}
+
+
+.feature-management-toggle:focus-visible {
+  box-shadow:
+    0 0 0 4px
+    rgba(
+      17,
+      20,
+      95,
+      0.13
+    );
+}
+
+
+.feature-management-toggle:disabled {
+  cursor:
+    not-allowed;
+
+  opacity:
+    0.66;
+}
+
+
+/* ==========================================================
+   ON TOGGLE
+========================================================== */
+
+.feature-management-toggle.enabled {
+  justify-content:
+    space-between;
+
+  background:
+    var(
+      --feature-navy
+    );
+
+  color:
+    #ffffff;
+
+  box-shadow:
+    0 5px 12px
+    rgba(
+      17,
+      20,
+      95,
+      0.15
+    );
+}
+
+
+/* ==========================================================
+   OFF TOGGLE
+========================================================== */
+
+.feature-management-toggle.disabled {
+  flex-direction:
+    row-reverse;
+
+  justify-content:
+    space-between;
+
+  background:
+    #e8ecf0;
+
+  color:
+    #6b7580;
+
+  box-shadow:
+    inset
+    0 0 0 1px
+    #d5dbe1;
+}
+
+
+/* ==========================================================
+   TOGGLE LABEL
+========================================================== */
+
+.feature-management-toggle-label {
+  flex: 1;
+
+  text-align:
+    center;
+
+  font-size:
+    0.59rem;
+
+  font-weight:
+    900;
+
+  letter-spacing:
+    0.35px;
+}
+
+
+/* ==========================================================
+   KNOB
+========================================================== */
+
+.feature-management-toggle-knob {
+  width: 30px;
+
+  height: 30px;
+
+  flex:
+    0 0 30px;
+
+  border-radius:
+    50%;
+
+  background:
+    #ffffff;
+
+  box-shadow:
+    0 2px 7px
+    rgba(
+      15,
+      23,
+      42,
+      0.2
+    );
+}
+
+
+/* ==========================================================
+   TOGGLE LOADER
+========================================================== */
+
+.feature-management-toggle-spinner {
+  margin:
+    auto;
+
+  font-size:
+    0.85rem;
+
+  animation:
+    featureManagementSpin
+    0.8s
+    linear
+    infinite;
+}
+
+
+/* ==========================================================
+   LOADING
+========================================================== */
+
+.feature-management-loading {
+  min-height:
+    260px;
+
+  display: flex;
+
+  flex-direction:
+    column;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  gap: 12px;
+
+  color:
+    var(
+      --feature-muted
+    );
+
+  font-size:
+    0.78rem;
+
+  font-weight:
+    700;
+}
+
+
+.feature-management-loading svg {
+  color:
+    var(
+      --feature-navy
+    );
+
+  font-size:
+    1.35rem;
+
+  animation:
+    featureManagementSpin
+    0.8s
+    linear
+    infinite;
+}
+
+
+@keyframes featureManagementSpin {
+
+  to {
+    transform:
+      rotate(
+        360deg
+      );
+  }
+
+}
+
+
+/* ==========================================================
+   TABLET
+========================================================== */
+
+@media (
+  max-width: 900px
+) {
+
+  .feature-management-hero-inner {
+    width:
+      calc(
+        100% - 32px
+      );
+  }
+
+
+  .feature-management-content {
+    width:
+      calc(
+        100% - 32px
+      );
+  }
+
+
+  .feature-management-intro {
+    grid-template-columns:
+      auto
+      1fr;
+  }
+
+
+  .feature-management-safety-note {
+    grid-column:
+      1 / -1;
+
+    max-width:
+      none;
+  }
+
+
+  .feature-management-grid {
+    grid-template-columns:
+      1fr;
+  }
+
+}
+
+
+/* ==========================================================
+   MOBILE
+========================================================== */
+
+@media (
+  max-width: 640px
+) {
+
+  .feature-management-hero-inner {
+    min-height:
+      auto;
+
+    padding:
+      36px 0;
+
+    flex-direction:
+      column;
+
+    align-items:
+      flex-start;
+
+    gap: 22px;
+  }
+
+
+  .feature-management-hero-copy h2 {
+    font-size:
+      2rem;
+  }
+
+
+  .feature-management-summary {
+    min-width:
+      120px;
+
+    padding:
+      13px
+      17px;
+  }
+
+
+  .feature-management-content {
+    padding-top:
+      22px;
+  }
+
+
+  .feature-management-intro {
+    grid-template-columns:
+      1fr;
+
+    padding:
+      20px;
+  }
+
+
+  .feature-management-card {
+    min-height: 0;
+
+    flex-direction:
+      column;
+
+    align-items:
+      stretch;
+
+    padding:
+      19px;
+  }
+
+
+  .feature-management-toggle-wrapper {
+    width: 100%;
+
+    justify-content:
+      flex-end;
+  }
+
+}

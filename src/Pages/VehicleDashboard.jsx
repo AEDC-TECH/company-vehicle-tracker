@@ -1,18 +1,22 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import {
   FaCar,
   FaClipboardCheck,
   FaClipboardList,
-  FaClock,
   FaExclamationTriangle,
   FaHistory,
-  FaSignOutAlt,
   FaPlus,
   FaRoad,
-  FaSyncAlt,
+  FaTruck,
+  FaBox,
+  FaBuilding,
+  FaGasPump,
+  FaTools,
   FaUsers,
+  FaWrench,
+  FaClock,
 } from "react-icons/fa";
 
 import { supabase } from "../lib/supabase";
@@ -21,8 +25,6 @@ import AEDCLogo from "../Components/AEDCLogo";
 import "../Styles/VehicleDashboard.css";
 
 function VehicleDashboard() {
-  const navigate = useNavigate();
-
   const [vehicles, setVehicles] = useState([]);
   const [pendingRequests, setPendingRequests] = useState([]);
   const [approvedRequests, setApprovedRequests] = useState([]);
@@ -30,67 +32,10 @@ function VehicleDashboard() {
 
   const [loading, setLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
-  const [loggingOut, setLoggingOut] = useState(false);
-  const [currentTime, setCurrentTime] = useState(new Date());
-
-  useEffect(() => {
-    const timer = window.setInterval(() => {
-      setCurrentTime(new Date());
-    }, 1000);
-
-    return () => {
-      window.clearInterval(timer);
-    };
-  }, []);
 
   useEffect(() => {
     loadDashboard();
   }, []);
-
-  const dashboardTimeText =
-    new Intl.DateTimeFormat(
-      "en-ZA",
-      {
-        hour: "2-digit",
-        minute: "2-digit",
-        second: "2-digit",
-        hour12: false,
-      }
-    ).format(currentTime);
-
-  async function handleLogout() {
-    if (loggingOut) {
-      return;
-    }
-
-    try {
-      setLoggingOut(true);
-      setErrorMessage("");
-
-      const { error } =
-        await supabase.auth.signOut();
-
-      if (error) {
-        throw error;
-      }
-
-      navigate("/admin-login", {
-        replace: true,
-      });
-    } catch (error) {
-      console.error(
-        "Admin logout error:",
-        error
-      );
-
-      setErrorMessage(
-        error.message ||
-          "Unable to log out. Please try again."
-      );
-
-      setLoggingOut(false);
-    }
-  }
 
 
   async function loadDashboard() {
@@ -250,6 +195,74 @@ function VehicleDashboard() {
     }
   }
 
+  function getVehicleReservation(
+    vehicleId
+  ) {
+    return approvedRequests.find(
+      (request) =>
+        request.vehicle_id ===
+          vehicleId &&
+        request.preinspection_expired_at ==
+          null &&
+        request.preinspection_expires_at &&
+        new Date(
+          request.preinspection_expires_at
+        ).getTime() >
+          Date.now()
+    );
+  }
+
+
+  function getReservationTimeRemaining(
+    request
+  ) {
+    if (
+      !request?.preinspection_expires_at
+    ) {
+      return "";
+    }
+
+
+    const remainingMs =
+      new Date(
+        request.preinspection_expires_at
+      ).getTime() -
+      Date.now();
+
+
+    if (remainingMs <= 0) {
+      return "Expired";
+    }
+
+
+    const totalMinutes =
+      Math.ceil(
+        remainingMs /
+          60000
+      );
+
+
+    const hours =
+      Math.floor(
+        totalMinutes /
+          60
+      );
+
+
+    const minutes =
+      totalMinutes %
+      60;
+
+
+    if (hours > 0) {
+      return `${hours}h ${minutes}m remaining`;
+    }
+
+
+    return `${minutes} min remaining`;
+  }
+
+
   function formatDate(value) {
     if (!value) {
       return "Not recorded";
@@ -268,6 +281,12 @@ function VehicleDashboard() {
     (vehicle) =>
       vehicle.status === "available"
   );
+
+  const reservedVehicles = vehicles.filter(
+    (vehicle) =>
+      vehicle.status === "reserved"
+  );
+
 
   const inUseVehicles = vehicles.filter(
     (vehicle) =>
@@ -393,86 +412,8 @@ function VehicleDashboard() {
   return (
     <main className="dashboard-page">
       {/* ===================================================
-          HEADER
+          SHARED ADMIN NAVBAR
       =================================================== */}
-
-      <header className="dashboard-header">
-        <div className="dashboard-header-inner">
-          <div className="dashboard-brand">
-            <AEDCLogo className="dashboard-brand-logo" />
-
-            <div className="dashboard-brand-text">
-              <span>
-                COMPANY VEHICLE TRACKER
-              </span>
-
-              <h1>
-                Fleet Dashboard
-              </h1>
-            </div>
-          </div>
-
-          <div className="dashboard-header-actions">
-            <div className="dashboard-navbar-status">
-              <span className="dashboard-navbar-live-dot" />
-
-              <div>
-                <small>
-                  SYSTEM
-                </small>
-
-                <strong>
-                  ONLINE
-                </strong>
-              </div>
-            </div>
-
-            <div className="dashboard-navbar-time">
-              <FaClock />
-
-              <div>
-                <small>
-                  LOCAL TIME
-                </small>
-
-                <strong>
-                  {dashboardTimeText}
-                </strong>
-              </div>
-            </div>
-
-            <Link
-              to="/vehicles"
-              className="dashboard-header-link"
-            >
-              <FaCar />
-              Manage Vehicles
-            </Link>
-
-            <button
-              type="button"
-              className="dashboard-refresh-button"
-              onClick={loadDashboard}
-            >
-              <FaSyncAlt />
-              Refresh
-            </button>
-
-            <button
-              type="button"
-              className="dashboard-logout-button"
-              onClick={handleLogout}
-              disabled={loggingOut}
-            >
-              <FaSignOutAlt />
-              {loggingOut
-                ? "Logging out..."
-                : "Logout"}
-            </button>
-          </div>
-        </div>
-      </header>
-
       {/* ===================================================
           HERO
       =================================================== */}
@@ -561,6 +502,23 @@ function VehicleDashboard() {
               </strong>
             </div>
           </article>
+
+          <article className="dashboard-summary-card">
+            <div className="dashboard-summary-icon dashboard-summary-reserved-icon">
+              <FaClock />
+            </div>
+
+            <div>
+              <span>
+                Reserved
+              </span>
+
+              <strong>
+                {reservedVehicles.length}
+              </strong>
+            </div>
+          </article>
+
 
           <article className="dashboard-summary-card">
             <div className="dashboard-summary-icon">
@@ -702,6 +660,139 @@ function VehicleDashboard() {
                 </span>
               </div>
             </Link>
+
+
+            <Link
+              to="/drivers"
+              className="dashboard-action-card"
+            >
+              <FaTruck />
+
+              <div>
+                <strong>
+                  Driver Management
+                </strong>
+
+                <span>
+                  Manage driver eligibility,
+                  licences and PrDP compliance.
+                </span>
+              </div>
+            </Link>
+
+
+            <Link
+              to="/defects"
+              className="dashboard-action-card"
+            >
+              <FaWrench />
+
+              <div>
+                <strong>
+                  Defect Management
+                </strong>
+
+                <span>
+                  Review faults, repairs and
+                  grounded vehicles.
+                </span>
+              </div>
+            </Link>
+
+
+            <Link
+              to="/maintenance"
+              className="dashboard-action-card"
+            >
+              <FaTools />
+
+              <div>
+                <strong>
+                  Maintenance
+                </strong>
+
+                <span>
+                  Schedule services, repairs,
+                  costs and return to service.
+                </span>
+              </div>
+            </Link>
+
+
+            <Link
+              to="/fuel"
+              className="dashboard-action-card"
+            >
+              <FaGasPump />
+
+              <div>
+                <strong>
+                  Fuel Management
+                </strong>
+
+                <span>
+                  Track fuel purchases, litres,
+                  receipts and fleet fuel spend.
+                </span>
+              </div>
+            </Link>
+
+
+            <Link
+              to="/customers"
+              className="dashboard-action-card"
+            >
+              <FaBuilding />
+
+              <div>
+                <strong>
+                  Customers
+                </strong>
+
+                <span>
+                  Manage transport clients,
+                  contacts and billing details.
+                </span>
+              </div>
+            </Link>
+
+
+            <Link
+              to="/jobs"
+              className="dashboard-action-card"
+            >
+              <FaBox />
+
+              <div>
+                <strong>
+                  Jobs & Deliveries
+                </strong>
+
+                <span>
+                  Plan customer jobs, cargo,
+                  collections and assignments.
+                </span>
+              </div>
+            </Link>
+
+
+            <Link
+              to="/dispatch"
+              className="dashboard-action-card"
+            >
+              <FaClipboardCheck />
+
+              <div>
+                <strong>
+                  Dispatch Board
+                </strong>
+
+                <span>
+                  Dispatch assigned jobs into
+                  pre-trip inspection and trips.
+                </span>
+              </div>
+            </Link>
           </div>
         </section>
 
@@ -748,6 +839,11 @@ function VehicleDashboard() {
           ) : (
             <div className="dashboard-fleet-grid">
               {vehicles.map((vehicle) => {
+                const reservation =
+                  getVehicleReservation(
+                    vehicle.id
+                  );
+
                 const activeTrip =
                   getVehicleActiveTrip(
                     vehicle.id
@@ -940,6 +1036,29 @@ function VehicleDashboard() {
                           </span>
                         </div>
                       )}
+
+                    {!activeTrip &&
+                      vehicle.status ===
+                        "reserved" && (
+                        <div className="dashboard-fleet-reserved">
+                          <FaClock />
+
+                          <div>
+                            <strong>
+                              Reserved for Pre-Inspection
+                            </strong>
+
+                            <span>
+                              {reservation
+                                ? getReservationTimeRemaining(
+                                    reservation
+                                  )
+                                : "Awaiting pre-use inspection"}
+                            </span>
+                          </div>
+                        </div>
+                      )}
+
 
                     {!activeTrip &&
                       (vehicle.status ===

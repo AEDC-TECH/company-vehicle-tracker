@@ -1,0 +1,120 @@
+/* ============================================================
+   FREE ON-DEVICE VEHICLE PHOTO VERIFICATION
+   ============================================================ */
+
+.local-verifier-assigned,
+.local-verifier-result {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+
+  margin-top: 12px;
+  padding: 11px 12px;
+
+  border: 1px solid #dce3ea;
+  border-radius: 9px;
+
+  background: #f7f9fb;
+}
+
+.local-verifier-assigned > svg,
+.local-verifier-result > svg {
+  flex: 0 0 auto;
+
+  margin-top: 2px;
+
+  color: #2365ad;
+}
+
+.local-verifier-assigned span,
+.local-verifier-assigned strong,
+.local-verifier-assigned small,
+.local-verifier-result strong,
+.local-verifier-result span,
+.local-verifier-result small {
+  display: block;
+}
+
+.local-verifier-assigned span {
+  color: #7c8995;
+
+  font-size: 0.43rem;
+  font-weight: 900;
+  letter-spacing: 0.45px;
+}
+
+.local-verifier-assigned strong {
+  margin-top: 2px;
+
+  color: #263746;
+
+  font-size: 0.62rem;
+  font-weight: 900;
+}
+
+.local-verifier-assigned small {
+  margin-top: 3px;
+
+  color: #63717e;
+
+  font-size: 0.5rem;
+  font-weight: 700;
+}
+
+
+.local-verifier-result strong {
+  color: #42515f;
+
+  font-size: 0.58rem;
+  font-weight: 900;
+}
+
+.local-verifier-result span {
+  margin-top: 3px;
+
+  color: #64727f;
+
+  font-size: 0.51rem;
+  line-height: 1.45;
+}
+
+.local-verifier-result small {
+  margin-top: 4px;
+
+  color: #55636f;
+
+  font-size: 0.48rem;
+  font-weight: 750;
+}
+
+
+.local-verifier-result.verified {
+  border-color: #b9dec6;
+
+  background: #f1faf4;
+}
+
+.local-verifier-result.verified > svg,
+.local-verifier-result.verified strong {
+  color: #167846;
+}
+
+
+.local-verifier-result.warning {
+  border-color: #ead7a0;
+
+  background: #fffaf0;
+}
+
+.local-verifier-result.warning > svg,
+.local-verifier-result.warning strong {
+  color: #9b7217;
+}
+
+
+@media (max-width: 650px) {
+  .local-verifier-assigned,
+  .local-verifier-result {
+    padding: 10px;
+  }
+}

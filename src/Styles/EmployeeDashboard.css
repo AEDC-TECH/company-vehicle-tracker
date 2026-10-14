@@ -3555,3 +3555,400 @@
     animation: none;
   }
 }
+
+
+/* ==========================================================
+   EMPLOYEE VEHICLE REQUEST WORKFLOW LOCK
+========================================================== */
+
+
+/* ==========================================================
+   DISABLED MAIN REQUEST BUTTON
+========================================================== */
+
+.employee-portal-page
+.employee-primary-action-disabled {
+  border:
+    1px solid #d5dae1 !important;
+
+  background:
+    #e9edf2 !important;
+
+  color:
+    #8b95a1 !important;
+
+  box-shadow:
+    none !important;
+
+  cursor:
+    not-allowed !important;
+
+  transform:
+    none !important;
+
+  opacity:
+    1;
+}
+
+
+.employee-portal-page
+.employee-primary-action-disabled:hover {
+  border-color:
+    #d5dae1 !important;
+
+  background:
+    #e9edf2 !important;
+
+  color:
+    #8b95a1 !important;
+
+  transform:
+    none !important;
+
+  box-shadow:
+    none !important;
+}
+
+
+/* ==========================================================
+   BLOCK NOTICE
+========================================================== */
+
+.employee-portal-page
+.employee-request-block-notice {
+  display: flex;
+
+  align-items:
+    flex-start;
+
+  gap: 12px;
+
+  margin-bottom:
+    22px;
+
+  padding:
+    14px 16px;
+
+  border:
+    1px solid
+    #ead7a5;
+
+  border-radius:
+    10px;
+
+  background:
+    #fff9e7;
+
+  color:
+    #735914;
+}
+
+
+.employee-portal-page
+.employee-request-block-notice > svg {
+  margin-top:
+    2px;
+
+  flex:
+    0 0 auto;
+
+  color:
+    #b38b2e;
+}
+
+
+.employee-portal-page
+.employee-request-block-notice > div {
+  min-width: 0;
+}
+
+
+.employee-portal-page
+.employee-request-block-notice strong {
+  display: block;
+
+  margin-bottom:
+    4px;
+
+  color:
+    #5f4910;
+
+  font-size:
+    0.73rem;
+
+  font-weight:
+    850;
+}
+
+
+.employee-portal-page
+.employee-request-block-notice span {
+  display: block;
+
+  color:
+    #806825;
+
+  font-size:
+    0.67rem;
+
+  line-height:
+    1.5;
+}
+
+
+.employee-portal-page
+.employee-request-block-notice span + span {
+  margin-top:
+    3px;
+}
+
+
+/* ==========================================================
+   DISABLED QUICK LINK
+========================================================== */
+
+.employee-portal-page
+.employee-quick-link-disabled {
+  display: flex;
+
+  align-items:
+    center;
+
+  gap: 14px;
+
+  min-height:
+    100%;
+
+  padding:
+    18px;
+
+  border:
+    1px solid
+    #dce1e6;
+
+  border-radius:
+    12px;
+
+  background:
+    #f4f6f8;
+
+  color:
+    #9aa3ad;
+
+  cursor:
+    not-allowed;
+
+  user-select:
+    none;
+}
+
+
+.employee-portal-page
+.employee-quick-link-disabled > svg:first-child {
+  color:
+    #9ba4ae;
+}
+
+
+.employee-portal-page
+.employee-quick-link-disabled > svg:last-child {
+  margin-left:
+    auto;
+
+  color:
+    #b38b2e;
+}
+
+
+.employee-portal-page
+.employee-quick-link-disabled div {
+  flex: 1;
+
+  min-width: 0;
+}
+
+
+.employee-portal-page
+.employee-quick-link-disabled strong {
+  display: block;
+
+  color:
+    #747e89;
+
+  font-size:
+    0.72rem;
+
+  font-weight:
+    800;
+}
+
+
+.employee-portal-page
+.employee-quick-link-disabled span {
+  display: block;
+
+  margin-top:
+    4px;
+
+  color:
+    #9aa3ad;
+
+  font-size:
+    0.64rem;
+
+  line-height:
+    1.4;
+}
+
+
+/* ==========================================================
+   PRE-INSPECTION RESERVATION COUNTDOWN
+========================================================== */
+
+.employee-portal-page
+.employee-reservation-countdown {
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+  margin-top: 14px;
+
+  padding:
+    13px 15px;
+
+  border:
+    1px solid
+    #cfd7ee;
+
+  border-radius:
+    9px;
+
+  background:
+    #f4f5fc;
+
+  color:
+    #11145f;
+}
+
+
+.employee-portal-page
+.employee-reservation-countdown > svg {
+  flex:
+    0 0 auto;
+
+  color:
+    #11145f;
+
+  font-size:
+    1rem;
+}
+
+
+.employee-portal-page
+.employee-reservation-countdown > div {
+  min-width: 0;
+}
+
+
+.employee-portal-page
+.employee-reservation-countdown span {
+  display: block;
+
+  margin-bottom:
+    3px;
+
+  color:
+    #7c8595;
+
+  font-size:
+    0.49rem;
+
+  font-weight:
+    900;
+
+  letter-spacing:
+    0.8px;
+}
+
+
+.employee-portal-page
+.employee-reservation-countdown strong {
+  display: block;
+
+  color:
+    #11145f;
+
+  font-size:
+    0.78rem;
+
+  font-weight:
+    900;
+}
+
+
+.employee-portal-page
+.employee-reservation-countdown small {
+  display: block;
+
+  margin-top:
+    3px;
+
+  color:
+    #727d8b;
+
+  font-size:
+    0.58rem;
+
+  font-weight:
+    650;
+}
+
+
+/* ==========================================================
+   URGENT — 30 MINUTES OR LESS
+========================================================== */
+
+.employee-portal-page
+.employee-reservation-countdown.urgent {
+  border-color:
+    #e2ba59;
+
+  background:
+    #fff8e5;
+
+  color:
+    #765611;
+}
+
+
+.employee-portal-page
+.employee-reservation-countdown.urgent > svg {
+  color:
+    #b38b2e;
+}
+
+
+.employee-portal-page
+.employee-reservation-countdown.urgent strong {
+  color:
+    #8b6514;
+}
+
+
+/* ==========================================================
+   MOBILE
+========================================================== */
+
+@media (
+  max-width: 640px
+) {
+
+  .employee-portal-page
+  .employee-reservation-countdown {
+    align-items:
+      flex-start;
+  }
+
+}

@@ -422,59 +422,121 @@ function EmployeeRequestVehicle() {
           HEADER
       ================================================ */}
 
+      {/* ================================================
+          EMPLOYEE PORTAL NAVBAR
+      ================================================ */}
+
       <header className="employee-request-header">
         <div className="employee-request-header-inner">
+
           <div className="employee-request-header-left">
+
             <Link
               to="/employee"
               className="employee-request-back"
               aria-label="Back to employee portal"
             >
               <FaArrowLeft />
+
+              <span>
+                Portal
+              </span>
             </Link>
 
-            <AEDCLogo
-              compact
-              className="employee-request-logo"
-            />
 
-            <div>
-              <span>
-                AEDC VEHICLE MANAGEMENT
-              </span>
+            <div className="employee-request-brand">
 
-              <h1>
-                Request Company Vehicle
-              </h1>
+              <AEDCLogo
+                compact
+                className="employee-request-logo"
+              />
 
-              <p>
-                Employee Vehicle Portal
-              </p>
+              <div>
+                <span>
+                  AEDC VEHICLE MANAGEMENT
+                </span>
+
+                <h1>
+                  Employee Vehicle Portal
+                </h1>
+              </div>
+
             </div>
+
           </div>
+
+
+          <div className="employee-request-user-chip">
+
+            <span>
+              REQUESTING AS
+            </span>
+
+            <strong>
+              {employeeName ||
+                employeeNumber ||
+                "Employee"}
+            </strong>
+
+          </div>
+
         </div>
       </header>
 
+
+      {/* ================================================
+          PAGE HERO
+      ================================================ */}
+
+      <section className="employee-request-hero">
+
+        <div className="employee-request-hero-inner">
+
+          <div className="employee-request-hero-copy">
+
+            <span>
+              VEHICLE BOOKING REQUEST
+            </span>
+
+            <h2>
+              Request a Company Vehicle
+            </h2>
+
+            <p>
+              Select an available AEDC vehicle and
+              provide the business-trip information
+              required for approval.
+            </p>
+
+          </div>
+
+
+          <div className="employee-request-hero-status">
+
+            <small>
+              REQUEST PROCESS
+            </small>
+
+            <strong>
+              5
+            </strong>
+
+            <span>
+              sections to complete
+            </span>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      {/* ================================================
+          PAGE CONTENT
+      ================================================ */}
+
       <section className="employee-request-content">
-        {/* ================================================
-            INTRO
-        ================================================ */}
-
-        <section className="employee-request-intro">
-          <span>
-            VEHICLE BOOKING REQUEST
-          </span>
-
-          <h2>
-            Request a Company Vehicle
-          </h2>
-
-          <p>
-            Complete the information below.
-            Your request will be sent to the
-            Facilities Manager for approval.
-          </p>
-        </section>
 
         {/* ================================================
             MESSAGES

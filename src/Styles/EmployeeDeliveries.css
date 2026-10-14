@@ -1,0 +1,262 @@
+/* EMPLOYEE DELIVERIES */
+
+.employee-deliveries-page,
+.pod-page {
+  min-height: 100vh;
+  background: #f5f6f8;
+  color: #303a46;
+}
+
+.employee-deliveries-header,
+.pod-header {
+  background: #ffffff;
+  border-bottom: 1px solid #e7eaee;
+}
+
+.employee-deliveries-header-inner,
+.pod-header-inner {
+  width: min(1050px, calc(100% - 30px));
+  min-height: 88px;
+  margin: 0 auto;
+
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.employee-deliveries-back,
+.pod-back {
+  width: 40px;
+  height: 40px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid #dfe3e8;
+  border-radius: 9px;
+
+  color: #11145f;
+  text-decoration: none;
+}
+
+.employee-deliveries-header-inner > div:last-child > span,
+.pod-header-inner > div:last-child > span {
+  color: #b38b2e;
+  font-size: 0.58rem;
+  font-weight: 900;
+  letter-spacing: 0.8px;
+}
+
+.employee-deliveries-header h1,
+.pod-header h1 {
+  margin: 3px 0 0;
+  font-size: 1.35rem;
+}
+
+.employee-deliveries-header p,
+.pod-header p {
+  margin: 4px 0 0;
+  color: #7b8590;
+  font-size: 0.68rem;
+}
+
+.employee-deliveries-content,
+.pod-content {
+  width: min(1050px, calc(100% - 30px));
+  margin: 0 auto;
+  padding: 26px 0 55px;
+}
+
+.employee-deliveries-error {
+  margin-bottom: 16px;
+  padding: 12px 14px;
+  border: 1px solid #edc0c0;
+  border-radius: 9px;
+  background: #fff3f3;
+  color: #a61b1b;
+  font-size: 0.68rem;
+  font-weight: 750;
+}
+
+.employee-deliveries-grid {
+  display: grid;
+  gap: 13px;
+}
+
+.employee-delivery-card {
+  padding: 17px;
+  border: 1px solid #e4e8ec;
+  border-radius: 12px;
+  background: #ffffff;
+}
+
+.employee-delivery-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.employee-delivery-top > div > span {
+  color: #b38b2e;
+  font-size: 0.52rem;
+  font-weight: 900;
+}
+
+.employee-delivery-top h2 {
+  margin: 4px 0 0;
+  font-size: 1rem;
+}
+
+.employee-delivery-status {
+  height: fit-content;
+  padding: 6px 9px;
+  border-radius: 999px;
+  background: #fff5df;
+  color: #84631b;
+  font-size: 0.48rem;
+  font-weight: 900;
+}
+
+.employee-delivery-status.completed {
+  background: #eaf7ef;
+  color: #177747;
+}
+
+.employee-delivery-route {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.employee-delivery-route > div {
+  padding: 11px;
+  border: 1px solid #edf0f3;
+  border-radius: 8px;
+  background: #fafbfc;
+}
+
+.employee-delivery-route svg {
+  margin-bottom: 5px;
+  color: #11145f;
+}
+
+.employee-delivery-route span,
+.employee-delivery-route strong {
+  display: block;
+}
+
+.employee-delivery-route span {
+  color: #8d96a0;
+  font-size: 0.45rem;
+  font-weight: 900;
+}
+
+.employee-delivery-route strong {
+  margin-top: 3px;
+  font-size: 0.58rem;
+  line-height: 1.45;
+}
+
+.employee-delivery-details {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 9px;
+}
+
+.employee-delivery-details > div {
+  padding: 10px;
+  border-bottom: 1px solid #edf0f3;
+}
+
+.employee-delivery-details span,
+.employee-delivery-details strong,
+.employee-delivery-details small {
+  display: block;
+}
+
+.employee-delivery-details span {
+  color: #8d96a0;
+  font-size: 0.45rem;
+  font-weight: 850;
+}
+
+.employee-delivery-details strong {
+  margin-top: 3px;
+  font-size: 0.57rem;
+}
+
+.employee-delivery-details small {
+  margin-top: 2px;
+  color: #7d8792;
+  font-size: 0.5rem;
+}
+
+.employee-delivery-actions {
+  margin-top: 13px;
+}
+
+.employee-delivery-pod,
+.employee-delivery-view {
+  min-height: 38px;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-size: 0.58rem;
+  font-weight: 850;
+}
+
+.employee-delivery-pod {
+  background: #11145f;
+  color: #ffffff;
+}
+
+.employee-delivery-view {
+  border: 1px solid #b9dec6;
+  background: #f0faf3;
+  color: #177747;
+}
+
+.employee-deliveries-empty,
+.pod-loading {
+  padding: 50px 20px;
+  text-align: center;
+  border: 1px dashed #d9dee4;
+  border-radius: 12px;
+  background: #ffffff;
+}
+
+.employee-deliveries-empty svg,
+.pod-loading svg {
+  color: #11145f;
+  font-size: 1.5rem;
+}
+
+.employee-deliveries-empty h2,
+.pod-loading h2 {
+  margin: 10px 0 3px;
+  font-size: 1rem;
+}
+
+.employee-deliveries-empty p,
+.pod-loading p {
+  color: #7e8893;
+  font-size: 0.64rem;
+}
+
+@media (max-width: 650px) {
+  .employee-deliveries-logo,
+  .pod-logo {
+    display: none;
+  }
+
+  .employee-delivery-route,
+  .employee-delivery-details {
+    grid-template-columns: 1fr;
+  }
+}

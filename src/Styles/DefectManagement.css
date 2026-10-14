@@ -1,0 +1,833 @@
+/* ============================================================
+   DEFECT MANAGEMENT
+   ============================================================ */
+
+.defect-management-page {
+  min-height: 100vh;
+  background: #f5f6f8;
+  color: #303a46;
+}
+
+.defect-header {
+  background: #ffffff;
+  border-bottom: 1px solid #e8ebef;
+}
+
+.defect-header-inner {
+  width: min(1220px, calc(100% - 32px));
+  min-height: 92px;
+  margin: 0 auto;
+
+  display: flex;
+  align-items: center;
+}
+
+.defect-header-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.defect-back-button {
+  width: 40px;
+  height: 40px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid #e0e4e9;
+  border-radius: 10px;
+
+  background: #ffffff;
+  color: #11145f;
+  text-decoration: none;
+}
+
+.defect-header-left > div:last-child > span {
+  display: block;
+  color: #b38b2e;
+  font-size: 0.62rem;
+  font-weight: 900;
+  letter-spacing: 0.9px;
+}
+
+.defect-header-left h1 {
+  margin: 3px 0 0;
+  font-size: 1.5rem;
+}
+
+.defect-header-left p {
+  margin: 5px 0 0;
+  color: #7b8590;
+  font-size: 0.78rem;
+}
+
+.defect-content {
+  width: min(1220px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 28px 0 60px;
+}
+
+.defect-message {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+
+  margin-bottom: 18px;
+  padding: 12px 14px;
+
+  border-radius: 9px;
+  font-size: 0.72rem;
+  font-weight: 750;
+}
+
+.defect-message-error {
+  border: 1px solid #edc0c0;
+  background: #fff3f3;
+  color: #a61b1b;
+}
+
+.defect-message-success {
+  border: 1px solid #b9dec6;
+  background: #f0faf3;
+  color: #177747;
+}
+
+
+/* SUMMARY */
+
+.defect-summary-grid {
+  display: grid;
+  grid-template-columns:
+    repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.defect-summary-grid article {
+  min-height: 98px;
+
+  display: flex;
+  align-items: center;
+  gap: 13px;
+
+  padding: 17px;
+
+  border: 1px solid #e6e9ed;
+  border-radius: 12px;
+
+  background: #ffffff;
+}
+
+.defect-summary-grid article > svg {
+  width: 40px;
+  height: 40px;
+  padding: 11px;
+
+  border-radius: 10px;
+
+  background: #f0f1f8;
+  color: #11145f;
+}
+
+.defect-summary-grid span {
+  display: block;
+  color: #8d96a0;
+  font-size: 0.56rem;
+  font-weight: 850;
+  text-transform: uppercase;
+}
+
+.defect-summary-grid strong {
+  display: block;
+  margin-top: 4px;
+
+  font-size: 1.35rem;
+  font-weight: 900;
+}
+
+
+/* TOOLBAR */
+
+.defect-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+
+  margin-bottom: 20px;
+  padding: 12px;
+
+  border: 1px solid #e6e9ed;
+  border-radius: 12px;
+
+  background: #ffffff;
+}
+
+.defect-search {
+  flex: 1;
+  min-width: 250px;
+
+  display: flex;
+  align-items: center;
+  gap: 9px;
+
+  padding: 0 12px;
+
+  border: 1px solid #e0e4e9;
+  border-radius: 9px;
+
+  background: #f8f9fa;
+}
+
+.defect-search svg {
+  color: #89939e;
+}
+
+.defect-search input {
+  width: 100%;
+  min-height: 40px;
+
+  border: 0;
+  outline: 0;
+
+  background: transparent;
+  color: #303a46;
+
+  font: inherit;
+  font-size: 0.7rem;
+}
+
+.defect-filter-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.defect-filter-tabs button {
+  min-height: 38px;
+  padding: 8px 12px;
+
+  border: 1px solid #e0e4e9;
+  border-radius: 8px;
+
+  background: #ffffff;
+  color: #697480;
+
+  font: inherit;
+  font-size: 0.59rem;
+  font-weight: 850;
+
+  cursor: pointer;
+}
+
+.defect-filter-tabs button.active {
+  border-color: #11145f;
+  background: #11145f;
+  color: #ffffff;
+}
+
+
+/* CARDS */
+
+.defect-grid {
+  display: grid;
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.defect-card {
+  min-width: 0;
+  padding: 18px;
+
+  border: 1px solid #e4e8ec;
+  border-left-width: 4px;
+  border-radius: 12px;
+
+  background: #ffffff;
+
+  box-shadow:
+    0 4px 13px
+      rgba(15, 23, 42, 0.035);
+}
+
+.defect-severity-minor {
+  border-left-color: #b6bec7;
+}
+
+.defect-severity-major {
+  border-left-color: #c18a24;
+}
+
+.defect-severity-critical {
+  border-left-color: #c62828;
+}
+
+.defect-card-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.defect-card-top > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.defect-severity-badge,
+.defect-grounded-badge,
+.defect-status-badge {
+  display: inline-flex;
+  align-items: center;
+
+  padding: 6px 9px;
+
+  border-radius: 999px;
+
+  font-size: 0.5rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.defect-severity-badge-minor {
+  background: #f1f3f5;
+  color: #65717c;
+}
+
+.defect-severity-badge-major {
+  background: #fff5df;
+  color: #8a6313;
+}
+
+.defect-severity-badge-critical {
+  background: #fff0f0;
+  color: #b42318;
+}
+
+.defect-grounded-badge {
+  background: #b42318;
+  color: #ffffff;
+}
+
+.defect-status-badge {
+  background: #eef0f7;
+  color: #11145f;
+}
+
+.defect-status-resolved {
+  background: #eaf7ef;
+  color: #177747;
+}
+
+.defect-status-in-repair {
+  background: #fff5df;
+  color: #84631b;
+}
+
+.defect-status-deferred {
+  background: #f1f3f5;
+  color: #65717c;
+}
+
+.defect-card-title {
+  margin: 16px 0;
+}
+
+.defect-card-title > span {
+  display: block;
+  color: #b38b2e;
+
+  font-size: 0.52rem;
+  font-weight: 900;
+  letter-spacing: 0.5px;
+}
+
+.defect-card-title h2 {
+  margin: 4px 0 6px;
+  color: #303a46;
+  font-size: 1rem;
+}
+
+.defect-card-title p {
+  margin: 0;
+  color: #697480;
+
+  font-size: 0.65rem;
+  line-height: 1.55;
+}
+
+.defect-vehicle-box {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+
+  padding: 12px;
+
+  border: 1px solid #e7eaee;
+  border-radius: 9px;
+
+  background: #f8f9fa;
+}
+
+.defect-vehicle-box > svg {
+  color: #11145f;
+}
+
+.defect-vehicle-box > div {
+  flex: 1;
+  min-width: 0;
+}
+
+.defect-vehicle-box span {
+  display: block;
+  color: #929ba5;
+  font-size: 0.47rem;
+  font-weight: 900;
+}
+
+.defect-vehicle-box strong,
+.defect-vehicle-box small {
+  display: block;
+}
+
+.defect-vehicle-box strong {
+  margin-top: 2px;
+  color: #46515c;
+  font-size: 0.68rem;
+}
+
+.defect-vehicle-box small {
+  margin-top: 2px;
+  color: #7c8792;
+  font-size: 0.56rem;
+}
+
+.defect-vehicle-box em {
+  font-style: normal;
+
+  padding: 5px 8px;
+  border-radius: 999px;
+
+  background: #ffffff;
+  color: #697480;
+
+  font-size: 0.48rem;
+  font-weight: 900;
+}
+
+.defect-meta-grid {
+  display: grid;
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr));
+  gap: 8px;
+
+  margin-top: 10px;
+}
+
+.defect-meta-grid > div {
+  min-width: 0;
+  padding: 10px;
+
+  border: 1px solid #edf0f3;
+  border-radius: 8px;
+
+  background: #fbfcfd;
+}
+
+.defect-meta-grid svg {
+  margin-bottom: 7px;
+  color: #11145f;
+  font-size: 0.68rem;
+}
+
+.defect-meta-grid span,
+.defect-meta-grid strong,
+.defect-meta-grid small {
+  display: block;
+}
+
+.defect-meta-grid span {
+  color: #929ba5;
+  font-size: 0.46rem;
+  font-weight: 850;
+  text-transform: uppercase;
+}
+
+.defect-meta-grid strong {
+  margin-top: 4px;
+  color: #48535f;
+  font-size: 0.57rem;
+}
+
+.defect-meta-grid small {
+  margin-top: 3px;
+  color: #7e8994;
+  font-size: 0.49rem;
+}
+
+.defect-repair-notes {
+  margin-top: 10px;
+  padding: 12px;
+
+  border: 1px solid #dfe5ea;
+  border-radius: 8px;
+
+  background: #f8fafb;
+}
+
+.defect-repair-notes span {
+  display: block;
+  color: #77838e;
+  font-size: 0.48rem;
+  font-weight: 900;
+}
+
+.defect-repair-notes p {
+  margin: 6px 0;
+  color: #4d5965;
+
+  font-size: 0.62rem;
+  line-height: 1.5;
+}
+
+.defect-repair-notes small {
+  color: #85909b;
+  font-size: 0.52rem;
+}
+
+.defect-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+
+  margin-top: 13px;
+}
+
+.defect-actions button {
+  min-height: 36px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+
+  padding: 7px 10px;
+
+  border-radius: 7px;
+
+  font: inherit;
+  font-size: 0.55rem;
+  font-weight: 850;
+
+  cursor: pointer;
+}
+
+.defect-secondary-action {
+  border: 1px solid #dce1e6;
+  background: #ffffff;
+  color: #67727d;
+}
+
+.defect-repair-action {
+  border: 1px solid #d9b66d;
+  background: #fff8e9;
+  color: #805d17;
+}
+
+.defect-resolve-action {
+  border: 1px solid #1f7a4c;
+  background: #1f7a4c;
+  color: #ffffff;
+}
+
+.defect-actions button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+
+/* EMPTY */
+
+.defect-empty {
+  padding: 50px 20px;
+
+  text-align: center;
+
+  border: 1px dashed #d9dee4;
+  border-radius: 12px;
+
+  background: #ffffff;
+  color: #7e8893;
+}
+
+.defect-empty > svg {
+  color: #11145f;
+  font-size: 1.5rem;
+}
+
+.defect-empty h2 {
+  margin: 10px 0 3px;
+  color: #46515c;
+  font-size: 1rem;
+}
+
+.defect-empty p {
+  margin: 0;
+  font-size: 0.66rem;
+}
+
+
+/* MODAL */
+
+.defect-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 20px;
+
+  background:
+    rgba(20, 25, 34, 0.58);
+}
+
+.defect-modal {
+  width: min(620px, 100%);
+  max-height: calc(100vh - 40px);
+  overflow-y: auto;
+
+  padding: 20px;
+
+  border-radius: 14px;
+
+  background: #ffffff;
+
+  box-shadow:
+    0 22px 70px
+      rgba(0, 0, 0, 0.2);
+}
+
+.defect-modal-heading {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+
+  padding-bottom: 14px;
+  border-bottom: 1px solid #edf0f3;
+}
+
+.defect-modal-heading span {
+  color: #b38b2e;
+  font-size: 0.53rem;
+  font-weight: 900;
+  letter-spacing: 0.7px;
+}
+
+.defect-modal-heading h2 {
+  margin: 4px 0;
+  color: #303a46;
+  font-size: 1.15rem;
+}
+
+.defect-modal-heading p {
+  margin: 0;
+  color: #7e8994;
+  font-size: 0.64rem;
+}
+
+.defect-modal-heading button {
+  width: 37px;
+  height: 37px;
+
+  border: 1px solid #e0e4e9;
+  border-radius: 8px;
+
+  background: #ffffff;
+  color: #697480;
+
+  cursor: pointer;
+}
+
+.defect-modal form {
+  display: grid;
+  gap: 13px;
+
+  margin-top: 16px;
+}
+
+.defect-modal form > label {
+  color: #5f6a75;
+  font-size: 0.59rem;
+  font-weight: 850;
+}
+
+.defect-modal textarea,
+.defect-modal input[type="text"] {
+  width: 100%;
+
+  margin-top: 6px;
+  padding: 10px;
+
+  border: 1px solid #dce1e6;
+  border-radius: 8px;
+  outline: none;
+
+  background: #ffffff;
+  color: #303a46;
+
+  font: inherit;
+  font-size: 0.68rem;
+}
+
+.defect-modal textarea {
+  resize: vertical;
+}
+
+.defect-modal textarea:focus,
+.defect-modal input[type="text"]:focus {
+  border-color: #11145f;
+
+  box-shadow:
+    0 0 0 3px
+      rgba(17, 20, 95, 0.08);
+}
+
+.defect-return-service-option {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+
+  padding: 12px;
+
+  border: 1px solid #cce4d5;
+  border-radius: 9px;
+
+  background: #f1faf4;
+}
+
+.defect-return-service-option input {
+  margin-top: 2px;
+  accent-color: #177747;
+}
+
+.defect-return-service-option strong,
+.defect-return-service-option small {
+  display: block;
+}
+
+.defect-return-service-option strong {
+  color: #266342;
+  font-size: 0.64rem;
+}
+
+.defect-return-service-option small {
+  margin-top: 3px;
+  color: #668273;
+
+  font-size: 0.54rem;
+  line-height: 1.45;
+}
+
+.defect-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+
+  margin-top: 5px;
+}
+
+.defect-modal-actions button {
+  min-height: 40px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+
+  padding: 8px 13px;
+
+  border-radius: 8px;
+
+  font: inherit;
+  font-size: 0.59rem;
+  font-weight: 850;
+
+  cursor: pointer;
+}
+
+.defect-modal-cancel {
+  border: 1px solid #dce1e6;
+  background: #ffffff;
+  color: #68737e;
+}
+
+.defect-modal-resolve {
+  border: 1px solid #177747;
+  background: #177747;
+  color: #ffffff;
+}
+
+@media (max-width: 900px) {
+  .defect-summary-grid,
+  .defect-grid {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+
+  .defect-toolbar {
+    align-items: stretch;
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 620px) {
+  .defect-header-inner,
+  .defect-content {
+    width: min(
+      100% - 22px,
+      1220px
+    );
+  }
+
+  .defect-logo {
+    display: none;
+  }
+
+  .defect-header-left h1 {
+    font-size: 1.12rem;
+  }
+
+  .defect-header-left p {
+    display: none;
+  }
+
+  .defect-summary-grid,
+  .defect-grid,
+  .defect-meta-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .defect-filter-tabs {
+    display: grid;
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+
+  .defect-filter-tabs button {
+    width: 100%;
+  }
+
+  .defect-modal-actions {
+    flex-direction: column-reverse;
+  }
+
+  .defect-modal-actions button {
+    width: 100%;
+  }
+}

@@ -933,3 +933,58 @@
     box-sizing: border-box;
   }
 }
+
+/* ============================================================
+   EMPLOYEE RETURN -> FUEL LEDGER ADD-ON
+   Append to EmployeeVehicleReturn.css
+   ============================================================ */
+
+.employee-return-fuel-full-option {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+
+  padding: 13px;
+
+  border: 1px solid #dce2e8;
+  border-radius: 9px;
+
+  background: #f8fafb;
+}
+
+.employee-return-fuel-full-option input {
+  width: auto;
+  margin: 2px 0 0;
+
+  accent-color: #11145f;
+}
+
+.employee-return-fuel-full-option span {
+  display: block;
+}
+
+.employee-return-fuel-full-option strong {
+  display: block;
+
+  color: #46515c;
+
+  font-size: 0.64rem;
+  font-weight: 850;
+}
+
+.employee-return-fuel-full-option small {
+  display: block;
+
+  margin-top: 4px;
+
+  color: #7d8792;
+
+  font-size: 0.54rem;
+  line-height: 1.45;
+}
+
+.employee-return-field input[readonly] {
+  background: #f4f6f8;
+  color: #46515c;
+  font-weight: 800;
+}

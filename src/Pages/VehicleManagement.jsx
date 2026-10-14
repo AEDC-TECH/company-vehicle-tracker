@@ -3,16 +3,23 @@ import { Link } from "react-router-dom";
 
 import {
   FaArrowLeft,
+  FaBarcode,
+  FaCalendarAlt,
   FaCar,
   FaCheckCircle,
   FaEdit,
   FaExclamationTriangle,
+  FaGasPump,
   FaPlus,
   FaPowerOff,
   FaRoad,
   FaSave,
+  FaShieldAlt,
   FaTimes,
+  FaTruck,
   FaTrash,
+  FaWeightHanging,
+  FaWrench,
 } from "react-icons/fa";
 
 import "../Styles/VehicleManagement.css";
@@ -26,12 +33,25 @@ const emptyForm = {
   make: "",
   model: "",
   registration: "",
+  vin: "",
+  engine_number: "",
+  chassis_number: "",
+  vehicle_year: "",
+  vehicle_type: "Passenger Vehicle",
   classification: "Pool Vehicle",
+  fuel_type: "",
+  ownership_type: "company-owned",
+  load_capacity_kg: "",
   registered_keeper:
     "African Entrepreneurship Development Corporation",
   default_parking: "Office Basement",
   custodian: "Facilities Manager",
   current_odometer: "",
+  service_interval_km: "",
+  last_service_odometer: "",
+  next_service_date: "",
+  licence_expiry: "",
+  insurance_expiry: "",
   status: "available",
   roadworthy: true,
   notes: "",
@@ -144,8 +164,19 @@ function VehicleManagement() {
       make: vehicleItem.make || "",
       model: vehicleItem.model || "",
       registration: vehicleItem.registration || "",
+      vin: vehicleItem.vin || "",
+      engine_number: vehicleItem.engine_number || "",
+      chassis_number: vehicleItem.chassis_number || "",
+      vehicle_year: vehicleItem.vehicle_year ?? "",
+      vehicle_type:
+        vehicleItem.vehicle_type || "Passenger Vehicle",
       classification:
         vehicleItem.classification || "Pool Vehicle",
+      fuel_type: vehicleItem.fuel_type || "",
+      ownership_type:
+        vehicleItem.ownership_type || "company-owned",
+      load_capacity_kg:
+        vehicleItem.load_capacity_kg ?? "",
       registered_keeper:
         vehicleItem.registered_keeper ||
         "African Entrepreneurship Development Corporation",
@@ -155,6 +186,16 @@ function VehicleManagement() {
         vehicleItem.custodian || "Facilities Manager",
       current_odometer:
         vehicleItem.current_odometer ?? "",
+      service_interval_km:
+        vehicleItem.service_interval_km ?? "",
+      last_service_odometer:
+        vehicleItem.last_service_odometer ?? "",
+      next_service_date:
+        vehicleItem.next_service_date || "",
+      licence_expiry:
+        vehicleItem.licence_expiry || "",
+      insurance_expiry:
+        vehicleItem.insurance_expiry || "",
       status: vehicleItem.status || "available",
       roadworthy: vehicleItem.roadworthy ?? true,
       notes: vehicleItem.notes || "",
@@ -210,6 +251,43 @@ function VehicleManagement() {
         );
       }
 
+      if (
+        formData.vehicle_year !== "" &&
+        (Number(formData.vehicle_year) < 1950 ||
+          Number(formData.vehicle_year) > 2100)
+      ) {
+        throw new Error(
+          "Please enter a valid vehicle year."
+        );
+      }
+
+      if (
+        formData.load_capacity_kg !== "" &&
+        Number(formData.load_capacity_kg) < 0
+      ) {
+        throw new Error(
+          "Load capacity cannot be negative."
+        );
+      }
+
+      if (
+        formData.service_interval_km !== "" &&
+        Number(formData.service_interval_km) <= 0
+      ) {
+        throw new Error(
+          "Service interval must be greater than zero."
+        );
+      }
+
+      if (
+        formData.last_service_odometer !== "" &&
+        Number(formData.last_service_odometer) < 0
+      ) {
+        throw new Error(
+          "Last service odometer cannot be negative."
+        );
+      }
+
       let duplicateQuery = supabase
         .from("vehicles")
         .select("id")
@@ -247,8 +325,35 @@ function VehicleManagement() {
           .trim()
           .toUpperCase(),
 
+        vin: formData.vin.trim().toUpperCase() || null,
+
+        engine_number:
+          formData.engine_number.trim().toUpperCase() || null,
+
+        chassis_number:
+          formData.chassis_number.trim().toUpperCase() || null,
+
+        vehicle_year:
+          formData.vehicle_year === ""
+            ? null
+            : Number(formData.vehicle_year),
+
+        vehicle_type:
+          formData.vehicle_type.trim() || "Passenger Vehicle",
+
         classification:
           formData.classification.trim() || "Pool Vehicle",
+
+        fuel_type:
+          formData.fuel_type.trim() || null,
+
+        ownership_type:
+          formData.ownership_type || "company-owned",
+
+        load_capacity_kg:
+          formData.load_capacity_kg === ""
+            ? null
+            : Number(formData.load_capacity_kg),
 
         registered_keeper:
           formData.registered_keeper.trim() ||
@@ -265,6 +370,25 @@ function VehicleManagement() {
         current_odometer: Number(
           formData.current_odometer
         ),
+
+        service_interval_km:
+          formData.service_interval_km === ""
+            ? null
+            : Number(formData.service_interval_km),
+
+        last_service_odometer:
+          formData.last_service_odometer === ""
+            ? null
+            : Number(formData.last_service_odometer),
+
+        next_service_date:
+          formData.next_service_date || null,
+
+        licence_expiry:
+          formData.licence_expiry || null,
+
+        insurance_expiry:
+          formData.insurance_expiry || null,
 
         status: formData.status,
 
@@ -478,6 +602,83 @@ function VehicleManagement() {
     }
   }
 
+  function formatDateOnly(value) {
+    if (!value) return "Not recorded";
+
+    return new Intl.DateTimeFormat("en-ZA", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+    }).format(new Date(`${value}T12:00:00`));
+  }
+
+  function daysUntil(value) {
+    if (!value) return null;
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const target = new Date(`${value}T12:00:00`);
+    target.setHours(0, 0, 0, 0);
+
+    return Math.ceil(
+      (target.getTime() - today.getTime()) /
+        (1000 * 60 * 60 * 24)
+    );
+  }
+
+  function getDateAlert(value) {
+    const remaining = daysUntil(value);
+
+    if (remaining === null) {
+      return {
+        label: "Not recorded",
+        className: "",
+      };
+    }
+
+    if (remaining < 0) {
+      return {
+        label: `Expired ${Math.abs(remaining)} day${
+          Math.abs(remaining) === 1 ? "" : "s"
+        } ago`,
+        className: "fleet-compliance-danger",
+      };
+    }
+
+    if (remaining <= 30) {
+      return {
+        label: `${remaining} day${
+          remaining === 1 ? "" : "s"
+        } remaining`,
+        className: "fleet-compliance-warning",
+      };
+    }
+
+    return {
+      label: formatDateOnly(value),
+      className: "fleet-compliance-good",
+    };
+  }
+
+  function getServiceRemainingKm(vehicleItem) {
+    if (
+      vehicleItem.service_interval_km == null ||
+      vehicleItem.last_service_odometer == null
+    ) {
+      return null;
+    }
+
+    const nextServiceOdometer =
+      Number(vehicleItem.last_service_odometer) +
+      Number(vehicleItem.service_interval_km);
+
+    return (
+      nextServiceOdometer -
+      Number(vehicleItem.current_odometer || 0)
+    );
+  }
+
   const activeVehicles = vehicles.filter(
     (vehicleItem) =>
       vehicleItem.active !== false
@@ -504,24 +705,8 @@ function VehicleManagement() {
               <FaArrowLeft />
             </Link>
 
-            <AEDCLogo
-              compact
-              className="fleet-logo"
-            />
-
             <div className="fleet-header-title">
-              <span>
-                AEDC VEHICLE MANAGEMENT
-              </span>
 
-              <h1>
-                Company Vehicles
-              </h1>
-
-              <p>
-                Manage AEDC pool vehicles and
-                fleet availability.
-              </p>
             </div>
           </div>
 
@@ -583,8 +768,8 @@ function VehicleManagement() {
                 </h2>
 
                 <p>
-                  Enter the official vehicle
-                  information below.
+                  Enter vehicle identity, capacity,
+                  service and compliance information.
                 </p>
               </div>
 
@@ -652,6 +837,159 @@ function VehicleManagement() {
                 </div>
 
                 <div className="fleet-field">
+                  <label htmlFor="vehicle_year">
+                    Vehicle Year
+                  </label>
+
+                  <input
+                    id="vehicle_year"
+                    name="vehicle_year"
+                    type="number"
+                    min="1950"
+                    max="2100"
+                    value={formData.vehicle_year}
+                    onChange={handleChange}
+                    placeholder="e.g. 2024"
+                  />
+                </div>
+
+                <div className="fleet-field">
+                  <label htmlFor="vehicle_type">
+                    Vehicle Type
+                  </label>
+
+                  <select
+                    id="vehicle_type"
+                    name="vehicle_type"
+                    value={formData.vehicle_type}
+                    onChange={handleChange}
+                  >
+                    <option value="Passenger Vehicle">
+                      Passenger Vehicle
+                    </option>
+                    <option value="Bakkie">Bakkie</option>
+                    <option value="Delivery Van">
+                      Delivery Van
+                    </option>
+                    <option value="Light Truck">
+                      Light Truck
+                    </option>
+                    <option value="Heavy Truck">
+                      Heavy Truck
+                    </option>
+                    <option value="Tractor Unit">
+                      Tractor Unit
+                    </option>
+                    <option value="Trailer">Trailer</option>
+                    <option value="Bus">Bus</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
+
+                <div className="fleet-field">
+                  <label htmlFor="fuel_type">
+                    Fuel Type
+                  </label>
+
+                  <select
+                    id="fuel_type"
+                    name="fuel_type"
+                    value={formData.fuel_type}
+                    onChange={handleChange}
+                  >
+                    <option value="">Select fuel type</option>
+                    <option value="Petrol">Petrol</option>
+                    <option value="Diesel">Diesel</option>
+                    <option value="Electric">Electric</option>
+                    <option value="Hybrid">Hybrid</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
+
+                <div className="fleet-field">
+                  <label htmlFor="ownership_type">
+                    Ownership
+                  </label>
+
+                  <select
+                    id="ownership_type"
+                    name="ownership_type"
+                    value={formData.ownership_type}
+                    onChange={handleChange}
+                  >
+                    <option value="company-owned">
+                      Company Owned
+                    </option>
+                    <option value="leased">Leased</option>
+                    <option value="financed">Financed</option>
+                    <option value="rented">Rented</option>
+                    <option value="contractor">
+                      Contractor Vehicle
+                    </option>
+                  </select>
+                </div>
+
+                <div className="fleet-field">
+                  <label htmlFor="load_capacity_kg">
+                    Load Capacity (kg)
+                  </label>
+
+                  <input
+                    id="load_capacity_kg"
+                    name="load_capacity_kg"
+                    type="number"
+                    min="0"
+                    step="0.01"
+                    value={formData.load_capacity_kg}
+                    onChange={handleChange}
+                    placeholder="e.g. 1200"
+                  />
+                </div>
+
+                <div className="fleet-field fleet-field-full">
+                  <label htmlFor="vin">VIN</label>
+
+                  <input
+                    id="vin"
+                    name="vin"
+                    type="text"
+                    value={formData.vin}
+                    onChange={handleChange}
+                    placeholder="17-character vehicle identification number"
+                  />
+                </div>
+
+                <div className="fleet-field">
+                  <label htmlFor="engine_number">
+                    Engine Number
+                  </label>
+
+                  <input
+                    id="engine_number"
+                    name="engine_number"
+                    type="text"
+                    value={formData.engine_number}
+                    onChange={handleChange}
+                    placeholder="Engine number"
+                  />
+                </div>
+
+                <div className="fleet-field">
+                  <label htmlFor="chassis_number">
+                    Chassis Number
+                  </label>
+
+                  <input
+                    id="chassis_number"
+                    name="chassis_number"
+                    type="text"
+                    value={formData.chassis_number}
+                    onChange={handleChange}
+                    placeholder="Chassis number"
+                  />
+                </div>
+
+                <div className="fleet-field">
                   <label htmlFor="classification">
                     Classification
                   </label>
@@ -680,6 +1018,82 @@ function VehicleManagement() {
                     onChange={handleChange}
                     placeholder="0"
                     required
+                  />
+                </div>
+
+                <div className="fleet-field">
+                  <label htmlFor="service_interval_km">
+                    Service Interval (km)
+                  </label>
+
+                  <input
+                    id="service_interval_km"
+                    name="service_interval_km"
+                    type="number"
+                    min="1"
+                    step="1"
+                    value={formData.service_interval_km}
+                    onChange={handleChange}
+                    placeholder="e.g. 15000"
+                  />
+                </div>
+
+                <div className="fleet-field">
+                  <label htmlFor="last_service_odometer">
+                    Last Service Odometer (km)
+                  </label>
+
+                  <input
+                    id="last_service_odometer"
+                    name="last_service_odometer"
+                    type="number"
+                    min="0"
+                    step="1"
+                    value={formData.last_service_odometer}
+                    onChange={handleChange}
+                    placeholder="e.g. 45000"
+                  />
+                </div>
+
+                <div className="fleet-field">
+                  <label htmlFor="next_service_date">
+                    Next Service Date
+                  </label>
+
+                  <input
+                    id="next_service_date"
+                    name="next_service_date"
+                    type="date"
+                    value={formData.next_service_date}
+                    onChange={handleChange}
+                  />
+                </div>
+
+                <div className="fleet-field">
+                  <label htmlFor="licence_expiry">
+                    Licence Expiry
+                  </label>
+
+                  <input
+                    id="licence_expiry"
+                    name="licence_expiry"
+                    type="date"
+                    value={formData.licence_expiry}
+                    onChange={handleChange}
+                  />
+                </div>
+
+                <div className="fleet-field">
+                  <label htmlFor="insurance_expiry">
+                    Insurance Expiry
+                  </label>
+
+                  <input
+                    id="insurance_expiry"
+                    name="insurance_expiry"
+                    type="date"
+                    value={formData.insurance_expiry}
+                    onChange={handleChange}
                   />
                 </div>
 
@@ -919,6 +1333,15 @@ function VehicleManagement() {
                     formatStatus={
                       formatStatus
                     }
+                    formatDateOnly={
+                      formatDateOnly
+                    }
+                    getDateAlert={
+                      getDateAlert
+                    }
+                    getServiceRemainingKm={
+                      getServiceRemainingKm
+                    }
                     onEdit={
                       openEditVehicle
                     }
@@ -974,6 +1397,15 @@ function VehicleManagement() {
                     formatStatus={
                       formatStatus
                     }
+                    formatDateOnly={
+                      formatDateOnly
+                    }
+                    getDateAlert={
+                      getDateAlert
+                    }
+                    getServiceRemainingKm={
+                      getServiceRemainingKm
+                    }
                     onEdit={
                       openEditVehicle
                     }
@@ -1003,10 +1435,23 @@ function VehicleCard({
   tripCount,
   getStatusClass,
   formatStatus,
+  formatDateOnly,
+  getDateAlert,
+  getServiceRemainingKm,
   onEdit,
   onToggle,
   onDelete,
 }) {
+  const licenceAlert = getDateAlert(
+    vehicle.licence_expiry
+  );
+
+  const insuranceAlert = getDateAlert(
+    vehicle.insurance_expiry
+  );
+
+  const serviceRemainingKm =
+    getServiceRemainingKm(vehicle);
   return (
     <article
       className={`fleet-vehicle-card ${
@@ -1038,6 +1483,37 @@ function VehicleCard({
           {vehicle.registration ||
             "Registration not recorded"}
         </p>
+      </div>
+
+      <div className="fleet-logistics-meta">
+        <span>
+          <FaTruck />
+          {vehicle.vehicle_type || "Vehicle"}
+        </span>
+
+        {vehicle.vehicle_year && (
+          <span>
+            <FaCalendarAlt />
+            {vehicle.vehicle_year}
+          </span>
+        )}
+
+        {vehicle.fuel_type && (
+          <span>
+            <FaGasPump />
+            {vehicle.fuel_type}
+          </span>
+        )}
+
+        {vehicle.load_capacity_kg != null && (
+          <span>
+            <FaWeightHanging />
+            {Number(
+              vehicle.load_capacity_kg
+            ).toLocaleString("en-ZA")}{" "}
+            kg
+          </span>
+        )}
       </div>
 
       <div className="fleet-vehicle-details">
@@ -1073,6 +1549,86 @@ function VehicleCard({
 
           <strong>
             {tripCount}
+          </strong>
+        </div>
+
+        <div>
+          <FaWrench />
+
+          <span>Service</span>
+
+          <strong>
+            {serviceRemainingKm === null
+              ? "Not configured"
+              : serviceRemainingKm < 0
+              ? `${Math.abs(
+                  serviceRemainingKm
+                ).toLocaleString("en-ZA")} km overdue`
+              : `${serviceRemainingKm.toLocaleString(
+                  "en-ZA"
+                )} km remaining`}
+          </strong>
+        </div>
+
+        <div>
+          <FaBarcode />
+
+          <span>VIN</span>
+
+          <strong>
+            {vehicle.vin || "Not recorded"}
+          </strong>
+        </div>
+      </div>
+
+      <div className="fleet-compliance-grid">
+        <div className={licenceAlert.className}>
+          <FaCalendarAlt />
+
+          <span>Licence</span>
+
+          <strong>
+            {vehicle.licence_expiry
+              ? formatDateOnly(
+                  vehicle.licence_expiry
+                )
+              : "Not recorded"}
+          </strong>
+
+          {vehicle.licence_expiry && (
+            <small>{licenceAlert.label}</small>
+          )}
+        </div>
+
+        <div className={insuranceAlert.className}>
+          <FaShieldAlt />
+
+          <span>Insurance</span>
+
+          <strong>
+            {vehicle.insurance_expiry
+              ? formatDateOnly(
+                  vehicle.insurance_expiry
+                )
+              : "Not recorded"}
+          </strong>
+
+          {vehicle.insurance_expiry && (
+            <small>{insuranceAlert.label}</small>
+          )}
+        </div>
+
+        <div>
+          <FaWrench />
+
+          <span>Next Service</span>
+
+          <strong>
+            {vehicle.next_service_date
+              ? formatDateOnly(
+                  vehicle.next_service_date
+                )
+              : "Not recorded"}
           </strong>
         </div>
       </div>

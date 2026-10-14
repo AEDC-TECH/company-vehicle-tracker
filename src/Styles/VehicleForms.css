@@ -1898,3 +1898,350 @@
   }
 }
 
+
+
+/* ==========================================================
+   AEDC REQUEST VEHICLE BRAND OVERRIDES
+   MATCH FLEET DASHBOARD
+========================================================== */
+
+.vehicle-form-page {
+  background: #f5f7fa;
+}
+
+
+/* HERO */
+
+.vehicle-form-page .form-hero {
+  background:
+    linear-gradient(
+      135deg,
+      #0b0d47 0%,
+      #11145f 55%,
+      #222879 100%
+    ) !important;
+
+  color: #ffffff;
+}
+
+
+.vehicle-form-page .form-hero::before {
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.025
+    );
+}
+
+
+.vehicle-form-page .form-hero::after {
+  background:
+    rgba(
+      179,
+      139,
+      46,
+      0.11
+    );
+}
+
+
+.vehicle-form-page .form-hero span {
+  color:
+    #e0b84d !important;
+}
+
+
+.vehicle-form-page .form-hero h1 {
+  color:
+    #ffffff !important;
+}
+
+
+.vehicle-form-page .form-hero p {
+  color:
+    rgba(
+      255,
+      255,
+      255,
+      0.78
+    ) !important;
+}
+
+
+/* SECTION NUMBERS */
+
+.vehicle-form-page
+.form-section-heading > span {
+  background:
+    #11145f !important;
+
+  color:
+    #ffffff !important;
+}
+
+
+/* SELECTED VEHICLE ICON */
+
+.vehicle-form-page
+.vehicle-summary-icon {
+  background:
+    #f0f1fb !important;
+
+  color:
+    #11145f !important;
+}
+
+
+/* SELECTED VEHICLE EYEBROW */
+
+.vehicle-form-page
+.vehicle-summary-form-card span,
+.vehicle-form-page
+.vehicle-summary-form-card
+.vehicle-summary-label {
+  color:
+    #b38b2e !important;
+}
+
+
+/* INPUT FOCUS */
+
+.vehicle-form-page
+input:focus,
+.vehicle-form-page
+select:focus,
+.vehicle-form-page
+textarea:focus {
+  border-color:
+    #11145f !important;
+
+  box-shadow:
+    0 0 0 3px
+    rgba(
+      17,
+      20,
+      95,
+      0.09
+    ) !important;
+}
+
+
+/* PRIMARY BUTTON */
+
+.vehicle-form-page
+button[type="submit"],
+.vehicle-form-page
+.primary-submit-button,
+.vehicle-form-page
+.submit-button {
+  background:
+    #11145f !important;
+
+  border-color:
+    #11145f !important;
+
+  color:
+    #ffffff !important;
+}
+
+
+.vehicle-form-page
+button[type="submit"]:hover:not(:disabled),
+.vehicle-form-page
+.primary-submit-button:hover:not(:disabled),
+.vehicle-form-page
+.submit-button:hover:not(:disabled) {
+  background:
+    #202677 !important;
+
+  border-color:
+    #202677 !important;
+}
+
+
+/* CARDS */
+
+.vehicle-form-page
+.form-card {
+  border-color:
+    #dfe4ea;
+
+  box-shadow:
+    0 5px 18px
+    rgba(
+      15,
+      23,
+      42,
+      0.045
+    );
+}
+
+
+/* GOLD ACCENTS */
+
+.vehicle-form-page
+.form-card label strong {
+  color:
+    #b38b2e;
+}
+
+
+/* ==========================================================
+   ADMIN REQUEST VEHICLE
+   EMPLOYEE AUTO LOOKUP
+========================================================== */
+
+.vehicle-form-page
+.employee-lookup-status {
+  display: flex;
+
+  align-items: center;
+
+  gap: 6px;
+
+  margin-top: 7px;
+
+  font-size: 0.68rem;
+
+  font-weight: 700;
+
+  line-height: 1.45;
+}
+
+
+/* LOOKING UP */
+
+.vehicle-form-page
+.employee-lookup-status.loading {
+  color: #7b8490;
+}
+
+
+/* FOUND */
+
+.vehicle-form-page
+.employee-lookup-status.found {
+  color: #218653;
+}
+
+
+/* NOT FOUND / INACTIVE */
+
+.vehicle-form-page
+.employee-lookup-status.not-found {
+  color: #b42318;
+}
+
+
+/* ==========================================================
+   AUTO-FILLED EMPLOYEE FIELDS
+========================================================== */
+
+.vehicle-form-page
+input[readonly] {
+  background:
+    #f5f7fa;
+
+  color:
+    #344256;
+
+  border-color:
+    #d8dee5;
+
+  cursor:
+    default;
+}
+
+
+.vehicle-form-page
+input[readonly]:focus {
+  border-color:
+    #d8dee5 !important;
+
+  box-shadow:
+    none !important;
+}
+
+
+/* ==========================================================
+   EMPLOYEE LOOKUP SUCCESS DETAIL
+========================================================== */
+
+.vehicle-form-page
+.employee-lookup-status.found::before {
+  content: "✓";
+
+  width: 16px;
+
+  height: 16px;
+
+  display:
+    inline-flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  flex:
+    0 0 16px;
+
+  border-radius:
+    50%;
+
+  background:
+    #eaf8f0;
+
+  color:
+    #218653;
+
+  font-size:
+    0.6rem;
+
+  font-weight:
+    900;
+}
+
+
+/* ==========================================================
+   EMPLOYEE LOOKUP ERROR DETAIL
+========================================================== */
+
+.vehicle-form-page
+.employee-lookup-status.not-found::before {
+  content: "!";
+
+  width: 16px;
+
+  height: 16px;
+
+  display:
+    inline-flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  flex:
+    0 0 16px;
+
+  border-radius:
+    50%;
+
+  background:
+    #fff0ee;
+
+  color:
+    #b42318;
+
+  font-size:
+    0.6rem;
+
+  font-weight:
+    900;
+}

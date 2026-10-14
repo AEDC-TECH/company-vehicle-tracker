@@ -1,0 +1,305 @@
+/* ============================================================
+   PRE-TRIP 4-SIDE PHOTO REQUIREMENT
+   ============================================================ */
+
+.employee-preinspection-photo-rule {
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
+
+  margin-bottom: 16px;
+  padding: 13px 14px;
+
+  border: 1px solid #e7d4a4;
+  border-radius: 10px;
+
+  background: #fffaf0;
+  color: #73591d;
+}
+
+.employee-preinspection-photo-rule > svg {
+  flex: 0 0 auto;
+  margin-top: 2px;
+
+  color: #a67c19;
+}
+
+.employee-preinspection-photo-rule strong {
+  display: block;
+
+  font-size: 0.64rem;
+  font-weight: 900;
+}
+
+.employee-preinspection-photo-rule p {
+  margin: 4px 0 0;
+
+  font-size: 0.56rem;
+  line-height: 1.55;
+}
+
+
+.employee-preinspection-photo-guide {
+  display: grid;
+  grid-template-columns:
+    repeat(4, minmax(0, 1fr));
+
+  gap: 9px;
+  margin-bottom: 18px;
+}
+
+
+.employee-preinspection-photo-guide-card {
+  position: relative;
+
+  min-width: 0;
+  padding: 13px;
+
+  border: 1px solid #dfe4e9;
+  border-radius: 10px;
+
+  background: #fafbfc;
+
+  transition:
+    border-color 0.18s ease,
+    background 0.18s ease,
+    transform 0.18s ease;
+}
+
+
+.employee-preinspection-photo-guide-card.complete {
+  border-color: #b9dec6;
+  background: #f2faf5;
+}
+
+
+.employee-preinspection-photo-step {
+  display: inline-flex;
+
+  padding: 4px 6px;
+
+  border-radius: 999px;
+
+  background: #eef0f7;
+  color: #11145f;
+
+  font-size: 0.42rem;
+  font-weight: 900;
+}
+
+
+.employee-preinspection-photo-icon {
+  min-height: 76px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-top: 10px;
+
+  border: 1px dashed #cfd6df;
+  border-radius: 8px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #f0f2f7,
+      #ffffff
+    );
+
+  color: #11145f;
+
+  font-size: 0.58rem;
+  font-weight: 900;
+  letter-spacing: 0.5px;
+}
+
+
+.employee-preinspection-photo-guide-card.complete
+.employee-preinspection-photo-icon {
+  border-color: #bdddc8;
+  background: #eaf7ef;
+  color: #177747;
+}
+
+
+.employee-preinspection-photo-guide-card h3 {
+  margin: 10px 0 0;
+
+  color: #34404c;
+
+  font-size: 0.65rem;
+}
+
+
+.employee-preinspection-photo-guide-card p {
+  min-height: 72px;
+
+  margin: 5px 0 9px;
+
+  color: #78838e;
+
+  font-size: 0.52rem;
+  line-height: 1.5;
+}
+
+
+.employee-preinspection-photo-guide-card > strong {
+  color: #a13b31;
+
+  font-size: 0.5rem;
+  font-weight: 900;
+}
+
+
+.employee-preinspection-photo-guide-card.complete
+> strong {
+  color: #177747;
+}
+
+
+.employee-preinspection-photo-uploads {
+  display: grid;
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+
+.employee-preinspection-photo-upload-slot {
+  min-width: 0;
+
+  padding: 12px;
+
+  border: 1px solid #e2e6eb;
+  border-radius: 11px;
+
+  background: #fcfcfd;
+}
+
+
+.employee-preinspection-photo-upload-heading {
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+
+  border-bottom: 1px solid #eceff2;
+}
+
+
+.employee-preinspection-photo-upload-heading span,
+.employee-preinspection-photo-upload-heading strong,
+.employee-preinspection-photo-upload-heading small {
+  display: block;
+}
+
+
+.employee-preinspection-photo-upload-heading span {
+  color: #b38b2e;
+
+  font-size: 0.44rem;
+  font-weight: 900;
+  letter-spacing: 0.4px;
+}
+
+
+.employee-preinspection-photo-upload-heading strong {
+  margin-top: 3px;
+
+  color: #33404c;
+
+  font-size: 0.68rem;
+}
+
+
+.employee-preinspection-photo-upload-heading small {
+  margin-top: 4px;
+
+  color: #87919c;
+
+  font-size: 0.51rem;
+  line-height: 1.45;
+}
+
+
+.employee-preinspection-four-photo-status {
+  display: grid;
+  grid-template-columns:
+    repeat(4, minmax(0, 1fr));
+
+  gap: 7px;
+  margin-bottom: 16px;
+}
+
+
+.employee-preinspection-four-photo-status > div {
+  padding: 9px;
+
+  border: 1px solid #ead0cd;
+  border-radius: 8px;
+
+  background: #fff7f6;
+}
+
+
+.employee-preinspection-four-photo-status > div.complete {
+  border-color: #c2e1cd;
+  background: #f2faf5;
+}
+
+
+.employee-preinspection-four-photo-status span,
+.employee-preinspection-four-photo-status strong {
+  display: block;
+}
+
+
+.employee-preinspection-four-photo-status span {
+  color: #7e8994;
+
+  font-size: 0.45rem;
+  font-weight: 850;
+}
+
+
+.employee-preinspection-four-photo-status strong {
+  margin-top: 3px;
+
+  color: #a43d33;
+
+  font-size: 0.52rem;
+  font-weight: 900;
+}
+
+
+.employee-preinspection-four-photo-status
+> div.complete strong {
+  color: #177747;
+}
+
+
+@media (max-width: 900px) {
+  .employee-preinspection-photo-guide {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+
+  .employee-preinspection-four-photo-status {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+}
+
+
+@media (max-width: 650px) {
+  .employee-preinspection-photo-guide,
+  .employee-preinspection-photo-uploads,
+  .employee-preinspection-four-photo-status {
+    grid-template-columns: 1fr;
+  }
+
+  .employee-preinspection-photo-guide-card p {
+    min-height: 0;
+  }
+}

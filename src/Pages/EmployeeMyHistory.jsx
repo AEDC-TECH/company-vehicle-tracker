@@ -23,11 +23,9 @@ import {
   FaUser,
 } from "react-icons/fa";
 
+import { supabase } from "../lib/supabase";
+
 import { lookupVehicleEmployee } from "../lib/employeeLookup";
-
-import { listVehicleTripsForEmployee } from "../lib/vehicleTripLookup";
-
-import { listVehiclesForEmployee } from "../lib/vehicleLookup";
 
 import AEDCLogo from "../Components/AEDCLogo";
 
@@ -152,14 +150,25 @@ function EmployeeMyHistory() {
        * ============================================
        */
 
+      const {
+        data: tripData,
+        error: tripError,
+      } = await supabase.rpc(
+        "list_employee_trip_history",
+        {
+          p_employee_number:
+            storedEmployeeNumber,
+        }
+      );
+
+
+      if (tripError) {
+        throw tripError;
+      }
+
+
       const loadedTrips =
-        await listVehicleTripsForEmployee(
-          storedEmployeeNumber,
-          [
-            "returned",
-            "incident-open",
-          ]
-        );
+        tripData || [];
 
 
       setTrips(
@@ -173,10 +182,42 @@ function EmployeeMyHistory() {
        * ============================================
        */
 
-      const vehicleData =
-        await listVehiclesForEmployee(
-          storedEmployeeNumber
+      const vehicleIds = [
+        ...new Set(
+          loadedTrips
+            .map(
+              (trip) =>
+                trip.vehicle_id
+            )
+            .filter(Boolean)
+        ),
+      ];
+
+
+      if (
+        vehicleIds.length === 0
+      ) {
+        setVehicles([]);
+
+        return;
+      }
+
+
+      const {
+        data: vehicleData,
+        error: vehicleError,
+      } = await supabase
+        .from("vehicles")
+        .select("*")
+        .in(
+          "id",
+          vehicleIds
         );
+
+
+      if (vehicleError) {
+        throw vehicleError;
+      }
 
 
       setVehicles(

@@ -4,6 +4,7 @@ import {
   FaCamera,
   FaCheckCircle,
   FaFileImage,
+  FaShieldAlt,
   FaTimes,
   FaUpload,
 } from "react-icons/fa";
@@ -12,7 +13,14 @@ import { supabase } from "../lib/supabase";
 
 import { createVehicleEvidenceRecord } from "../lib/vehicleEvidenceLookup";
 
+import {
+  formatAssignedVehicleName,
+  shouldVerifyPhotoLocally,
+  verifyVehiclePhoto,
+} from "../lib/vehiclePhotoVerifier";
+
 import "../Styles/VehicleEvidenceUpload.css";
+import "../Styles/VehiclePhotoVerifier.css";
 
 function VehicleEvidenceUpload({
   vehicleId,
@@ -25,6 +33,11 @@ function VehicleEvidenceUpload({
   description = "",
   required = false,
   multiple = true,
+  imagesOnly = false,
+  expectedVehicle = null,
+  expectedOdometer = null,
+  preferCamera = false,
+  employeeNumberOverride = null,
   onUploaded,
 }) {
   const fileInputRef = useRef(null);
@@ -34,11 +47,32 @@ function VehicleEvidenceUpload({
   const [uploading, setUploading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
+  const [
+    verificationMessage,
+    setVerificationMessage,
+  ] = useState("");
+
+  const [
+    verificationResult,
+    setVerificationResult,
+  ] = useState(null);
+
   function chooseFiles() {
     fileInputRef.current?.click();
   }
 
   function getStoredEmployeeNumber() {
+    const override =
+      String(
+        employeeNumberOverride || ""
+      )
+        .trim()
+        .toUpperCase();
+
+    if (override) {
+      return override;
+    }
+
     return String(
       localStorage.getItem(
         "aedc_employee_number"
@@ -56,14 +90,24 @@ function VehicleEvidenceUpload({
   }
 
   function handleFileSelection(event) {
+    setVerificationMessage("");
+    setVerificationResult(null);
+
     const files = Array.from(event.target.files || []);
 
-    const allowedTypes = [
+    const imageTypes = [
       "image/jpeg",
       "image/png",
       "image/webp",
-      "application/pdf",
     ];
+
+    const allowedTypes =
+      imagesOnly
+        ? imageTypes
+        : [
+            ...imageTypes,
+            "application/pdf",
+          ];
 
     const validFiles = [];
     const errors = [];
@@ -71,7 +115,9 @@ function VehicleEvidenceUpload({
     for (const file of files) {
       if (!allowedTypes.includes(file.type)) {
         errors.push(
-          `${file.name}: unsupported file type.`
+          imagesOnly
+            ? `${file.name}: this upload requires a JPG, PNG or WEBP image.`
+            : `${file.name}: unsupported file type.`
         );
         continue;
       }
@@ -102,6 +148,9 @@ function VehicleEvidenceUpload({
   }
 
   function removeSelectedFile(index) {
+    setVerificationMessage("");
+    setVerificationResult(null);
+
     setSelectedFiles((current) =>
       current.filter(
         (_, fileIndex) =>
@@ -137,15 +186,77 @@ function VehicleEvidenceUpload({
       const completedUploads = [];
 
       for (const file of selectedFiles) {
+        if (
+          imagesOnly &&
+          shouldVerifyPhotoLocally(
+            type
+          )
+        ) {
+          setVerificationMessage(
+            type === "odometer"
+              ? "Reading odometer photo on this device..."
+              : "Checking that this photo contains a vehicle..."
+          );
+
+          const verification =
+            await verifyVehiclePhoto({
+              file,
+              type,
+              expectedVehicle,
+              expectedOdometer,
+            });
+
+          setVerificationResult(
+            verification
+          );
+
+          if (
+            verification.accepted !==
+            true
+          ) {
+            throw new Error(
+              verification.message ||
+              "This photo did not pass local verification."
+            );
+          }
+
+          setVerificationMessage(
+            verification.message ||
+            "Photo verified."
+          );
+        }
+
         const safeName = sanitiseFileName(
           file.name
         );
 
+        const directionalTypes = [
+          "vehicle-front",
+          "vehicle-rear",
+          "vehicle-driver-side",
+          "vehicle-passenger-side",
+        ];
+
+        const isDirectionalPhoto =
+          directionalTypes.includes(
+            type
+          );
+
+        const databaseEvidenceType =
+          isDirectionalPhoto
+            ? "vehicle-condition"
+            : type;
+
+        const logicalPrefix =
+          isDirectionalPhoto
+            ? `${type}--`
+            : "";
+
         const uniqueName =
-          `${Date.now()}-${crypto.randomUUID()}-${safeName}`;
+          `${logicalPrefix}${Date.now()}-${crypto.randomUUID()}-${safeName}`;
 
         const storagePath =
-          `${recordFolder}/${stage}/${type}/${uniqueName}`;
+          `${recordFolder}/${stage}/${databaseEvidenceType}/${uniqueName}`;
 
         const {
           error: storageError,
@@ -165,28 +276,39 @@ function VehicleEvidenceUpload({
           throw storageError;
         }
 
-        const evidenceRecord =
-          await createVehicleEvidenceRecord({
-            employeeNumber:
-              getStoredEmployeeNumber(),
+        let evidenceRecord;
 
-            vehicleId,
-            tripId,
-            requestId,
-            incidentId,
-            stage,
-            type,
-            storagePath,
+        try {
+          evidenceRecord =
+            await createVehicleEvidenceRecord({
+              employeeNumber:
+                getStoredEmployeeNumber(),
 
-            originalFileName:
-              file.name,
+              vehicleId,
+              tripId,
+              requestId,
+              incidentId,
+              stage,
+              type:
+                databaseEvidenceType,
+              storagePath,
 
-            mimeType:
-              file.type,
+              originalFileName:
+                file.name,
 
-            fileSize:
-              file.size,
-          });
+              mimeType:
+                file.type,
+
+              fileSize:
+                file.size,
+            });
+        } catch (databaseError) {
+          await supabase.storage
+            .from("vehicle-evidence")
+            .remove([storagePath]);
+
+          throw databaseError;
+        }
 
         completedUploads.push(
           evidenceRecord
@@ -250,8 +372,18 @@ function VehicleEvidenceUpload({
         ref={fileInputRef}
         className="hidden-file-input"
         type="file"
-        accept="image/jpeg,image/png,image/webp,application/pdf"
+        accept={
+          imagesOnly
+            ? "image/jpeg,image/png,image/webp"
+            : "image/jpeg,image/png,image/webp,application/pdf"
+        }
         multiple={multiple}
+        capture={
+          preferCamera &&
+          imagesOnly
+            ? "environment"
+            : undefined
+        }
         onChange={handleFileSelection}
       />
 
@@ -268,11 +400,15 @@ function VehicleEvidenceUpload({
         </strong>
 
         <span>
-          JPG, PNG, WEBP or PDF · Maximum 10 MB each
+          {imagesOnly
+            ? "JPG, PNG or WEBP image · Maximum 10 MB each"
+            : "JPG, PNG, WEBP or PDF · Maximum 10 MB each"}
         </span>
 
         <small>
-          Mobile users can choose photos from their device.
+          {preferCamera
+            ? "On mobile, use the rear camera and photograph the assigned vehicle now."
+            : "Mobile users can choose photos from their device."}
         </small>
       </button>
 
@@ -327,7 +463,11 @@ function VehicleEvidenceUpload({
             <FaUpload />
 
             {uploading
-              ? "Uploading..."
+              ? shouldVerifyPhotoLocally(
+                  type
+                )
+                ? "Checking & Uploading..."
+                : "Uploading..."
               : `Upload ${
                   selectedFiles.length
                 } File${
@@ -338,6 +478,135 @@ function VehicleEvidenceUpload({
           </button>
         </div>
       )}
+
+      {expectedVehicle &&
+        shouldVerifyPhotoLocally(
+          type
+        ) && (
+        <div className="local-verifier-assigned">
+          <FaShieldAlt />
+
+          <div>
+            <span>
+              ASSIGNED VEHICLE
+            </span>
+
+            <strong>
+              {formatAssignedVehicleName(
+                expectedVehicle
+              ) ||
+                "Company Vehicle"}
+            </strong>
+
+            {expectedVehicle
+              .registration && (
+              <small>
+                Registration:{" "}
+                {
+                  expectedVehicle
+                    .registration
+                }
+              </small>
+            )}
+          </div>
+        </div>
+      )}
+
+
+      {verificationMessage && (
+        <div
+          className={`local-verifier-result ${
+            verificationResult
+              ?.accepted
+              ? "verified"
+              : ""
+          } ${
+            verificationResult
+              ?.odometerMatched ===
+                false
+              ? "warning"
+              : ""
+          }`}
+        >
+          <FaShieldAlt />
+
+          <div>
+            <strong>
+              {verificationResult
+                ?.accepted
+                ? "Photo Check Complete"
+                : "Checking Photo"}
+            </strong>
+
+            <span>
+              {
+                verificationMessage
+              }
+            </span>
+
+            {verificationResult
+              ?.vehicleDetected && (
+              <small>
+                Vehicle detected:{" "}
+                {
+                  verificationResult
+                    .detectedVehicleClass
+                }
+                {" · "}
+                confidence{" "}
+                {Math.round(
+                  (
+                    verificationResult
+                      .vehicleConfidence ||
+                    0
+                  ) * 100
+                )}
+                %
+              </small>
+            )}
+
+            {verificationResult
+              ?.registrationMatched ===
+                true && (
+              <small>
+                Registration matched:{" "}
+                {
+                  verificationResult
+                    .expectedRegistration
+                }
+              </small>
+            )}
+
+            {verificationResult
+              ?.registrationStatus ===
+                "matched" && (
+              <small>
+                Registration verified:{" "}
+                {
+                  verificationResult
+                    .expectedRegistration
+                }
+              </small>
+            )}
+
+            {verificationResult
+              ?.detectedOdometer !=
+                null && (
+              <small>
+                Odometer OCR:{" "}
+                {Number(
+                  verificationResult
+                    .detectedOdometer
+                ).toLocaleString(
+                  "en-ZA"
+                )}{" "}
+                km
+              </small>
+            )}
+          </div>
+        </div>
+      )}
+
 
       {uploadedFiles.length > 0 && (
         <div className="uploaded-evidence-list">

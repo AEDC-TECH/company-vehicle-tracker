@@ -33,6 +33,22 @@ function RequestVehicle() {
   const [errorMessage, setErrorMessage] =
     useState("");
 
+  const [
+    employeeLookupLoading,
+    setEmployeeLookupLoading,
+  ] = useState(false);
+
+  const [
+    employeeLookupMessage,
+    setEmployeeLookupMessage,
+  ] = useState("");
+
+  const [
+    employeeFound,
+    setEmployeeFound,
+  ] = useState(false);
+
+
   const [formData, setFormData] = useState({
     driverName: "",
     employeeNumber: "",
@@ -170,6 +186,331 @@ function RequestVehicle() {
       .replaceAll("-", " ")
       .toUpperCase();
   }
+
+  /*
+   * =========================================================
+   * ADMIN EMPLOYEE LOOKUP
+   *
+   * Admin enters the employee/work number.
+   * The employee register becomes the source of truth for:
+   *
+   * - full name
+   * - department
+   * - active status
+   *
+   * A 500ms debounce prevents unnecessary database calls
+   * while the admin is still typing.
+   * =========================================================
+   */
+
+  useEffect(() => {
+    const rawEmployeeNumber =
+      formData.employeeNumber.trim();
+
+    let cancelled = false;
+
+
+    /*
+     * No employee number entered.
+     */
+
+    if (!rawEmployeeNumber) {
+      setEmployeeLookupLoading(false);
+
+      setEmployeeLookupMessage("");
+
+      setEmployeeFound(false);
+
+
+      setFormData(
+        (current) => ({
+          ...current,
+
+          driverName: "",
+
+          department: "",
+        })
+      );
+
+
+      return undefined;
+    }
+
+
+    /*
+     * The work number changed.
+     *
+     * Immediately clear details belonging
+     * to the previously selected employee.
+     */
+
+    setEmployeeFound(false);
+
+    setEmployeeLookupMessage("");
+
+
+    setFormData(
+      (current) => ({
+        ...current,
+
+        driverName: "",
+
+        department: "",
+      })
+    );
+
+
+    const timer =
+      window.setTimeout(
+        async () => {
+          const normalizedEmployeeNumber =
+            rawEmployeeNumber
+              .toUpperCase();
+
+
+          try {
+            setEmployeeLookupLoading(
+              true
+            );
+
+
+            const {
+              data: employee,
+              error,
+            } =
+              await supabase
+                .from("drivers")
+                .select(
+                  `
+                    id,
+                    full_name,
+                    employee_number,
+                    department,
+                    job_title,
+                    employment_type,
+                    active
+                  `
+                )
+                .eq(
+                  "employee_number",
+                  normalizedEmployeeNumber
+                )
+                .maybeSingle();
+
+
+            if (cancelled) {
+              return;
+            }
+
+
+            if (error) {
+              throw error;
+            }
+
+
+            /*
+             * =============================================
+             * NOT FOUND
+             * =============================================
+             */
+
+            if (!employee) {
+              setEmployeeFound(
+                false
+              );
+
+
+              setEmployeeLookupMessage(
+                `Employee ${normalizedEmployeeNumber} was not found in the AEDC employee register.`
+              );
+
+
+              return;
+            }
+
+
+            /*
+             * =============================================
+             * INACTIVE
+             * =============================================
+             */
+
+            if (
+              employee.active ===
+              false
+            ) {
+              setEmployeeFound(
+                false
+              );
+
+
+              setFormData(
+                (current) => ({
+                  ...current,
+
+                  employeeNumber:
+                    employee.employee_number ||
+                    normalizedEmployeeNumber,
+
+                  driverName:
+                    employee.full_name ||
+                    "",
+
+                  department:
+                    employee.department ||
+                    "",
+                })
+              );
+
+
+              setEmployeeLookupMessage(
+                `${
+                  employee.full_name ||
+                  normalizedEmployeeNumber
+                } is registered but the employee account is inactive.`
+              );
+
+
+              return;
+            }
+
+
+            /*
+             * =============================================
+             * REGISTER DATA QUALITY
+             * =============================================
+             */
+
+            if (
+              !employee.full_name
+            ) {
+              setEmployeeFound(
+                false
+              );
+
+
+              setEmployeeLookupMessage(
+                `Employee ${normalizedEmployeeNumber} exists, but their full name is missing from the Employee Register.`
+              );
+
+
+              return;
+            }
+
+
+            if (
+              !employee.department
+            ) {
+              setEmployeeFound(
+                false
+              );
+
+
+              setFormData(
+                (current) => ({
+                  ...current,
+
+                  employeeNumber:
+                    employee.employee_number ||
+                    normalizedEmployeeNumber,
+
+                  driverName:
+                    employee.full_name,
+
+                  department: "",
+                })
+              );
+
+
+              setEmployeeLookupMessage(
+                `${employee.full_name} was found, but their department is missing. Update the Employee Register first.`
+              );
+
+
+              return;
+            }
+
+
+            /*
+             * =============================================
+             * EMPLOYEE FOUND
+             * =============================================
+             */
+
+            setFormData(
+              (current) => ({
+                ...current,
+
+                employeeNumber:
+                  employee.employee_number ||
+                  normalizedEmployeeNumber,
+
+                driverName:
+                  employee.full_name,
+
+                department:
+                  employee.department,
+              })
+            );
+
+
+            setEmployeeFound(
+              true
+            );
+
+
+            setEmployeeLookupMessage(
+              `${employee.full_name} found in the AEDC Employee Register.`
+            );
+
+          } catch (error) {
+            if (cancelled) {
+              return;
+            }
+
+
+            console.error(
+              "Employee lookup error:",
+              error
+            );
+
+
+            setEmployeeFound(
+              false
+            );
+
+
+            setEmployeeLookupMessage(
+              error.message ||
+              "Unable to look up the employee."
+            );
+
+          } finally {
+            if (
+              !cancelled
+            ) {
+              setEmployeeLookupLoading(
+                false
+              );
+            }
+          }
+        },
+        500
+      );
+
+
+    return () => {
+      cancelled = true;
+
+      window.clearTimeout(
+        timer
+      );
+    };
+
+  }, [
+    formData.employeeNumber,
+  ]);
+
 
   function handleChange(event) {
     const {
@@ -594,9 +935,9 @@ function RequestVehicle() {
           </Link>
 
           <div className="form-brand">
-            <FaCar />
+
             <span>
-              AEDC Vehicle Tracker
+
             </span>
           </div>
         </div>
@@ -830,6 +1171,7 @@ function RequestVehicle() {
                 <FaUser />
 
                 <input
+                readOnly
                   required
                   type="text"
                   name="driverName"
@@ -837,14 +1179,14 @@ function RequestVehicle() {
                     formData.driverName
                   }
                   onChange={handleChange}
-                  placeholder="Full name"
+                  placeholder="Auto-filled from employee number"
                 />
               </div>
             </div>
 
             <div className="input-group">
               <label>
-                Employee / Contractor Number *
+                Employee / Work Number *
               </label>
 
               <input
@@ -857,6 +1199,26 @@ function RequestVehicle() {
                 onChange={handleChange}
                 placeholder="Employee number"
               />
+
+              {employeeLookupLoading && (
+                <small className="employee-lookup-status loading">
+                  Looking up employee...
+                </small>
+              )}
+
+
+              {!employeeLookupLoading &&
+                employeeLookupMessage && (
+                  <small
+                    className={`employee-lookup-status ${
+                      employeeFound
+                        ? "found"
+                        : "not-found"
+                    }`}
+                  >
+                    {employeeLookupMessage}
+                  </small>
+                )}
             </div>
 
             <div className="input-group full-width">
@@ -865,6 +1227,7 @@ function RequestVehicle() {
               </label>
 
               <input
+                readOnly
                 required
                 type="text"
                 name="department"
@@ -872,7 +1235,7 @@ function RequestVehicle() {
                   formData.department
                 }
                 onChange={handleChange}
-                placeholder="e.g. IT, Finance, Operations"
+                placeholder="Auto-filled from Employee Register"
               />
             </div>
           </div>
