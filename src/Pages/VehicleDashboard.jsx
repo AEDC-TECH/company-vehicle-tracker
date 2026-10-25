@@ -32,9 +32,20 @@ function VehicleDashboard() {
 
   const [loading, setLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
+  const [currentTime, setCurrentTime] = useState(() => Date.now());
 
   useEffect(() => {
     loadDashboard();
+  }, []);
+
+  useEffect(() => {
+    const timer = window.setInterval(() => {
+      setCurrentTime(Date.now());
+    }, 30000);
+
+    return () => {
+      window.clearInterval(timer);
+    };
   }, []);
 
 
@@ -208,7 +219,7 @@ function VehicleDashboard() {
         new Date(
           request.preinspection_expires_at
         ).getTime() >
-          Date.now()
+          currentTime
     );
   }
 
@@ -227,7 +238,7 @@ function VehicleDashboard() {
       new Date(
         request.preinspection_expires_at
       ).getTime() -
-      Date.now();
+      currentTime;
 
 
     if (remainingMs <= 0) {
@@ -287,11 +298,6 @@ function VehicleDashboard() {
       vehicle.status === "reserved"
   );
 
-
-  const inUseVehicles = vehicles.filter(
-    (vehicle) =>
-      vehicle.status === "in-use"
-  );
 
   const unavailableVehicles = vehicles.filter(
     (vehicle) =>

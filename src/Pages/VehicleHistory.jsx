@@ -11,11 +11,13 @@ import {
   FaCar,
   FaCheckCircle,
   FaClipboardList,
+  FaDownload,
   FaExclamationTriangle,
   FaGasPump,
   FaHistory,
   FaKey,
   FaMapMarkerAlt,
+  FaPrint,
   FaRoad,
   FaShieldAlt,
   FaUser,
@@ -25,7 +27,6 @@ import { supabase } from "../lib/supabase";
 
 import VehicleEvidenceGallery from "../Components/VehicleEvidenceGallery";
 
-import AEDCLogo from "../Components/AEDCLogo";
 
 import "../Styles/VehicleForms.css";
 import "../Styles/VehicleHistory.css";
@@ -39,6 +40,9 @@ const inspectionLabels = {
 
 function VehicleHistory() {
   const [history, setHistory] =
+    useState([]);
+
+  const [vehicles, setVehicles] =
     useState([]);
 
   const [search, setSearch] =
@@ -62,28 +66,40 @@ function VehicleHistory() {
     setErrorMessage,
   ] = useState("");
 
-  useEffect(() => {
-    loadHistory();
-  }, []);
-
   async function loadHistory() {
     try {
       setLoading(true);
       setErrorMessage("");
 
-      const {
-        data,
-        error,
-      } = await supabase.rpc(
-        "admin_list_vehicle_trip_history"
-      );
+      const [
+        historyResult,
+        vehicleResult,
+      ] = await Promise.all([
+        supabase.rpc(
+          "admin_list_vehicle_trip_history"
+        ),
 
-      if (error) {
-        throw error;
+        supabase
+          .from("vehicles")
+          .select(
+            "id, make, model, registration, registration_number"
+          ),
+      ]);
+
+      if (historyResult.error) {
+        throw historyResult.error;
+      }
+
+      if (vehicleResult.error) {
+        throw vehicleResult.error;
       }
 
       setHistory(
-        data || []
+        historyResult.data || []
+      );
+
+      setVehicles(
+        vehicleResult.data || []
       );
     } catch (error) {
       console.error(
@@ -102,6 +118,28 @@ function VehicleHistory() {
     }
   }
 
+  useEffect(() => {
+    const timer = window.setTimeout(() => {
+      void loadHistory();
+    }, 0);
+
+    return () => {
+      window.clearTimeout(timer);
+    };
+  }, []);
+
+  const vehicleById =
+    useMemo(() => {
+      return new Map(
+        vehicles.map(
+          (vehicle) => [
+            vehicle.id,
+            vehicle,
+          ]
+        )
+      );
+    }, [vehicles]);
+
   const filteredHistory =
     useMemo(() => {
       const searchValue =
@@ -117,6 +155,11 @@ function VehicleHistory() {
             trip.status ===
               statusFilter;
 
+          const vehicle =
+            vehicleById.get(
+              trip.vehicle_id
+            );
+
           const searchable = [
             trip.booking_reference,
             trip.driver_name,
@@ -124,6 +167,10 @@ function VehicleHistory() {
             trip.department,
             trip.destination,
             trip.purpose,
+            vehicle?.make,
+            vehicle?.model,
+            vehicle?.registration,
+            vehicle?.registration_number,
           ]
             .filter(Boolean)
             .join(" ")
@@ -145,7 +192,164 @@ function VehicleHistory() {
       history,
       search,
       statusFilter,
+      vehicleById,
     ]);
+
+  function getVehicleLabel(trip) {
+    const vehicle =
+      vehicleById.get(
+        trip?.vehicle_id
+      );
+
+    if (!vehicle) {
+      return "Vehicle not recorded";
+    }
+
+    const name = [
+      vehicle.make,
+      vehicle.model,
+    ]
+      .filter(Boolean)
+      .join(" ");
+
+    const registration =
+      vehicle.registration ||
+      vehicle.registration_number ||
+      "";
+
+    if (name && registration) {
+      return `${name} · ${registration}`;
+    }
+
+    return (
+      name ||
+      registration ||
+      "Vehicle not recorded"
+    );
+  }
+
+  function toCsvValue(value) {
+    const normalized =
+      value === null ||
+      value === undefined
+        ? ""
+        : String(value);
+
+    return `"${normalized.replaceAll(
+      '"',
+      '""'
+    )}"`;
+  }
+
+  function exportLogbookCsv() {
+    if (filteredHistory.length === 0) {
+      return;
+    }
+
+    const headers = [
+      "Booking Reference",
+      "Status",
+      "Vehicle",
+      "Driver",
+      "Employee Number",
+      "Department",
+      "Destination",
+      "Purpose",
+      "Departure",
+      "Returned",
+      "Start Odometer (km)",
+      "End Odometer (km)",
+      "Distance Travelled (km)",
+      "Fuel Before",
+      "Fuel After",
+      "New Damage",
+      "Warning Light",
+      "Mechanical Issue",
+    ];
+
+    const rows =
+      filteredHistory.map(
+        (trip) => {
+          const distance =
+            trip.end_odometer !== null &&
+            trip.end_odometer !== undefined
+              ? trip.distance_travelled ||
+                Number(
+                  trip.end_odometer
+                ) -
+                  Number(
+                    trip.start_odometer ||
+                      0
+                  )
+              : "";
+
+          return [
+            trip.booking_reference,
+            trip.status,
+            getVehicleLabel(trip),
+            trip.driver_name,
+            trip.employee_number,
+            trip.department,
+            trip.destination,
+            trip.purpose,
+            trip.departure_at,
+            trip.returned_at,
+            trip.start_odometer,
+            trip.end_odometer,
+            distance,
+            trip.fuel_before,
+            trip.fuel_after,
+            trip.new_damage
+              ? "Yes"
+              : "No",
+            trip.warning_light_reported
+              ? "Yes"
+              : "No",
+            trip.mechanical_issue_reported
+              ? "Yes"
+              : "No",
+          ]
+            .map(toCsvValue)
+            .join(",");
+        }
+      );
+
+    const csv = [
+      headers
+        .map(toCsvValue)
+        .join(","),
+      ...rows,
+    ].join("\n");
+
+    const blob = new Blob(
+      [`\uFEFF${csv}`],
+      {
+        type:
+          "text/csv;charset=utf-8",
+      }
+    );
+
+    const url =
+      URL.createObjectURL(blob);
+
+    const link =
+      document.createElement("a");
+
+    const dateStamp =
+      new Date()
+        .toISOString()
+        .slice(0, 10);
+
+    link.href = url;
+    link.download =
+      `aedc-vehicle-logbook-${dateStamp}.csv`;
+
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+
+    URL.revokeObjectURL(url);
+  }
 
   function toggleTrip(id) {
     setExpandedTrip(
@@ -203,16 +407,6 @@ function VehicleHistory() {
     return `****${visible}`;
   }
 
-  function formatStatus(status) {
-    if (!status) {
-      return "";
-    }
-
-    return status
-      .replaceAll("-", " ")
-      .toUpperCase();
-  }
-
   const totalTrips =
     history.length;
 
@@ -261,8 +455,12 @@ function VehicleHistory() {
           </Link>
 
           <div className="form-brand">
+            <FaCar />
 
-       </div>
+            <span>
+              AEDC Digital Logbook
+            </span>
+          </div>
         </div>
       </header>
 
@@ -385,44 +583,72 @@ function VehicleHistory() {
             </p>
           </div>
 
-          <div className="history-filter-controls">
-            <input
-              type="search"
-              placeholder="Search driver, booking, destination..."
-              value={search}
-              onChange={(event) =>
-                setSearch(
-                  event.target.value
-                )
-              }
-            />
+          <div className="history-toolbar-right">
+            <div className="history-filter-controls">
+              <input
+                type="search"
+                placeholder="Search driver, vehicle, booking, destination..."
+                value={search}
+                onChange={(event) =>
+                  setSearch(
+                    event.target.value
+                  )
+                }
+              />
 
-            <select
-              value={
-                statusFilter
-              }
-              onChange={(event) =>
-                setStatusFilter(
-                  event.target.value
-                )
-              }
-            >
-              <option value="all">
-                All Records
-              </option>
+              <select
+                value={
+                  statusFilter
+                }
+                onChange={(event) =>
+                  setStatusFilter(
+                    event.target.value
+                  )
+                }
+              >
+                <option value="all">
+                  All Records
+                </option>
 
-              <option value="in-use">
-                In Use
-              </option>
+                <option value="in-use">
+                  In Use
+                </option>
 
-              <option value="returned">
-                Completed
-              </option>
+                <option value="returned">
+                  Completed
+                </option>
 
-              <option value="incident-open">
-                Incident Open
-              </option>
-            </select>
+                <option value="incident-open">
+                  Incident Open
+                </option>
+              </select>
+            </div>
+
+            <div className="history-export-actions">
+              <button
+                type="button"
+                onClick={exportLogbookCsv}
+                disabled={
+                  filteredHistory.length === 0
+                }
+              >
+                <FaDownload />
+                Export CSV
+              </button>
+
+              <button
+                type="button"
+                onClick={() =>
+                  window.print()
+                }
+                disabled={
+                  filteredHistory.length === 0
+                }
+              >
+                <FaPrint />
+                Print Logbook
+              </button>
+            </div>
           </div>
         </div>
 
@@ -512,6 +738,16 @@ function VehicleHistory() {
                           ? ` · ${trip.employee_number}`
                           : ""}
                       </p>
+
+                      <div className="history-vehicle-chip">
+                        <FaCar />
+
+                        <span>
+                          {getVehicleLabel(
+                            trip
+                          )}
+                        </span>
+                      </div>
                     </div>
 
                     <TripStatus

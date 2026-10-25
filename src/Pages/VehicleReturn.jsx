@@ -26,7 +26,7 @@ import { supabase } from "../lib/supabase";
 
 import {
   formatAssignedVehicleName,
-} from "../lib/vehiclePhotoVerifier";
+} from "../lib/vehicleLookup";
 
 import VehicleEvidenceUpload from "../Components/VehicleEvidenceUpload";
 
@@ -1612,8 +1612,8 @@ function VehicleReturn() {
                 Capture the complete front, rear,
                 driver side and passenger side.
                 Front and rear photos must show the
-                assigned registration clearly enough
-                for the local verification check.
+                assigned registration clearly for
+                the permanent vehicle record.
               </p>
             </div>
           </div>

@@ -230,8 +230,7 @@ function RequestApproval() {
         );
 
 
-        let licenseExpiryDate =
-          null;
+        let licenseExpiryDate;
 
         let licenseExpired =
           false;

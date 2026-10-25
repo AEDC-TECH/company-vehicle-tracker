@@ -1,0 +1,1557 @@
+/* ==========================================================
+   AEDC COMPANY VEHICLE TRACKER
+   SYSTEM-WIDE VISUAL CONSISTENCY LAYER
+
+   This file is intentionally loaded after all page styles.
+   It does not replace page-specific layouts. It aligns the
+   shared visual language across Admin and Employee screens.
+========================================================== */
+
+:root {
+  --aedc-navy: #11145f;
+  --aedc-navy-2: #1c2177;
+  --aedc-navy-soft: #f0f1f8;
+  --aedc-gold: #b38b2e;
+  --aedc-gold-2: #d3af55;
+  --aedc-page: #f4f6f8;
+  --aedc-surface: #ffffff;
+  --aedc-surface-soft: #f8f9fb;
+  --aedc-border: #e1e5ea;
+  --aedc-border-strong: #d6dce3;
+  --aedc-text: #303a46;
+  --aedc-muted: #7f8994;
+  --aedc-success: #177747;
+  --aedc-success-soft: #eaf7ef;
+  --aedc-danger: #b42318;
+  --aedc-danger-soft: #fff0ef;
+  --aedc-warning: #896400;
+  --aedc-warning-soft: #fff7df;
+  --aedc-info: #1d5fa7;
+  --aedc-info-soft: #eef5fc;
+  --aedc-radius-sm: 9px;
+  --aedc-radius: 12px;
+  --aedc-radius-lg: 16px;
+  --aedc-shadow-sm: 0 4px 14px rgba(15, 23, 42, 0.045);
+  --aedc-shadow: 0 12px 32px rgba(15, 23, 42, 0.07);
+  --aedc-content: 1180px;
+  --aedc-transition: 0.2s ease;
+}
+
+html,
+body,
+#root {
+  background: var(--aedc-page);
+}
+
+body {
+  color: var(--aedc-text);
+}
+
+::selection {
+  background: rgba(17, 20, 95, 0.16);
+  color: var(--aedc-navy);
+}
+
+/* ==========================================================
+   PAGE FOUNDATIONS
+========================================================== */
+
+:is(
+  .dashboard-page,
+  .vehicle-management-page,
+  .vehicle-details-page,
+  .vehicle-requests-page,
+  .vehicle-form-page,
+  .driver-management-page,
+  .defect-management-page,
+  .maintenance-page,
+  .fuel-page,
+  .customer-page,
+  .jobs-page,
+  .dispatch-page,
+  .admin-pod-page,
+  .feature-management-page,
+  .employee-register-page,
+  .employee-portal-page,
+  .employee-deliveries-page,
+  .employee-history-page,
+  .employee-myrequests-page,
+  .employee-preinspection-page,
+  .pod-page,
+  .employee-request-page,
+  .employee-return-page
+) {
+  min-height: 100vh;
+  background: var(--aedc-page);
+  color: var(--aedc-text);
+  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+:is(
+  .dashboard-page,
+  .vehicle-management-page,
+  .vehicle-details-page,
+  .vehicle-requests-page,
+  .vehicle-form-page,
+  .driver-management-page,
+  .defect-management-page,
+  .maintenance-page,
+  .fuel-page,
+  .customer-page,
+  .jobs-page,
+  .dispatch-page,
+  .admin-pod-page,
+  .feature-management-page,
+  .employee-register-page,
+  .employee-portal-page,
+  .employee-deliveries-page,
+  .employee-history-page,
+  .employee-myrequests-page,
+  .employee-preinspection-page,
+  .pod-page,
+  .employee-request-page,
+  .employee-return-page
+) a,
+:is(
+  .dashboard-page,
+  .vehicle-management-page,
+  .vehicle-details-page,
+  .vehicle-requests-page,
+  .vehicle-form-page,
+  .driver-management-page,
+  .defect-management-page,
+  .maintenance-page,
+  .fuel-page,
+  .customer-page,
+  .jobs-page,
+  .dispatch-page,
+  .admin-pod-page,
+  .feature-management-page,
+  .employee-register-page,
+  .employee-portal-page,
+  .employee-deliveries-page,
+  .employee-history-page,
+  .employee-myrequests-page,
+  .employee-preinspection-page,
+  .pod-page,
+  .employee-request-page,
+  .employee-return-page
+) button {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ==========================================================
+   PRIMARY ADMIN NAVBAR
+========================================================== */
+
+.dashboard-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: rgba(255, 255, 255, 0.98);
+  border-bottom: 1px solid var(--aedc-border);
+  box-shadow: var(--aedc-shadow-sm);
+  backdrop-filter: blur(14px);
+}
+
+.dashboard-header-inner {
+  width: min(var(--aedc-content), calc(100% - 48px));
+  min-height: 82px;
+  margin: 0 auto;
+  gap: 24px;
+}
+
+.dashboard-brand-text h1 {
+  color: var(--aedc-navy);
+  font-size: 1.16rem;
+  font-weight: 850;
+}
+
+.dashboard-brand-text span {
+  color: var(--aedc-gold);
+}
+
+.dashboard-header-link,
+.dashboard-refresh-button,
+.dashboard-logout-button {
+  min-height: 40px;
+  border-radius: var(--aedc-radius-sm);
+  font-weight: 800;
+  transition: var(--aedc-transition);
+}
+
+.dashboard-refresh-button {
+  background: var(--aedc-navy);
+  border-color: var(--aedc-navy);
+}
+
+.dashboard-refresh-button:hover {
+  background: var(--aedc-navy-2);
+}
+
+/* ==========================================================
+   ADMIN SECONDARY PAGE HEADERS
+   The shared AdminNavbar is the main navigation. Page headers
+   below it become clean title bars instead of competing navbars.
+========================================================== */
+
+:is(
+  .fleet-header,
+  .vehicle-details-header,
+  .vehicle-requests-header,
+  .driver-header,
+  .defect-header,
+  .maintenance-header,
+  .fuel-header,
+  .customer-header,
+  .jobs-header,
+  .dispatch-header,
+  .admin-pod-header,
+  .employee-register-header,
+  .form-header
+) {
+  position: relative;
+  top: auto;
+  z-index: 2;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  backdrop-filter: none;
+}
+
+:is(
+  .fleet-header-inner,
+  .vehicle-details-header-inner,
+  .vehicle-requests-header-inner,
+  .driver-header-inner,
+  .defect-header-inner,
+  .maintenance-header-inner,
+  .fuel-header-inner,
+  .customer-header-inner,
+  .jobs-header-inner,
+  .dispatch-header-inner,
+  .admin-pod-header-inner,
+  .employee-register-header-inner,
+  .form-header-inner
+) {
+  width: min(var(--aedc-content), calc(100% - 48px));
+  min-height: 0;
+  margin: 0 auto;
+  padding: 26px 0 12px;
+  gap: 18px;
+}
+
+:is(
+  .fleet-logo,
+  .vehicle-details-logo,
+  .driver-logo,
+  .defect-logo,
+  .admin-pod-logo
+) {
+  display: none;
+}
+
+:is(
+  .fleet-back-button,
+  .vehicle-details-back,
+  .vehicle-requests-back-button,
+  .driver-back-button,
+  .defect-back-button,
+  .maintenance-back,
+  .fuel-back,
+  .customer-back,
+  .jobs-back,
+  .dispatch-back,
+  .admin-pod-back,
+  .employee-register-back,
+  .back-button
+) {
+  min-width: 40px;
+  min-height: 40px;
+  border: 1px solid var(--aedc-border-strong);
+  border-radius: var(--aedc-radius-sm);
+  background: var(--aedc-surface);
+  color: var(--aedc-navy);
+  box-shadow: none;
+  font-weight: 800;
+  transition: var(--aedc-transition);
+}
+
+:is(
+  .fleet-back-button,
+  .vehicle-details-back,
+  .vehicle-requests-back-button,
+  .driver-back-button,
+  .defect-back-button,
+  .maintenance-back,
+  .fuel-back,
+  .customer-back,
+  .jobs-back,
+  .dispatch-back,
+  .admin-pod-back,
+  .employee-register-back,
+  .back-button
+):hover {
+  border-color: var(--aedc-navy);
+  background: var(--aedc-navy-soft);
+  color: var(--aedc-navy);
+  transform: translateY(-1px);
+}
+
+:is(
+  .fleet-header-title h1,
+  .vehicle-details-header-text h1,
+  .vehicle-requests-header h1,
+  .driver-header h1,
+  .defect-header h1,
+  .maintenance-header h1,
+  .fuel-header h1,
+  .customer-header h1,
+  .jobs-header h1,
+  .dispatch-header h1,
+  .admin-pod-header h1,
+  .employee-register-header h1
+) {
+  color: var(--aedc-navy);
+  font-size: clamp(1.28rem, 2vw, 1.55rem);
+  font-weight: 850;
+  letter-spacing: -0.015em;
+}
+
+/* ==========================================================
+   EMPLOYEE HEADERS
+========================================================== */
+
+:is(
+  .employee-portal-header,
+  .employee-deliveries-header,
+  .employee-history-header,
+  .employee-myrequests-header,
+  .employee-preinspection-header,
+  .pod-header,
+  .employee-request-header,
+  .employee-return-header
+) {
+  position: sticky;
+  top: 0;
+  z-index: 500;
+  background: rgba(255, 255, 255, 0.98);
+  border-bottom: 1px solid var(--aedc-border);
+  box-shadow: var(--aedc-shadow-sm);
+  backdrop-filter: blur(14px);
+}
+
+:is(
+  .employee-portal-header-inner,
+  .employee-deliveries-header-inner,
+  .employee-history-header-inner,
+  .employee-myrequests-header-inner,
+  .employee-preinspection-header-inner,
+  .pod-header-inner,
+  .employee-request-header-inner,
+  .employee-return-header-inner
+) {
+  width: min(var(--aedc-content), calc(100% - 48px));
+  min-height: 82px;
+  margin: 0 auto;
+  padding: 10px 0;
+  gap: 18px;
+}
+
+:is(
+  .employee-deliveries-back,
+  .employee-history-back,
+  .employee-myrequests-back,
+  .employee-preinspection-back,
+  .pod-back,
+  .employee-request-back,
+  .employee-return-back
+) {
+  min-height: 40px;
+  border: 1px solid var(--aedc-border-strong);
+  border-radius: var(--aedc-radius-sm);
+  background: var(--aedc-surface);
+  color: var(--aedc-navy);
+  font-weight: 800;
+  box-shadow: none;
+  transition: var(--aedc-transition);
+}
+
+:is(
+  .employee-deliveries-back,
+  .employee-history-back,
+  .employee-myrequests-back,
+  .employee-preinspection-back,
+  .pod-back,
+  .employee-request-back,
+  .employee-return-back
+):hover {
+  border-color: var(--aedc-navy);
+  background: var(--aedc-navy-soft);
+  color: var(--aedc-navy);
+}
+
+:is(
+  .employee-portal-header,
+  .employee-deliveries-header,
+  .employee-history-header,
+  .employee-myrequests-header,
+  .employee-preinspection-header,
+  .pod-header,
+  .employee-request-header,
+  .employee-return-header
+) h1 {
+  color: var(--aedc-navy);
+  font-size: 1.22rem;
+  font-weight: 850;
+  letter-spacing: -0.01em;
+}
+
+/* ==========================================================
+   CONTENT WIDTH + VERTICAL RHYTHM
+========================================================== */
+
+:is(
+  .fleet-content,
+  .vehicle-details-content,
+  .vehicle-requests-content,
+  .driver-content,
+  .defect-content,
+  .maintenance-content,
+  .fuel-content,
+  .customer-content,
+  .jobs-content,
+  .dispatch-content,
+  .admin-pod-content,
+  .feature-management-content,
+  .employee-register-content,
+  .employee-deliveries-content,
+  .employee-history-content,
+  .employee-myrequests-content,
+  .pod-content,
+  .employee-request-content
+) {
+  width: min(var(--aedc-content), calc(100% - 48px));
+  margin-left: auto;
+  margin-right: auto;
+  padding-top: 26px;
+  padding-bottom: 64px;
+}
+
+/* ==========================================================
+   BRAND HERO LANGUAGE
+========================================================== */
+
+:is(
+  .dashboard-hero,
+  .form-hero,
+  .employee-request-hero,
+  .employee-history-hero,
+  .employee-return-hero,
+  .employee-preinspection-hero,
+  .vehicle-details-hero,
+  .feature-management-hero
+) {
+  background:
+    radial-gradient(circle at 90% 10%, rgba(211, 175, 85, 0.17), transparent 34%),
+    linear-gradient(135deg, #0f124f 0%, var(--aedc-navy) 48%, #20267f 100%);
+  color: #ffffff;
+}
+
+.form-hero {
+  padding: 38px 24px 78px;
+}
+
+.form-hero-inner {
+  width: min(var(--aedc-content), 100%);
+}
+
+.form-hero-inner > span,
+:is(
+  .employee-request-hero,
+  .employee-history-hero,
+  .employee-return-hero,
+  .employee-preinspection-hero,
+  .feature-management-hero
+) [class*="eyebrow"],
+:is(
+  .employee-request-hero,
+  .employee-history-hero,
+  .employee-return-hero,
+  .employee-preinspection-hero,
+  .feature-management-hero
+) > span {
+  color: #e6c978;
+}
+
+.form-hero h1 {
+  margin: 0 0 10px;
+  font-size: clamp(2rem, 4.5vw, 3rem);
+  letter-spacing: -0.035em;
+}
+
+.form-hero p {
+  max-width: 720px;
+  color: rgba(255, 255, 255, 0.78);
+}
+
+/* ==========================================================
+   CARDS / PANELS
+========================================================== */
+
+:is(
+  .form-card,
+  .confirmation-card,
+  .fleet-form-card,
+  .driver-form-card,
+  .customer-card,
+  .defect-card,
+  .maintenance-card,
+  .fuel-card,
+  .job-card,
+  .dispatch-card,
+  .admin-pod-card,
+  .admin-pod-route-card,
+  .employee-access-card,
+  .employee-delivery-card,
+  .employee-history-employee-card,
+  .employee-history-summary,
+  .employee-myrequests-summary,
+  .employee-request-card,
+  .employee-preinspection-card,
+  .employee-return-card,
+  .pod-context-card,
+  .pod-complete-card,
+  .vehicle-details-section,
+  .vehicle-details-summary,
+  .history-overview-card,
+  .dashboard-summary-card,
+  .dashboard-empty-card,
+  .employee-empty-card,
+  .feature-management-intro,
+  .feature-management-card
+) {
+  border-radius: var(--aedc-radius-lg);
+  border-color: var(--aedc-border);
+  box-shadow: var(--aedc-shadow-sm);
+}
+
+:is(
+  .form-card,
+  .confirmation-card,
+  .fleet-form-card,
+  .driver-form-card,
+  .customer-card,
+  .defect-card,
+  .maintenance-card,
+  .fuel-card,
+  .job-card,
+  .dispatch-card,
+  .admin-pod-card,
+  .employee-access-card,
+  .employee-delivery-card,
+  .employee-request-card,
+  .employee-preinspection-card,
+  .employee-return-card,
+  .pod-context-card,
+  .pod-complete-card,
+  .vehicle-details-section
+) {
+  background: var(--aedc-surface);
+}
+
+.form-card,
+.confirmation-card {
+  padding: 26px;
+  border-radius: var(--aedc-radius-lg);
+  box-shadow: var(--aedc-shadow);
+}
+
+.vehicle-form {
+  width: min(1000px, calc(100% - 40px));
+  margin-top: -44px;
+  gap: 18px;
+  padding-bottom: 64px;
+}
+
+/* ==========================================================
+   SUMMARY / KPI CARDS
+========================================================== */
+
+:is(
+  .fleet-summary-grid,
+  .driver-summary-grid,
+  .defect-summary-grid,
+  .dashboard-summary-grid,
+  .employee-summary-grid,
+  .history-overview-grid
+) {
+  gap: 14px;
+}
+
+:is(
+  .fleet-summary-grid,
+  .driver-summary-grid,
+  .defect-summary-grid,
+  .dashboard-summary-grid,
+  .employee-summary-grid
+) > * {
+  border-radius: var(--aedc-radius);
+  border-color: var(--aedc-border);
+  box-shadow: var(--aedc-shadow-sm);
+}
+
+:is(
+  .fleet-summary-grid,
+  .driver-summary-grid,
+  .defect-summary-grid,
+  .dashboard-summary-grid,
+  .employee-summary-grid
+) svg {
+  color: var(--aedc-navy);
+}
+
+/* ==========================================================
+   TOOLBARS / SEARCH / FILTERS
+========================================================== */
+
+:is(
+  .vehicle-requests-toolbar,
+  .driver-toolbar,
+  .defect-toolbar,
+  .maintenance-toolbar,
+  .fuel-toolbar,
+  .customer-toolbar,
+  .jobs-toolbar,
+  .dispatch-toolbar,
+  .employee-history-toolbar,
+  .employee-myrequests-tools,
+  .history-toolbar
+) {
+  border: 1px solid var(--aedc-border);
+  border-radius: var(--aedc-radius);
+  background: var(--aedc-surface);
+  box-shadow: var(--aedc-shadow-sm);
+}
+
+:is(
+  .vehicle-requests-search,
+  .driver-search,
+  .defect-search,
+  .maintenance-search,
+  .fuel-search,
+  .customer-search,
+  .jobs-search,
+  .dispatch-search,
+  .employee-history-search,
+  .employee-myrequests-search,
+  .employee-register-search,
+  .history-search
+) {
+  border-radius: var(--aedc-radius-sm);
+  border-color: var(--aedc-border-strong);
+  background: var(--aedc-surface-soft);
+}
+
+/* ==========================================================
+   FORM CONTROLS
+========================================================== */
+
+:is(
+  .dashboard-page,
+  .vehicle-management-page,
+  .vehicle-details-page,
+  .vehicle-requests-page,
+  .vehicle-form-page,
+  .driver-management-page,
+  .defect-management-page,
+  .maintenance-page,
+  .fuel-page,
+  .customer-page,
+  .jobs-page,
+  .dispatch-page,
+  .admin-pod-page,
+  .feature-management-page,
+  .employee-register-page,
+  .employee-portal-page,
+  .employee-deliveries-page,
+  .employee-history-page,
+  .employee-myrequests-page,
+  .employee-preinspection-page,
+  .pod-page,
+  .employee-request-page,
+  .employee-return-page
+) input:not([type="checkbox"]):not([type="radio"]):not([type="file"]),
+:is(
+  .dashboard-page,
+  .vehicle-management-page,
+  .vehicle-details-page,
+  .vehicle-requests-page,
+  .vehicle-form-page,
+  .driver-management-page,
+  .defect-management-page,
+  .maintenance-page,
+  .fuel-page,
+  .customer-page,
+  .jobs-page,
+  .dispatch-page,
+  .admin-pod-page,
+  .feature-management-page,
+  .employee-register-page,
+  .employee-portal-page,
+  .employee-deliveries-page,
+  .employee-history-page,
+  .employee-myrequests-page,
+  .employee-preinspection-page,
+  .pod-page,
+  .employee-request-page,
+  .employee-return-page
+) select,
+:is(
+  .dashboard-page,
+  .vehicle-management-page,
+  .vehicle-details-page,
+  .vehicle-requests-page,
+  .vehicle-form-page,
+  .driver-management-page,
+  .defect-management-page,
+  .maintenance-page,
+  .fuel-page,
+  .customer-page,
+  .jobs-page,
+  .dispatch-page,
+  .admin-pod-page,
+  .feature-management-page,
+  .employee-register-page,
+  .employee-portal-page,
+  .employee-deliveries-page,
+  .employee-history-page,
+  .employee-myrequests-page,
+  .employee-preinspection-page,
+  .pod-page,
+  .employee-request-page,
+  .employee-return-page
+) textarea {
+  min-height: 44px;
+  border: 1px solid var(--aedc-border-strong);
+  border-radius: var(--aedc-radius-sm);
+  background: #ffffff;
+  color: var(--aedc-text);
+  outline: none;
+  transition: border-color var(--aedc-transition), box-shadow var(--aedc-transition), background var(--aedc-transition);
+}
+
+:is(
+  .dashboard-page,
+  .vehicle-management-page,
+  .vehicle-details-page,
+  .vehicle-requests-page,
+  .vehicle-form-page,
+  .driver-management-page,
+  .defect-management-page,
+  .maintenance-page,
+  .fuel-page,
+  .customer-page,
+  .jobs-page,
+  .dispatch-page,
+  .admin-pod-page,
+  .feature-management-page,
+  .employee-register-page,
+  .employee-portal-page,
+  .employee-deliveries-page,
+  .employee-history-page,
+  .employee-myrequests-page,
+  .employee-preinspection-page,
+  .pod-page,
+  .employee-request-page,
+  .employee-return-page
+) input:not([type="checkbox"]):not([type="radio"]):not([type="file"]):focus,
+:is(
+  .dashboard-page,
+  .vehicle-management-page,
+  .vehicle-details-page,
+  .vehicle-requests-page,
+  .vehicle-form-page,
+  .driver-management-page,
+  .defect-management-page,
+  .maintenance-page,
+  .fuel-page,
+  .customer-page,
+  .jobs-page,
+  .dispatch-page,
+  .admin-pod-page,
+  .feature-management-page,
+  .employee-register-page,
+  .employee-portal-page,
+  .employee-deliveries-page,
+  .employee-history-page,
+  .employee-myrequests-page,
+  .employee-preinspection-page,
+  .pod-page,
+  .employee-request-page,
+  .employee-return-page
+) select:focus,
+:is(
+  .dashboard-page,
+  .vehicle-management-page,
+  .vehicle-details-page,
+  .vehicle-requests-page,
+  .vehicle-form-page,
+  .driver-management-page,
+  .defect-management-page,
+  .maintenance-page,
+  .fuel-page,
+  .customer-page,
+  .jobs-page,
+  .dispatch-page,
+  .admin-pod-page,
+  .feature-management-page,
+  .employee-register-page,
+  .employee-portal-page,
+  .employee-deliveries-page,
+  .employee-history-page,
+  .employee-myrequests-page,
+  .employee-preinspection-page,
+  .pod-page,
+  .employee-request-page,
+  .employee-return-page
+) textarea:focus {
+  border-color: var(--aedc-navy);
+  box-shadow: 0 0 0 3px rgba(17, 20, 95, 0.08);
+}
+
+/* ==========================================================
+   PRIMARY ACTIONS
+========================================================== */
+
+:is(
+  .fleet-add-button,
+  .vehicle-requests-new-button,
+  .customer-create-button,
+  .maintenance-create-button,
+  .fuel-add-button,
+  .jobs-create-button,
+  .employee-register-add,
+  .employee-myrequests-new,
+  .employee-history-primary-button,
+  .employee-return-primary-button,
+  .submit-button,
+  .admin-pod-header-actions .primary
+) {
+  min-height: 42px;
+  border-radius: var(--aedc-radius-sm);
+  border-color: var(--aedc-navy);
+  background: var(--aedc-navy);
+  color: #ffffff;
+  font-weight: 800;
+  box-shadow: 0 7px 18px rgba(17, 20, 95, 0.12);
+  transition: var(--aedc-transition);
+}
+
+:is(
+  .fleet-add-button,
+  .vehicle-requests-new-button,
+  .customer-create-button,
+  .maintenance-create-button,
+  .fuel-add-button,
+  .jobs-create-button,
+  .employee-register-add,
+  .employee-myrequests-new,
+  .employee-history-primary-button,
+  .employee-return-primary-button,
+  .submit-button,
+  .admin-pod-header-actions .primary
+):hover:not(:disabled) {
+  background: var(--aedc-navy-2);
+  border-color: var(--aedc-navy-2);
+  transform: translateY(-1px);
+}
+
+:is(
+  .fleet-add-button,
+  .vehicle-requests-new-button,
+  .customer-create-button,
+  .maintenance-create-button,
+  .fuel-add-button,
+  .jobs-create-button,
+  .employee-register-add,
+  .employee-myrequests-new,
+  .submit-button
+):focus-visible {
+  outline: 3px solid rgba(179, 139, 46, 0.27);
+  outline-offset: 2px;
+}
+
+button:disabled,
+[aria-disabled="true"] {
+  cursor: not-allowed;
+}
+
+/* ==========================================================
+   TABS / FILTER PILLS
+========================================================== */
+
+:is(
+  .driver-filter-tabs,
+  .defect-filter-tabs,
+  .maintenance-tabs,
+  .fuel-tabs,
+  .jobs-tabs,
+  .dispatch-tabs
+) {
+  gap: 6px;
+}
+
+:is(
+  .driver-filter-tabs,
+  .defect-filter-tabs,
+  .maintenance-tabs,
+  .fuel-tabs,
+  .jobs-tabs,
+  .dispatch-tabs
+) button {
+  border-radius: 999px;
+  font-weight: 800;
+}
+
+:is(
+  .driver-filter-tabs,
+  .defect-filter-tabs,
+  .maintenance-tabs,
+  .fuel-tabs,
+  .jobs-tabs,
+  .dispatch-tabs
+) button:hover {
+  border-color: var(--aedc-navy);
+  color: var(--aedc-navy);
+}
+
+/* ==========================================================
+   MESSAGES / ALERTS
+========================================================== */
+
+:is(
+  .fleet-message,
+  .driver-message,
+  .defect-message,
+  .maintenance-message,
+  .fuel-message,
+  .customer-message,
+  .jobs-message,
+  .dispatch-message,
+  .admin-pod-message,
+  .employee-register-message,
+  .employee-request-message,
+  .employee-preinspection-message,
+  .pod-message,
+  .feature-management-message,
+  .vehicle-requests-error,
+  .employee-deliveries-error
+) {
+  border-radius: var(--aedc-radius-sm);
+  font-weight: 700;
+}
+
+:is(
+  .fleet-message-error,
+  .driver-message-error,
+  .defect-message-error,
+  .maintenance-error,
+  .fuel-error,
+  .customer-error,
+  .jobs-error,
+  .dispatch-error,
+  .admin-pod-message.error,
+  .employee-register-message-error,
+  .employee-request-error,
+  .employee-preinspection-message-error,
+  .pod-error,
+  .feature-management-message.error,
+  .vehicle-requests-error,
+  .employee-deliveries-error
+) {
+  background: var(--aedc-danger-soft);
+  border-color: #efc5c1;
+  color: var(--aedc-danger);
+}
+
+:is(
+  .fleet-message-success,
+  .driver-message-success,
+  .defect-message-success,
+  .maintenance-success,
+  .fuel-success,
+  .customer-success,
+  .jobs-success,
+  .dispatch-success,
+  .admin-pod-message.success,
+  .employee-register-message-success,
+  .employee-request-success,
+  .feature-management-message.success
+) {
+  background: var(--aedc-success-soft);
+  border-color: #b9dec6;
+  color: var(--aedc-success);
+}
+
+/* ==========================================================
+   EMPTY STATES
+========================================================== */
+
+:is(
+  .fleet-empty,
+  .vehicle-requests-empty,
+  .driver-empty,
+  .defect-empty,
+  .maintenance-empty,
+  .fuel-empty,
+  .customer-empty,
+  .jobs-empty,
+  .dispatch-empty,
+  .admin-pod-empty,
+  .employee-register-empty,
+  .employee-deliveries-empty,
+  .employee-history-empty,
+  .employee-myrequests-empty,
+  .vehicle-details-empty,
+  .empty-history
+) {
+  border: 1px dashed var(--aedc-border-strong);
+  border-radius: var(--aedc-radius-lg);
+  background: rgba(255, 255, 255, 0.7);
+  color: var(--aedc-muted);
+}
+
+/* ==========================================================
+   EVIDENCE / PHOTO COMPONENTS
+========================================================== */
+
+:is(
+  .vehicle-evidence-gallery,
+  .vehicle-evidence-upload,
+  .vehicle-photo-verifier,
+  .employee-preinspection-photo-guide,
+  .employee-preinspection-photo-uploads,
+  .employee-return-photo-summary
+) {
+  --evidence-accent: var(--aedc-navy);
+}
+
+.vehicle-evidence-gallery :is(button, a),
+.vehicle-evidence-upload :is(button, a),
+.vehicle-photo-verifier :is(button, a) {
+  border-radius: var(--aedc-radius-sm);
+}
+
+/* ==========================================================
+   TABLES
+========================================================== */
+
+:is(
+  .blank-pod-table,
+  .condition-history-table
+) {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  overflow: hidden;
+  border: 1px solid var(--aedc-border);
+  border-radius: var(--aedc-radius);
+  background: var(--aedc-surface);
+}
+
+:is(
+  .blank-pod-table,
+  .condition-history-table
+) th {
+  background: var(--aedc-surface-soft);
+  color: var(--aedc-navy);
+  font-size: 0.68rem;
+  font-weight: 850;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+:is(
+  .blank-pod-table,
+  .condition-history-table
+) td,
+:is(
+  .blank-pod-table,
+  .condition-history-table
+) th {
+  border-bottom: 1px solid var(--aedc-border);
+}
+
+/* ==========================================================
+   HISTORY / DIGITAL LOGBOOK
+========================================================== */
+
+.history-page .history-toolbar,
+.history-page .history-overview-card,
+.history-page .history-record-card {
+  border-color: var(--aedc-border);
+}
+
+.history-page .history-export-button,
+.history-page .history-print-button {
+  min-height: 42px;
+  border-radius: var(--aedc-radius-sm);
+  font-weight: 800;
+}
+
+.history-page .history-export-button {
+  background: var(--aedc-navy);
+  border-color: var(--aedc-navy);
+  color: #ffffff;
+}
+
+.history-page .history-export-button:hover {
+  background: var(--aedc-navy-2);
+}
+
+/* ==========================================================
+   SCROLLBAR (DESKTOP ONLY)
+========================================================== */
+
+@media (pointer: fine) {
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: #c8ced6 transparent;
+  }
+}
+
+/* ==========================================================
+   RESPONSIVE SYSTEM RULES
+========================================================== */
+
+@media (max-width: 900px) {
+  .dashboard-header-inner,
+  :is(
+    .fleet-header-inner,
+    .vehicle-details-header-inner,
+    .vehicle-requests-header-inner,
+    .driver-header-inner,
+    .defect-header-inner,
+    .maintenance-header-inner,
+    .fuel-header-inner,
+    .customer-header-inner,
+    .jobs-header-inner,
+    .dispatch-header-inner,
+    .admin-pod-header-inner,
+    .employee-register-header-inner,
+    .form-header-inner,
+    .employee-portal-header-inner,
+    .employee-deliveries-header-inner,
+    .employee-history-header-inner,
+    .employee-myrequests-header-inner,
+    .employee-preinspection-header-inner,
+    .pod-header-inner,
+    .employee-request-header-inner,
+    .employee-return-header-inner
+  ),
+  :is(
+    .fleet-content,
+    .vehicle-details-content,
+    .vehicle-requests-content,
+    .driver-content,
+    .defect-content,
+    .maintenance-content,
+    .fuel-content,
+    .customer-content,
+    .jobs-content,
+    .dispatch-content,
+    .admin-pod-content,
+    .feature-management-content,
+    .employee-register-content,
+    .employee-deliveries-content,
+    .employee-history-content,
+    .employee-myrequests-content,
+    .pod-content,
+    .employee-request-content
+  ) {
+    width: min(100% - 32px, var(--aedc-content));
+  }
+
+  :is(
+    .fleet-summary-grid,
+    .driver-summary-grid,
+    .defect-summary-grid,
+    .dashboard-summary-grid,
+    .employee-summary-grid,
+    .history-overview-grid
+  ) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 720px) {
+  .dashboard-header-inner {
+    min-height: 72px;
+  }
+
+  .dashboard-navbar-status,
+  .dashboard-navbar-time {
+    display: none;
+  }
+
+  :is(
+    .fleet-header-inner,
+    .vehicle-details-header-inner,
+    .vehicle-requests-header-inner,
+    .driver-header-inner,
+    .defect-header-inner,
+    .maintenance-header-inner,
+    .fuel-header-inner,
+    .customer-header-inner,
+    .jobs-header-inner,
+    .dispatch-header-inner,
+    .admin-pod-header-inner,
+    .employee-register-header-inner,
+    .form-header-inner
+  ) {
+    padding-top: 18px;
+  }
+
+  :is(
+    .employee-portal-header-inner,
+    .employee-deliveries-header-inner,
+    .employee-history-header-inner,
+    .employee-myrequests-header-inner,
+    .employee-preinspection-header-inner,
+    .pod-header-inner,
+    .employee-request-header-inner,
+    .employee-return-header-inner
+  ) {
+    min-height: 72px;
+  }
+
+  .form-hero {
+    padding: 30px 18px 66px;
+  }
+
+  .vehicle-form {
+    width: min(100% - 24px, 1000px);
+    margin-top: -34px;
+  }
+
+  .form-card,
+  .confirmation-card {
+    padding: 20px;
+  }
+
+  :is(
+    .vehicle-requests-toolbar,
+    .driver-toolbar,
+    .defect-toolbar,
+    .maintenance-toolbar,
+    .fuel-toolbar,
+    .customer-toolbar,
+    .jobs-toolbar,
+    .dispatch-toolbar,
+    .employee-history-toolbar,
+    .employee-myrequests-tools,
+    .history-toolbar
+  ) {
+    align-items: stretch;
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 560px) {
+  .dashboard-header-inner,
+  :is(
+    .fleet-header-inner,
+    .vehicle-details-header-inner,
+    .vehicle-requests-header-inner,
+    .driver-header-inner,
+    .defect-header-inner,
+    .maintenance-header-inner,
+    .fuel-header-inner,
+    .customer-header-inner,
+    .jobs-header-inner,
+    .dispatch-header-inner,
+    .admin-pod-header-inner,
+    .employee-register-header-inner,
+    .form-header-inner,
+    .employee-portal-header-inner,
+    .employee-deliveries-header-inner,
+    .employee-history-header-inner,
+    .employee-myrequests-header-inner,
+    .employee-preinspection-header-inner,
+    .pod-header-inner,
+    .employee-request-header-inner,
+    .employee-return-header-inner
+  ),
+  :is(
+    .fleet-content,
+    .vehicle-details-content,
+    .vehicle-requests-content,
+    .driver-content,
+    .defect-content,
+    .maintenance-content,
+    .fuel-content,
+    .customer-content,
+    .jobs-content,
+    .dispatch-content,
+    .admin-pod-content,
+    .feature-management-content,
+    .employee-register-content,
+    .employee-deliveries-content,
+    .employee-history-content,
+    .employee-myrequests-content,
+    .pod-content,
+    .employee-request-content
+  ) {
+    width: min(100% - 24px, var(--aedc-content));
+  }
+
+  :is(
+    .fleet-summary-grid,
+    .driver-summary-grid,
+    .defect-summary-grid,
+    .dashboard-summary-grid,
+    .employee-summary-grid,
+    .history-overview-grid
+  ) {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboard-brand-text p,
+  .dashboard-brand-text span,
+  :is(
+    .fleet-header-title,
+    .vehicle-details-header-text,
+    .vehicle-requests-header-left,
+    .driver-header-left,
+    .defect-header-left,
+    .maintenance-header-left,
+    .fuel-header-left,
+    .customer-header-left,
+    .jobs-header-left,
+    .dispatch-header-left,
+    .admin-pod-header-copy,
+    .employee-register-header-left
+  ) p {
+    display: none;
+  }
+}
+
+/* ==========================================================
+   PRINT
+========================================================== */
+
+@media print {
+  .dashboard-header,
+  :is(
+    .fleet-header,
+    .vehicle-details-header,
+    .vehicle-requests-header,
+    .driver-header,
+    .defect-header,
+    .maintenance-header,
+    .fuel-header,
+    .customer-header,
+    .jobs-header,
+    .dispatch-header,
+    .admin-pod-header,
+    .employee-register-header,
+    .employee-portal-header,
+    .employee-deliveries-header,
+    .employee-history-header,
+    .employee-myrequests-header,
+    .employee-preinspection-header,
+    .pod-header,
+    .employee-request-header,
+    .employee-return-header
+  ),
+  .no-print {
+    display: none !important;
+  }
+
+  body,
+  #root,
+  :is(
+    .dashboard-page,
+    .vehicle-management-page,
+    .vehicle-details-page,
+    .vehicle-requests-page,
+    .vehicle-form-page,
+    .driver-management-page,
+    .defect-management-page,
+    .maintenance-page,
+    .fuel-page,
+    .customer-page,
+    .jobs-page,
+    .dispatch-page,
+    .admin-pod-page,
+    .feature-management-page,
+    .employee-register-page,
+    .employee-portal-page,
+    .employee-deliveries-page,
+    .employee-history-page,
+    .employee-myrequests-page,
+    .employee-preinspection-page,
+    .pod-page,
+    .employee-request-page,
+    .employee-return-page
+  ) {
+    background: #ffffff !important;
+  }
+}
+
+/* ===== DASHBOARD FINAL CONSISTENCY START ===== */
+
+/* ---------------------------------------------------------
+   SUMMARY
+   Five metrics should form one clean desktop row.
+--------------------------------------------------------- */
+
+@media (min-width: 1051px) {
+  .dashboard-summary-grid {
+    grid-template-columns:
+      repeat(5, minmax(0, 1fr));
+
+    gap: 12px;
+  }
+}
+
+
+/* ---------------------------------------------------------
+   QUICK ACCESS
+   Four columns gives a much more balanced 4 + 3 layout
+   when seven features are currently visible.
+--------------------------------------------------------- */
+
+@media (min-width: 1051px) {
+  .dashboard-actions-grid {
+    grid-template-columns:
+      repeat(4, minmax(0, 1fr));
+  }
+}
+
+.dashboard-action-card {
+  min-height: 84px;
+}
+
+
+/* ---------------------------------------------------------
+   SINGLE VEHICLE
+   Do not leave half of the dashboard empty when AEDC
+   currently has only one active vehicle.
+--------------------------------------------------------- */
+
+.dashboard-fleet-card:only-child {
+  grid-column: 1 / -1;
+}
+
+@media (min-width: 901px) {
+  .dashboard-fleet-card:only-child
+  .dashboard-fleet-info-grid {
+    grid-template-columns:
+      repeat(4, minmax(0, 1fr));
+  }
+
+  .dashboard-fleet-card:only-child
+  .dashboard-fleet-actions {
+    grid-template-columns:
+      repeat(2, minmax(180px, 260px));
+
+    justify-content: end;
+  }
+}
+
+
+/* ---------------------------------------------------------
+   UPCOMING / PENDING BOOKINGS
+   Give the booking information a proper desktop structure.
+--------------------------------------------------------- */
+
+.dashboard-booking-main > strong {
+  display: block;
+
+  margin-top: 4px;
+
+  color: #303a46;
+
+  font-size: 0.88rem;
+  font-weight: 850;
+
+  line-height: 1.3;
+}
+
+@media (min-width: 1001px) {
+  .dashboard-booking-card {
+    grid-template-columns:
+      minmax(0, 1.45fr)
+      minmax(170px, 0.72fr)
+      minmax(180px, 0.72fr)
+      110px;
+
+    gap: 22px;
+  }
+
+  .dashboard-booking-detail {
+    display: block;
+
+    margin-top: 0;
+  }
+
+  .dashboard-booking-detail span {
+    display: block;
+
+    margin-bottom: 5px;
+
+    color: #8c96a1;
+
+    font-size: 0.55rem;
+    font-weight: 750;
+  }
+
+  .dashboard-booking-detail strong {
+    display: block;
+
+    color: #454f5a;
+
+    font-size: 0.72rem;
+    font-weight: 850;
+
+    line-height: 1.35;
+  }
+
+  .dashboard-booking-action {
+    width: 100%;
+  }
+}
+
+
+/* ---------------------------------------------------------
+   SECTION RHYTHM
+--------------------------------------------------------- */
+
+.dashboard-section {
+  margin-top: 36px;
+}
+
+.dashboard-section + .dashboard-section {
+  margin-top: 42px;
+}
+
+
+/* ---------------------------------------------------------
+   TABLET
+--------------------------------------------------------- */
+
+@media (
+  min-width: 901px
+) and (
+  max-width: 1050px
+) {
+  .dashboard-summary-grid {
+    grid-template-columns:
+      repeat(3, minmax(0, 1fr));
+  }
+}
+
+
+/* ===== DASHBOARD FINAL CONSISTENCY END ===== */

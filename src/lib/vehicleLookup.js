@@ -120,3 +120,42 @@ export async function checkVehicleRequestabilityForEmployee(
 
   return data || null;
 }
+
+
+export function formatAssignedVehicleName(
+  vehicle
+) {
+  if (!vehicle) {
+    return "";
+  }
+
+  const make =
+    String(
+      vehicle.make || ""
+    ).trim();
+
+  const model =
+    String(
+      vehicle.model || ""
+    ).trim();
+
+  if (!make) {
+    return model;
+  }
+
+  if (!model) {
+    return make;
+  }
+
+  if (
+    model
+      .toLowerCase()
+      .startsWith(
+        make.toLowerCase()
+      )
+  ) {
+    return model;
+  }
+
+  return `${make} ${model}`;
+}

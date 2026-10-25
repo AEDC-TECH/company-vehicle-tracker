@@ -3,7 +3,6 @@ import { Link, useNavigate } from "react-router-dom";
 
 import {
   FaArrowLeft,
-  FaCalendarAlt,
   FaCar,
   FaCheckCircle,
   FaClipboardCheck,
@@ -249,12 +248,6 @@ function EmployeeMyRequests() {
     requests.filter(
       (request) =>
         request.status === "approved"
-    ).length;
-
-  const declinedCount =
-    requests.filter(
-      (request) =>
-        request.status === "declined"
     ).length;
 
   const completedCount =

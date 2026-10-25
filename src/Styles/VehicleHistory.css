@@ -1070,3 +1070,135 @@
     font-size: 0.48rem;
   }
 }
+
+/* ==========================================
+   RELEASE POLISH - LOGBOOK EXPORT + VEHICLE ID
+========================================== */
+
+.history-toolbar-right {
+  width: min(620px, 100%);
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 9px;
+}
+
+.history-toolbar-right
+.history-filter-controls {
+  width: 100%;
+}
+
+.history-export-actions {
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.history-export-actions button {
+  min-height: 36px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+
+  padding: 0 13px;
+
+  border: 1px solid #d7dde5;
+  border-radius: 9px;
+
+  background: #ffffff;
+  color: #11145f;
+
+  cursor: pointer;
+
+  font: inherit;
+  font-size: 0.56rem;
+  font-weight: 900;
+  letter-spacing: 0.15px;
+
+  transition:
+    transform 160ms ease,
+    border-color 160ms ease,
+    box-shadow 160ms ease;
+}
+
+.history-export-actions button:hover:not(:disabled) {
+  transform: translateY(-1px);
+
+  border-color:
+    rgba(17, 20, 95, 0.38);
+
+  box-shadow:
+    0 8px 18px
+    rgba(31, 40, 55, 0.08);
+}
+
+.history-export-actions button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.history-vehicle-chip {
+  width: fit-content;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+
+  margin-top: 8px;
+  padding: 6px 9px;
+
+  border: 1px solid #e1e5ea;
+  border-radius: 999px;
+
+  background: #f8f9fb;
+  color: #4c5865;
+
+  font-size: 0.54rem;
+  font-weight: 800;
+}
+
+.history-vehicle-chip svg {
+  color: #11145f;
+}
+
+@media (max-width: 700px) {
+  .history-toolbar-right {
+    width: 100%;
+    align-items: stretch;
+  }
+
+  .history-export-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .history-export-actions button {
+    width: 100%;
+  }
+}
+
+@media print {
+  .dashboard-header,
+  .form-header,
+  .form-hero,
+  .history-overview-grid,
+  .history-toolbar,
+  .history-record-actions {
+    display: none !important;
+  }
+
+  .history-content {
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .policy-history-card {
+    break-inside: avoid;
+    box-shadow: none !important;
+  }
+}

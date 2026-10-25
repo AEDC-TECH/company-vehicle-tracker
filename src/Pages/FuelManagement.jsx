@@ -10,7 +10,6 @@ import {
 
 import {
   FaArrowLeft,
-  FaCalendarAlt,
   FaCar,
   FaCheckCircle,
   FaGasPump,
@@ -20,11 +19,9 @@ import {
   FaSearch,
   FaTachometerAlt,
   FaTimes,
-  FaUser,
 } from "react-icons/fa";
 
 import { supabase } from "../lib/supabase";
-import AEDCLogo from "../Components/AEDCLogo";
 
 import "../Styles/FuelManagement.css";
 

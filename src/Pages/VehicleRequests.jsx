@@ -14,7 +14,6 @@ import {
 } from "react-icons/fa";
 
 import { supabase } from "../lib/supabase";
-import AEDCLogo from "../Components/AEDCLogo";
 
 import "../Styles/VehicleRequests.css";
 

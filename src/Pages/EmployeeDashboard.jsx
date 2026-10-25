@@ -503,7 +503,7 @@ function EmployeeDashboard() {
       totalMinutes % 60;
 
 
-    let label = "";
+    let label;
 
 
     if (hours > 0) {

@@ -15,12 +15,9 @@ import { createVehicleEvidenceRecord } from "../lib/vehicleEvidenceLookup";
 
 import {
   formatAssignedVehicleName,
-  shouldVerifyPhotoLocally,
-  verifyVehiclePhoto,
-} from "../lib/vehiclePhotoVerifier";
+} from "../lib/vehicleLookup";
 
 import "../Styles/VehicleEvidenceUpload.css";
-import "../Styles/VehiclePhotoVerifier.css";
 
 function VehicleEvidenceUpload({
   vehicleId,
@@ -35,7 +32,6 @@ function VehicleEvidenceUpload({
   multiple = true,
   imagesOnly = false,
   expectedVehicle = null,
-  expectedOdometer = null,
   preferCamera = false,
   employeeNumberOverride = null,
   onUploaded,
@@ -46,16 +42,6 @@ function VehicleEvidenceUpload({
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [uploading, setUploading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-
-  const [
-    verificationMessage,
-    setVerificationMessage,
-  ] = useState("");
-
-  const [
-    verificationResult,
-    setVerificationResult,
-  ] = useState(null);
 
   function chooseFiles() {
     fileInputRef.current?.click();
@@ -90,9 +76,6 @@ function VehicleEvidenceUpload({
   }
 
   function handleFileSelection(event) {
-    setVerificationMessage("");
-    setVerificationResult(null);
-
     const files = Array.from(event.target.files || []);
 
     const imageTypes = [
@@ -148,9 +131,6 @@ function VehicleEvidenceUpload({
   }
 
   function removeSelectedFile(index) {
-    setVerificationMessage("");
-    setVerificationResult(null);
-
     setSelectedFiles((current) =>
       current.filter(
         (_, fileIndex) =>
@@ -186,46 +166,6 @@ function VehicleEvidenceUpload({
       const completedUploads = [];
 
       for (const file of selectedFiles) {
-        if (
-          imagesOnly &&
-          shouldVerifyPhotoLocally(
-            type
-          )
-        ) {
-          setVerificationMessage(
-            type === "odometer"
-              ? "Reading odometer photo on this device..."
-              : "Checking that this photo contains a vehicle..."
-          );
-
-          const verification =
-            await verifyVehiclePhoto({
-              file,
-              type,
-              expectedVehicle,
-              expectedOdometer,
-            });
-
-          setVerificationResult(
-            verification
-          );
-
-          if (
-            verification.accepted !==
-            true
-          ) {
-            throw new Error(
-              verification.message ||
-              "This photo did not pass local verification."
-            );
-          }
-
-          setVerificationMessage(
-            verification.message ||
-            "Photo verified."
-          );
-        }
-
         const safeName = sanitiseFileName(
           file.name
         );
@@ -463,11 +403,7 @@ function VehicleEvidenceUpload({
             <FaUpload />
 
             {uploading
-              ? shouldVerifyPhotoLocally(
-                  type
-                )
-                ? "Checking & Uploading..."
-                : "Uploading..."
+              ? "Uploading..."
               : `Upload ${
                   selectedFiles.length
                 } File${
@@ -479,11 +415,8 @@ function VehicleEvidenceUpload({
         </div>
       )}
 
-      {expectedVehicle &&
-        shouldVerifyPhotoLocally(
-          type
-        ) && (
-        <div className="local-verifier-assigned">
+      {expectedVehicle && (
+        <div className="evidence-assigned-vehicle">
           <FaShieldAlt />
 
           <div>
@@ -506,101 +439,6 @@ function VehicleEvidenceUpload({
                   expectedVehicle
                     .registration
                 }
-              </small>
-            )}
-          </div>
-        </div>
-      )}
-
-
-      {verificationMessage && (
-        <div
-          className={`local-verifier-result ${
-            verificationResult
-              ?.accepted
-              ? "verified"
-              : ""
-          } ${
-            verificationResult
-              ?.odometerMatched ===
-                false
-              ? "warning"
-              : ""
-          }`}
-        >
-          <FaShieldAlt />
-
-          <div>
-            <strong>
-              {verificationResult
-                ?.accepted
-                ? "Photo Check Complete"
-                : "Checking Photo"}
-            </strong>
-
-            <span>
-              {
-                verificationMessage
-              }
-            </span>
-
-            {verificationResult
-              ?.vehicleDetected && (
-              <small>
-                Vehicle detected:{" "}
-                {
-                  verificationResult
-                    .detectedVehicleClass
-                }
-                {" · "}
-                confidence{" "}
-                {Math.round(
-                  (
-                    verificationResult
-                      .vehicleConfidence ||
-                    0
-                  ) * 100
-                )}
-                %
-              </small>
-            )}
-
-            {verificationResult
-              ?.registrationMatched ===
-                true && (
-              <small>
-                Registration matched:{" "}
-                {
-                  verificationResult
-                    .expectedRegistration
-                }
-              </small>
-            )}
-
-            {verificationResult
-              ?.registrationStatus ===
-                "matched" && (
-              <small>
-                Registration verified:{" "}
-                {
-                  verificationResult
-                    .expectedRegistration
-                }
-              </small>
-            )}
-
-            {verificationResult
-              ?.detectedOdometer !=
-                null && (
-              <small>
-                Odometer OCR:{" "}
-                {Number(
-                  verificationResult
-                    .detectedOdometer
-                ).toLocaleString(
-                  "en-ZA"
-                )}{" "}
-                km
               </small>
             )}
           </div>

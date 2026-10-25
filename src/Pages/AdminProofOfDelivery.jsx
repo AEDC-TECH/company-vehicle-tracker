@@ -12,7 +12,6 @@ import {
 
 import {
   FaArrowLeft,
-  FaBox,
   FaCheckCircle,
   FaDownload,
   FaExclamationTriangle,
@@ -22,7 +21,6 @@ import {
   FaSignature,
   FaTruck,
   FaUpload,
-  FaUser,
 } from "react-icons/fa";
 
 import {
@@ -146,12 +144,6 @@ function AdminProofOfDelivery() {
     setPaperFile,
   ] =
     useState(null);
-
-  const [
-    paperPreviewUrl,
-    setPaperPreviewUrl,
-  ] =
-    useState("");
 
   const [
     formData,
@@ -470,10 +462,6 @@ function AdminProofOfDelivery() {
 
       setContext(
         nextContext
-      );
-
-      setPaperPreviewUrl(
-        signedPaperUrl
       );
 
 
@@ -892,37 +880,6 @@ function AdminProofOfDelivery() {
 
   function printBlankPod() {
     window.print();
-  }
-
-
-  function addWrappedText(
-    doc,
-    text,
-    x,
-    y,
-    width,
-    options = {}
-  ) {
-    const lines =
-      doc.splitTextToSize(
-        String(
-          text ||
-          "Not recorded"
-        ),
-        width
-      );
-
-    doc.text(
-      lines,
-      x,
-      y,
-      options
-    );
-
-    return (
-      y +
-      lines.length * 5
-    );
   }
 
 

@@ -14,7 +14,6 @@ import {
 import {
   FaArrowLeft,
   FaCamera,
-  FaCar,
   FaCheckCircle,
   FaExclamationTriangle,
   FaMapMarkerAlt,

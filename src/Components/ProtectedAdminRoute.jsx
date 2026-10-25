@@ -10,7 +10,6 @@ import {
 } from "react-router-dom";
 
 import {
-  FaShieldAlt,
   FaSpinner,
 } from "react-icons/fa";
 

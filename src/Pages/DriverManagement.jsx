@@ -28,7 +28,6 @@ import {
 
 import { supabase } from "../lib/supabase";
 
-import AEDCLogo from "../Components/AEDCLogo";
 
 import "../Styles/DriverManagement.css";
 

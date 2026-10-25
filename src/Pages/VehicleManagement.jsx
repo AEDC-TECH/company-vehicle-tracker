@@ -25,7 +25,6 @@ import {
 import "../Styles/VehicleManagement.css";
 
 import { supabase } from "../lib/supabase";
-import AEDCLogo from "../Components/AEDCLogo";
 
 
 

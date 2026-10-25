@@ -935,9 +935,10 @@ function RequestVehicle() {
           </Link>
 
           <div className="form-brand">
+            <FaCar />
 
             <span>
-
+              AEDC Vehicle Request
             </span>
           </div>
         </div>

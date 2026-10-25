@@ -11,7 +11,6 @@ import {
 import {
   FaArrowLeft,
   FaBox,
-  FaBuilding,
   FaCalendarAlt,
   FaCar,
   FaCheckCircle,
@@ -24,7 +23,6 @@ import {
 } from "react-icons/fa";
 
 import { supabase } from "../lib/supabase";
-import AEDCLogo from "../Components/AEDCLogo";
 
 import "../Styles/TransportJobs.css";
 

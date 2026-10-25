@@ -460,3 +460,65 @@
 .evidence-status-summary strong {
   color: #1d5fa7;
 }
+
+/* ===== ASSIGNED VEHICLE EVIDENCE CONTEXT START ===== */
+
+.evidence-assigned-vehicle {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+
+  margin-top: 12px;
+  padding: 12px 14px;
+
+  border:
+    1px solid
+    rgba(18, 24, 108, 0.12);
+
+  border-radius: 10px;
+
+  background: #f7f8fc;
+}
+
+.evidence-assigned-vehicle > svg {
+  flex: 0 0 auto;
+
+  margin-top: 2px;
+
+  color: #11176d;
+}
+
+.evidence-assigned-vehicle span,
+.evidence-assigned-vehicle strong,
+.evidence-assigned-vehicle small {
+  display: block;
+}
+
+.evidence-assigned-vehicle span {
+  color: #8b96a3;
+
+  font-size: 0.46rem;
+  font-weight: 850;
+
+  letter-spacing: 0.12em;
+}
+
+.evidence-assigned-vehicle strong {
+  margin-top: 3px;
+
+  color: #2e3844;
+
+  font-size: 0.68rem;
+  font-weight: 850;
+}
+
+.evidence-assigned-vehicle small {
+  margin-top: 4px;
+
+  color: #6f7b88;
+
+  font-size: 0.55rem;
+  font-weight: 700;
+}
+
+/* ===== ASSIGNED VEHICLE EVIDENCE CONTEXT END ===== */

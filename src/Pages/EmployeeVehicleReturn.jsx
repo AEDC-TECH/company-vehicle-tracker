@@ -51,18 +51,74 @@ const inspectionItems = [
   {
     key: "bodywork",
     label: "Exterior Bodywork",
+    attentionSeverity: "minor",
+    damagedSeverity: "major",
   },
   {
     key: "tyres",
-    label: "Tyres",
+    label: "Tyres & Wheels",
+    attentionSeverity: "major",
+    damagedSeverity: "critical",
   },
   {
     key: "windscreen",
-    label: "Windscreen",
+    label: "Windscreen & Windows",
+    attentionSeverity: "minor",
+    damagedSeverity: "major",
   },
   {
     key: "lights",
-    label: "Lights",
+    label: "Lights & Indicators",
+    attentionSeverity: "minor",
+    damagedSeverity: "major",
+  },
+  {
+    key: "brakes",
+    label: "Brakes",
+    attentionSeverity: "major",
+    damagedSeverity: "critical",
+  },
+  {
+    key: "steering",
+    label: "Steering",
+    attentionSeverity: "major",
+    damagedSeverity: "critical",
+  },
+  {
+    key: "horn",
+    label: "Horn",
+    attentionSeverity: "minor",
+    damagedSeverity: "major",
+  },
+  {
+    key: "seatbelts",
+    label: "Seatbelts",
+    attentionSeverity: "major",
+    damagedSeverity: "critical",
+  },
+  {
+    key: "mirrors",
+    label: "Mirrors",
+    attentionSeverity: "minor",
+    damagedSeverity: "major",
+  },
+  {
+    key: "wipers",
+    label: "Wipers & Washers",
+    attentionSeverity: "minor",
+    damagedSeverity: "major",
+  },
+  {
+    key: "fluidLeaks",
+    label: "Fluid Leaks",
+    attentionSeverity: "major",
+    damagedSeverity: "critical",
+  },
+  {
+    key: "safetyEquipment",
+    label: "Safety Equipment",
+    attentionSeverity: "major",
+    damagedSeverity: "critical",
   },
 ];
 
@@ -163,6 +219,12 @@ function EmployeeVehicleReturn() {
   const [
     conditionAfter,
     setConditionAfter,
+  ] = useState({});
+
+
+  const [
+    returnDefectDetails,
+    setReturnDefectDetails,
   ] = useState({});
 
 
@@ -454,23 +516,20 @@ function EmployeeVehicleReturn() {
         {};
 
 
-      setConditionAfter({
-        bodywork:
-          before.bodywork ||
-          "good",
+      setConditionAfter(
+        inspectionItems.reduce(
+          (result, item) => {
+            result[item.key] =
+              before[item.key] ||
+              "good";
 
-        tyres:
-          before.tyres ||
-          "good",
+            return result;
+          },
+          {}
+        )
+      );
 
-        windscreen:
-          before.windscreen ||
-          "good",
-
-        lights:
-          before.lights ||
-          "good",
-      });
+      setReturnDefectDetails({});
 
 
       /*
@@ -649,6 +708,46 @@ function EmployeeVehicleReturn() {
           value,
       })
     );
+
+    if (value === "good") {
+      setReturnDefectDetails(
+        (previous) => ({
+          ...previous,
+
+          [key]: "",
+        })
+      );
+    }
+  }
+
+
+  function handleReturnDefectDescriptionChange(
+    key,
+    value
+  ) {
+    setReturnDefectDetails(
+      (previous) => ({
+        ...previous,
+
+        [key]: value,
+      })
+    );
+  }
+
+
+  function getConditionSeverity(
+    item,
+    value
+  ) {
+    if (value === "attention") {
+      return item.attentionSeverity;
+    }
+
+    if (value === "damaged") {
+      return item.damagedSeverity;
+    }
+
+    return null;
   }
 
 
@@ -712,12 +811,30 @@ function EmployeeVehicleReturn() {
                   item.key
                 ] ||
                 "good",
+
+              severity:
+                getConditionSeverity(
+                  item,
+                  conditionAfter[
+                    item.key
+                  ] ||
+                  "good"
+                ),
+
+              description:
+                String(
+                  returnDefectDetails[
+                    item.key
+                  ] ||
+                  ""
+                ).trim(),
             })
           );
       },
       [
         trip,
         conditionAfter,
+        returnDefectDetails,
       ]
     );
 
@@ -917,6 +1034,47 @@ function EmployeeVehicleReturn() {
       ) {
         return;
       }
+    }
+
+
+    /*
+     * ============================================
+     * POST-USE SAFETY INSPECTION
+     * ============================================
+     */
+
+    const inspectionItemsMissingDetails =
+      inspectionItems.filter(
+        (item) =>
+          (
+            conditionAfter[
+              item.key
+            ] ||
+            "good"
+          ) !== "good" &&
+          !String(
+            returnDefectDetails[
+              item.key
+            ] ||
+            ""
+          ).trim()
+      );
+
+
+    if (
+      inspectionItemsMissingDetails
+        .length > 0
+    ) {
+      window.alert(
+        `Describe every return inspection item marked Attention or Defect before completing the return. Missing: ${inspectionItemsMissingDetails
+          .map(
+            (item) =>
+              item.label
+          )
+          .join(", ")}.`
+      );
+
+      return;
     }
 
 
@@ -1197,17 +1355,11 @@ function EmployeeVehicleReturn() {
         .newDamage ===
         "no"
     ) {
-      const continueReturn =
-        window.confirm(
-          "The post-use inspection shows that the vehicle condition has worsened, but New Damage is set to No. Continue?"
-        );
+      window.alert(
+        "The return inspection shows that the vehicle condition has worsened. Set New Damage to Yes and record the damage before completing the return."
+      );
 
-
-      if (
-        !continueReturn
-      ) {
-        return;
-      }
+      return;
     }
 
 
@@ -1239,6 +1391,8 @@ function EmployeeVehicleReturn() {
 
 
       const hasIncident =
+        conditionChanges.length >
+          0 ||
         formData
           .newDamage ===
         "yes" ||
@@ -1336,10 +1490,21 @@ function EmployeeVehicleReturn() {
 
         newDamage:
           formData.newDamage ===
-          "yes",
+            "yes" ||
+          conditionChanges.length > 0,
 
         newDamageDescription:
-          formData.newDamageDescription,
+          formData
+            .newDamageDescription ||
+          conditionChanges
+            .map(
+              (change) =>
+                `${change.label}: ${
+                  change.description ||
+                  change.after
+                }`
+            )
+            .join("; "),
 
         warningLightReported:
           formData.warningLightReported ===
@@ -1356,7 +1521,37 @@ function EmployeeVehicleReturn() {
           formData.mechanicalIssueDescription,
 
         postUseNotes:
-          formData.postUseNotes,
+          [
+            formData.postUseNotes,
+
+            ...inspectionItems
+              .filter(
+                (item) =>
+                  (
+                    conditionAfter[
+                      item.key
+                    ] ||
+                    "good"
+                  ) !== "good"
+              )
+              .map(
+                (item) =>
+                  `Return inspection - ${
+                    item.label
+                  }: ${
+                    conditionAfter[
+                      item.key
+                    ]
+                  } - ${
+                    returnDefectDetails[
+                      item.key
+                    ] ||
+                    "No description"
+                  }`
+              ),
+          ]
+            .filter(Boolean)
+            .join("\n"),
 
         returnParkingLocation:
           formData.returnParkingLocation,
@@ -2254,73 +2449,243 @@ function EmployeeVehicleReturn() {
           description="Inspect the same vehicle areas checked before departure."
         >
 
+          <div className="employee-return-inspection-summary">
+
+            <div>
+              <span>
+                Checklist
+              </span>
+
+              <strong>
+                {inspectionItems.length} items
+              </strong>
+            </div>
+
+            <div>
+              <span>
+                Issues Found
+              </span>
+
+              <strong>
+                {
+                  inspectionItems.filter(
+                    (item) =>
+                      (
+                        conditionAfter[
+                          item.key
+                        ] ||
+                        "good"
+                      ) !== "good"
+                  ).length
+                }
+              </strong>
+            </div>
+
+            <div
+              className={
+                conditionChanges.length > 0
+                  ? "employee-return-summary-warning"
+                  : ""
+              }
+            >
+              <span>
+                Worsened
+              </span>
+
+              <strong>
+                {conditionChanges.length}
+              </strong>
+            </div>
+
+          </div>
+
+
           <div className="employee-return-inspection-grid">
 
             {inspectionItems.map(
-              (item) => (
-
-                <div
-                  key={
+              (item) => {
+                const selected =
+                  conditionAfter[
                     item.key
-                  }
-                  className="employee-return-inspection-item"
-                >
+                  ] ||
+                  "good";
 
-                  <strong>
-                    {item.label}
-                  </strong>
+                const beforeValue =
+                  trip
+                    ?.condition_before
+                    ?.[item.key] ||
+                  "good";
 
+                const itemSeverity =
+                  getConditionSeverity(
+                    item,
+                    selected
+                  );
 
-                  <div className="employee-return-condition-buttons">
+                return (
 
-                    {[
-                      "good",
-                      "attention",
-                      "damaged",
-                    ].map(
-                      (
-                        condition
-                      ) => (
+                  <div
+                    key={item.key}
+                    className={`employee-return-inspection-item ${
+                      selected !==
+                      "good"
+                        ? "employee-return-inspection-has-issue"
+                        : ""
+                    }`}
+                  >
 
-                        <button
-                          key={
-                            condition
-                          }
-                          type="button"
-                          className={`employee-return-condition-button ${
-                            conditionAfter[
-                              item.key
-                            ] ===
-                            condition
-                              ? `employee-return-condition-${condition}`
-                              : ""
-                          }`}
-                          onClick={() =>
-                            handleConditionChange(
-                              item.key,
-                              condition
-                            )
-                          }
-                        >
+                    <div className="employee-return-inspection-heading">
 
-                          {condition ===
+                      <FaCar />
+
+                      <div>
+
+                        <strong>
+                          {item.label}
+                        </strong>
+
+                        <span>
+                          {selected ===
                           "good"
-                            ? "Good"
-                            : condition ===
-                              "attention"
-                            ? "Attention"
-                            : "Damaged"}
+                            ? "No issue identified"
+                            : `${itemSeverity} issue`}
+                        </span>
 
-                        </button>
+                        <small>
+                          Departure: {
+                            beforeValue
+                          }
+                        </small>
 
-                      )
+                      </div>
+
+                    </div>
+
+
+                    <div className="employee-return-condition-buttons">
+
+                      {[
+                        "good",
+                        "attention",
+                        "damaged",
+                      ].map(
+                        (
+                          condition
+                        ) => (
+
+                          <button
+                            key={
+                              condition
+                            }
+                            type="button"
+                            className={`employee-return-condition-button ${
+                              selected ===
+                              condition
+                                ? `employee-return-condition-${condition}`
+                                : ""
+                            }`}
+                            onClick={() =>
+                              handleConditionChange(
+                                item.key,
+                                condition
+                              )
+                            }
+                          >
+
+                            {condition ===
+                            "good"
+                              ? "Good"
+                              : condition ===
+                                "attention"
+                              ? "Attention"
+                              : "Defect"}
+
+                          </button>
+
+                        )
+                      )}
+
+                    </div>
+
+
+                    {selected !==
+                      "good" && (
+
+                      <div className="employee-return-defect-detail">
+
+                        <div className="employee-return-defect-meta">
+
+                          <span>
+                            Severity
+                          </span>
+
+                          <strong
+                            className={`employee-return-severity employee-return-severity-${itemSeverity}`}
+                          >
+                            {
+                              itemSeverity
+                            }
+                          </strong>
+
+                        </div>
+
+
+                        <label>
+
+                          Describe the issue *
+
+                          <textarea
+                            value={
+                              returnDefectDetails[
+                                item.key
+                              ] ||
+                              ""
+                            }
+                            onChange={(
+                              event
+                            ) =>
+                              handleReturnDefectDescriptionChange(
+                                item.key,
+                                event
+                                  .target
+                                  .value
+                              )
+                            }
+                            rows="3"
+                            placeholder={`Describe the ${item.label.toLowerCase()} condition clearly...`}
+                            required
+                          />
+
+                        </label>
+
+
+                        {itemSeverity ===
+                          "critical" && (
+
+                          <div className="employee-return-critical-warning">
+
+                            <FaExclamationTriangle />
+
+                            <span>
+                              Critical return
+                              defect. The vehicle
+                              will remain
+                              unavailable pending
+                              Admin review.
+                            </span>
+
+                          </div>
+
+                        )}
+
+                      </div>
+
                     )}
 
                   </div>
 
-                </div>
-
-              )
+                );
+              }
             )}
 
           </div>

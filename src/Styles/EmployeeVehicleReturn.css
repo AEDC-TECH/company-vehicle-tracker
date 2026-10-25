@@ -988,3 +988,241 @@
   color: #46515c;
   font-weight: 800;
 }
+
+/* ============================================================
+   RETURN SAFETY CHECKLIST PARITY
+   Mirrors the pre-trip inspection workflow.
+============================================================ */
+
+.employee-return-inspection-summary {
+  display: grid;
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr));
+
+  gap: 10px;
+
+  margin-bottom: 16px;
+}
+
+.employee-return-inspection-summary > div {
+  padding: 12px 14px;
+
+  border: 1px solid #dce1e6;
+  border-radius: 8px;
+
+  background: #f8f9fa;
+}
+
+.employee-return-inspection-summary span {
+  display: block;
+
+  color: #929ba5;
+
+  font-size: 0.48rem;
+  font-weight: 850;
+
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.employee-return-inspection-summary strong {
+  display: block;
+
+  margin-top: 4px;
+
+  color: #37424d;
+
+  font-size: 0.78rem;
+}
+
+.employee-return-inspection-summary
+.employee-return-summary-warning {
+  border-color: #e7cf89;
+
+  background: #fff8e5;
+}
+
+.employee-return-inspection-summary
+.employee-return-summary-warning strong {
+  color: #7a5a13;
+}
+
+.employee-return-inspection-has-issue {
+  border-color: #dfca8a;
+
+  background: #fffdf7;
+}
+
+.employee-return-inspection-heading {
+  display: flex;
+  align-items: flex-start;
+
+  gap: 9px;
+
+  margin-bottom: 10px;
+}
+
+.employee-return-inspection-heading > svg {
+  flex: 0 0 auto;
+
+  margin-top: 2px;
+
+  color: #11145f;
+}
+
+.employee-return-inspection-heading strong,
+.employee-return-inspection-heading span,
+.employee-return-inspection-heading small {
+  display: block;
+}
+
+.employee-return-inspection-heading strong {
+  color: #46515c;
+
+  font-size: 0.62rem;
+}
+
+.employee-return-inspection-heading span {
+  margin-top: 2px;
+
+  color: #89939e;
+
+  font-size: 0.49rem;
+  font-weight: 700;
+}
+
+.employee-return-inspection-heading small {
+  margin-top: 3px;
+
+  color: #a07a1d;
+
+  font-size: 0.46rem;
+  font-weight: 800;
+
+  text-transform: capitalize;
+}
+
+.employee-return-defect-detail {
+  margin-top: 10px;
+  padding-top: 10px;
+
+  border-top: 1px solid #e6e1d3;
+}
+
+.employee-return-defect-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 10px;
+
+  margin-bottom: 8px;
+}
+
+.employee-return-defect-meta > span {
+  color: #8d96a0;
+
+  font-size: 0.48rem;
+  font-weight: 800;
+
+  text-transform: uppercase;
+}
+
+.employee-return-severity {
+  padding: 4px 8px;
+
+  border-radius: 999px;
+
+  font-size: 0.46rem;
+  font-weight: 900;
+
+  text-transform: uppercase;
+}
+
+.employee-return-severity-minor {
+  background: #fff8e5;
+  color: #7a5a13;
+}
+
+.employee-return-severity-major {
+  background: #fff0ef;
+  color: #b42318;
+}
+
+.employee-return-severity-critical {
+  background: #b42318;
+  color: #ffffff;
+}
+
+.employee-return-defect-detail label {
+  display: block;
+
+  color: #46515c;
+
+  font-size: 0.52rem;
+  font-weight: 800;
+}
+
+.employee-return-defect-detail textarea {
+  width: 100%;
+  min-height: 78px;
+
+  margin-top: 6px;
+  padding: 10px 11px;
+
+  box-sizing: border-box;
+
+  resize: vertical;
+
+  border: 1px solid #d8dde2;
+  border-radius: 7px;
+
+  background: #ffffff;
+  color: #37424d;
+
+  font: inherit;
+  font-size: 0.56rem;
+  line-height: 1.45;
+}
+
+.employee-return-defect-detail textarea:focus {
+  outline: none;
+
+  border-color: #11145f;
+
+  box-shadow:
+    0 0 0 3px
+    rgba(17, 20, 95, 0.08);
+}
+
+.employee-return-critical-warning {
+  display: flex;
+  align-items: flex-start;
+
+  gap: 8px;
+
+  margin-top: 9px;
+  padding: 9px 10px;
+
+  border: 1px solid #e5aaa5;
+  border-radius: 7px;
+
+  background: #fff0ef;
+  color: #9d1d17;
+
+  font-size: 0.51rem;
+  font-weight: 750;
+  line-height: 1.45;
+}
+
+.employee-return-critical-warning svg {
+  flex: 0 0 auto;
+
+  margin-top: 1px;
+}
+
+@media (max-width: 700px) {
+  .employee-return-inspection-summary {
+    grid-template-columns: 1fr;
+  }
+}
